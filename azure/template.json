@@ -200,7 +200,7 @@
                                 {
                                     "type": "computes",
                                     "apiVersion": "2021-07-01",
-                                    "name": "[variables('computeName')]",
+                                    "name": "cpucluster",
                                     "location": "[parameters('resourceGroupLocation')]",
                                     "properties": {
                                         "computeType": "AmlCompute",
