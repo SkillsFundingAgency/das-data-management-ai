@@ -188,10 +188,10 @@
                             ],
                             "properties": {
                                 "friendlyName": "[variables('workspaceName')]",
-                                "storageAccount": "[resourceId(subscription().subscriptionId, variables('resourceGroupName'), 'Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                                "keyVault": "[resourceId(subscription().subscriptionId, variables('resourceGroupName'), 'Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                                "applicationInsights": "[resourceId(subscription().subscriptionId, variables('resourceGroupName'), 'Microsoft.Insights/components', variables('appInsightsName'))]",
-                                "containerRegistry": "[resourceId(subscription().subscriptionId, variables('resourceGroupName'), 'Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+                                "storageAccount": "[concat(subscription().id, '/resourceGroups/', variables('resourceGroupName'), '/providers/Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+                                "keyVault": "[concat(subscription().id, '/resourceGroups/', variables('resourceGroupName'), '/providers/Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+                                "applicationInsights": "[concat(subscription().id, '/resourceGroups/', variables('resourceGroupName'), '/providers/Microsoft.Insights/components/', variables('appInsightsName'))]",
+                                "containerRegistry": "[concat(subscription().id, '/resourceGroups/', variables('resourceGroupName'), '/providers/Microsoft.ContainerRegistry/registries/', variables('containerRegistryName'))]",
                                 "hbiWorkspace": "[parameters('confidential_data')]",
                                 "systemDatastoresAuthMode": "identity"
                             }
