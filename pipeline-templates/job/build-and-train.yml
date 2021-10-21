@@ -30,7 +30,6 @@ jobs:
         value: $[ dependencies.DeployInfra.outputs['ARMOutput.ComputeName.value'] ]
     steps:
       - checkout: self
-      - template: azure-pipelines-templates/build/step/gitversion.yml@das-platform-building-blocks
 
       ## Run some tests
       - task: AzureCLI@2
