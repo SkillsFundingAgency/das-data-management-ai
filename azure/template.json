@@ -183,7 +183,8 @@
                             "dependsOn": [
                                 "[variables('storageAccountName')]",
                                 "[variables('keyVaultName')]",
-                                "[variables('appInsightsName')]"
+                                "[variables('appInsightsName')]",
+                                "[variables('containerRegistryName')]"
                             ],
                             "properties": {
                                 "friendlyName": "[variables('workspaceName')]",
