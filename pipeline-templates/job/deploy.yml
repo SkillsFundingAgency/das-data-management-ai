@@ -17,6 +17,6 @@ jobs:
             SubscriptionId: $(SubscriptionId)
             Location: $(ResourceGroupLocation)
             Environment: ${{ parameters.Environment }}
-            TemplatePath: $(Pipeline.Workspace)/EmploymentCheck/azure/template.json
-            ParametersPath: $(Pipeline.Workspace)/EmploymentCheck/azure/template.parameters.json
-            IsMultiRepoCheckout: false
+            TemplatePath: $(Pipeline.Workspace)/drop/azure/template.json
+            ParametersPath: $(Pipeline.Workspace)/drop/azure/template.parameters.json
+            IsMultiRepoCheckout: true
