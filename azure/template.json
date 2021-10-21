@@ -66,7 +66,7 @@
             "name": "ml-resources",
             "resourceGroup": "[variables('resourceGroupName')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
+                "[subscriptionResourceId('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
             ],
             "properties": {
                 "mode": "Incremental",
