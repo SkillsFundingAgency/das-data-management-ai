@@ -23,15 +23,16 @@ jobs:
     dependsOn: DeployInfra
     variables:
       - name: WorkspaceName
-        value: $[ dependencies.DeployInfra.outputs['ARMOutput.WorkspaceName.value'] ]
+        value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.WorkspaceName'] ]
       - name: ResourceGroupName
-        value: $[ dependencies.DeployInfra.outputs['ARMOutput.ResourceGroupName.value'] ]
+        value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
       - name: ComputeName
-        value: $[ dependencies.DeployInfra.outputs['ARMOutput.ComputeName.value'] ]
+        value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
     steps:
       - checkout: self
 
       ## Run some tests
+
       - task: AzureCLI@2
         displayName: "Train and Register"
         inputs:
@@ -41,7 +42,7 @@ jobs:
           scriptType: "pscore"
           inlineScript: |
             az extension add -n azure-cli-ml
-            az ml folder attach --workspace-name $(WorkspaceName) --resource-group $(WorkspaceName)
+            az ml folder attach --workspace-name $(WorkspaceName) --resource-group $(ResourceGroupName)
             az ml run submit-script --run-configuration-name config/train --target $(ComputeName) --experiment-name placeholder-exp --output-metadata-file run.json train.py
             ## Validate output before registering?
             az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/output.pkl --output-metadata-file model.json
