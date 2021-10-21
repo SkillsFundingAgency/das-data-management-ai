@@ -16,8 +16,8 @@ jobs:
                 SubscriptionId: $(SubscriptionId)
                 Location: $(ResourceGroupLocation)
                 Environment: ${{ parameters.Environment }}
-                TemplatePath: azure/template.json
-                ParametersPath: azure/template.parameters.json
+                TemplatePath: das-data-management-ai/azure/template.json
+                ParametersPath: das-data-management-ai/azure/template.parameters.json
                 IsMultiRepoCheckout: true
   - job: BuildAndTrain
     dependsOn: DeployInfra
