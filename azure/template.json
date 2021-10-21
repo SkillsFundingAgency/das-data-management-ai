@@ -60,122 +60,143 @@
             "tags": "[parameters('tags')]",
             "properties": {}
         },
-        // {
-        //     "apiVersion": "2020-10-01",
-        //     "name": "ml-subnet",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "virtualNetworkName": {
-        //                 "value": "[parameters('sharedEnvVirtualNetworkName')]"
-        //             },
-        //             "subnetName": {
-        //                 "value": "[parameters('subnetObject').name]"
-        //             },
-        //             "subnetAddressPrefix": {
-        //                 "value": "[parameters('subnetObject').addressSpace]"
-        //             },
-        //             "serviceEndpointList": {
-        //                 "value": "[parameters('subnetServiceEndpointList')]"
-        //             },
-        //             "delegations": {
-        //                 "value": "[parameters('subnetDelegations')]"
-        //             }
-        //         }
-        //     },
-        //     "dependsOn": [
-        //         "[variables('resourceGroupName')]"
-        //     ]
-        // },
         {
-            "type": "Microsoft.ContainerRegistry/registries",
-            "apiVersion": "2019-12-01-preview",
-            "name": "[variables('containerRegistryName')]",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Basic"
-            },
-            "properties": {
-                "adminUserEnabled": true
-                // "networkRuleSet": "[if(equals(parameters('containerRegistryBehindVNet'), 'true'), variables('networkRuleSetBehindVNet'), json('null'))]"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2019-06-01",
-            "name": "[variables('storageAccountName')]",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "Standard_LRS"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "encryption": {
-                    "services": {
-                        "blob": {
-                            "enabled": true
-                        },
-                        "file": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "supportsHttpsTrafficOnly": true //,
-                // "networkAcls": "[if(equals(parameters('storageAccountBehindVNet'), 'true'), variables('networkRuleSetBehindVNet'), json('null'))]"
-            }
-        },
-        {
-            "type": "Microsoft.KeyVault/vaults",
-            "apiVersion": "2019-09-01",
-            "name": "[variables('keyVaultName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "tenantId": "[subscription().tenantId]",
-                "sku": {
-                    "name": "standard",
-                    "family": "A"
-                },
-                "accessPolicies": [] //,
-                // "networkAcls": "[variables('networkRuleSetBehindVNet')]"
-            }
-        },
-        {
-            "type": "Microsoft.Insights/components",
-            "apiVersion": "2020-02-02-preview",
-            "name": "[variables('appInsightsName')]",
-            "location": "[resourceGroup().location]",
-            "kind": "web",
-            "properties": {
-                "Application_Type": "web"
-            }
-        },
-        {
-            "type": "Microsoft.MachineLearningServices/workspaces",
-            "apiVersion": "2021-07-01",
-            "name": "[variables('workspaceName')]",
-            "location": "[resourceGroup().location]",
-            "identity": {
-                "type": "systemAssigned"
-            },
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "ml-resources",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                "[resourceId('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
             ],
             "properties": {
-                "friendlyName": "[variables('workspaceName')]",
-                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
-                "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
-                "hbiWorkspace": "[parameters('confidential_data')]"
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        // {
+                        //     "apiVersion": "2020-10-01",
+                        //     "name": "ml-subnet",
+                        //     "type": "Microsoft.Resources/deployments",
+                        //     "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+                        //     "properties": {
+                        //         "mode": "Incremental",
+                        //         "templateLink": {
+                        //             "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
+                        //             "contentVersion": "1.0.0.0"
+                        //         },
+                        //         "parameters": {
+                        //             "virtualNetworkName": {
+                        //                 "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                        //             },
+                        //             "subnetName": {
+                        //                 "value": "[parameters('subnetObject').name]"
+                        //             },
+                        //             "subnetAddressPrefix": {
+                        //                 "value": "[parameters('subnetObject').addressSpace]"
+                        //             },
+                        //             "serviceEndpointList": {
+                        //                 "value": "[parameters('subnetServiceEndpointList')]"
+                        //             },
+                        //             "delegations": {
+                        //                 "value": "[parameters('subnetDelegations')]"
+                        //             }
+                        //         }
+                        //     },
+                        //     "dependsOn": [
+                        //         "[variables('resourceGroupName')]"
+                        //     ]
+                        // },
+                        {
+                            "type": "Microsoft.ContainerRegistry/registries",
+                            "apiVersion": "2019-12-01-preview",
+                            "name": "[variables('containerRegistryName')]",
+                            "location": "[parameters('resourceGroupLocation')]",
+                            "sku": {
+                                "name": "Basic"
+                            },
+                            "properties": {
+                                "adminUserEnabled": true
+                                // "networkRuleSet": "[if(equals(parameters('containerRegistryBehindVNet'), 'true'), variables('networkRuleSetBehindVNet'), json('null'))]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Storage/storageAccounts",
+                            "apiVersion": "2019-06-01",
+                            "name": "[variables('storageAccountName')]",
+                            "location": "[parameters('resourceGroupLocation')]",
+                            "sku": {
+                                "name": "Standard_LRS"
+                            },
+                            "kind": "StorageV2",
+                            "properties": {
+                                "encryption": {
+                                    "services": {
+                                        "blob": {
+                                            "enabled": true
+                                        },
+                                        "file": {
+                                            "enabled": true
+                                        }
+                                    },
+                                    "keySource": "Microsoft.Storage"
+                                },
+                                "supportsHttpsTrafficOnly": true //,
+                                // "networkAcls": "[if(equals(parameters('storageAccountBehindVNet'), 'true'), variables('networkRuleSetBehindVNet'), json('null'))]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.KeyVault/vaults",
+                            "apiVersion": "2019-09-01",
+                            "name": "[variables('keyVaultName')]",
+                            "location": "[parameters('resourceGroupLocation')]",
+                            "properties": {
+                                "tenantId": "[subscription().tenantId]",
+                                "sku": {
+                                    "name": "standard",
+                                    "family": "A"
+                                },
+                                "accessPolicies": [] //,
+                                // "networkAcls": "[variables('networkRuleSetBehindVNet')]"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.Insights/components",
+                            "apiVersion": "2020-02-02-preview",
+                            "name": "[variables('appInsightsName')]",
+                            "location": "[parameters('resourceGroupLocation')]",
+                            "kind": "web",
+                            "properties": {
+                                "Application_Type": "web"
+                            }
+                        },
+                        {
+                            "type": "Microsoft.MachineLearningServices/workspaces",
+                            "apiVersion": "2021-07-01",
+                            "name": "[variables('workspaceName')]",
+                            "location": "[parameters('resourceGroupLocation')]",
+                            "identity": {
+                                "type": "systemAssigned"
+                            },
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                            ],
+                            "properties": {
+                                "friendlyName": "[variables('workspaceName')]",
+                                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                                "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
+                                "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+                                "hbiWorkspace": "[parameters('confidential_data')]"
+                            }
+                        }
+                    ],
+                    "outputs": {}
+                }
             }
         }
     ]
