@@ -18,6 +18,7 @@ jobs:
                 TemplatePath: azure/template.json
                 ParametersPath: azure/template.parameters.json
   - job: BuildAndTrain
+    dependsOn: DeployInfra
     variables:
       - name: WorkspaceName
         value: $[ dependencies.DeployInfra.outputs['ARMOutput.WorkspaceName.value'] ]
