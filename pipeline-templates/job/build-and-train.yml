@@ -33,39 +33,16 @@ jobs:
 
       ## Run some tests
       - task: AzureCLI@2
-        displayName: "Install AML CLI"
-        inputs:
-          azureSubscription: ${{ parameters.ServiceConnection }}
-          scriptLocation: inlineScript
-          scriptType: "bash"
-          inlineScript: "az extension add -n azure-cli-ml"
-
-      - task: AzureCLI@2
-        displayName: "Attach folder to workspace"
+        displayName: "Train and Register"
         inputs:
           azureSubscription: ${{ parameters.ServiceConnection }}
           workingDirectory: models/placeholder
           scriptLocation: inlineScript
-          scriptType: "bash"
-          inlineScript: "az ml folder attach --workspace-name $(WorkspaceName) --resource-group $(WorkspaceName)"
-
-      - task: AzureCLI@2
-        displayName: "Train model"
-        inputs:
-          azureSubscription: ${{ parameters.ServiceConnection }}
-          workingDirectory: models/placeholder
-          scriptLocation: inlineScript
-          scriptType: "bash"
-          inlineScript: "az ml run submit-script --run-configuration-name config/train --target $(ComputeName) --experiment-name placeholder-exp --output-metadata-file run.json train.py"
-
-      ## Validate output before registering?
-
-      - task: AzureCLI@2
-        displayName: 'Register model'
-        inputs:
-          azureSubscription: ${{ parameters.ServiceConnection }}
-          workingDirectory: models/placeholder
-          scriptLocation: inlineScript
-          scriptType: 'bash'
-          inlineScript: 'az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/output.pkl --output-metadata-file model.json'
+          scriptType: "pscore"
+          inlineScript: |
+            az extension add -n azure-cli-ml
+            az ml folder attach --workspace-name $(WorkspaceName) --resource-group $(WorkspaceName)
+            az ml run submit-script --run-configuration-name config/train --target $(ComputeName) --experiment-name placeholder-exp --output-metadata-file run.json train.py
+            ## Validate output before registering?
+            az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/output.pkl --output-metadata-file model.json
 
