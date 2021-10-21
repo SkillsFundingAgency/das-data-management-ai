@@ -181,16 +181,16 @@
                                 "type": "systemAssigned"
                             },
                             "dependsOn": [
-                                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                                "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+                                "[resourceId(variables('resourceGroupName'), 'Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                                "[resourceId(variables('resourceGroupName'), 'Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                                "[resourceId(variables('resourceGroupName'), 'Microsoft.Insights/components', variables('appInsightsName'))]"
                             ],
                             "properties": {
                                 "friendlyName": "[variables('workspaceName')]",
-                                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                                "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
-                                "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+                                "storageAccount": "[resourceId(variables('resourceGroupName'), 'Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                                "keyVault": "[resourceId(variables('resourceGroupName'), 'Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                                "applicationInsights": "[resourceId(variables('resourceGroupName'), 'Microsoft.Insights/components', variables('appInsightsName'))]",
+                                "containerRegistry": "[resourceId(variables('resourceGroupName'), 'Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
                                 "hbiWorkspace": "[parameters('confidential_data')]"
                             }
                         }
