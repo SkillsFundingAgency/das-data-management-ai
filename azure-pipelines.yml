@@ -11,7 +11,7 @@ variables:
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))
 
 pool:
-  name: DAS - Continuous Integration Agents
+  name: DAS - Continuous Deployment Agents
   workspace:
     clean: all
 
@@ -30,19 +30,13 @@ resources:
     endpoint: SkillsFundingAgency
 
 stages:
-- stage: Build
-  jobs:
-  - template: pipeline-templates/job/code-build.yml
-
-- stage: Deploy_AT
-  dependsOn: Build
-  displayName: Deploy to AT
+- stage: BuildAndTrain
   # condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
   jobs:
-  - template: pipeline-templates/job/deploy.yml
+  - template: pipeline-templates/job/build-and-train.yml
     parameters:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM

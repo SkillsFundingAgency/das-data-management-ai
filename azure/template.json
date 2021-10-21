@@ -48,6 +48,7 @@
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
         "workspaceName": "[concat(variables('resourceNamePrefix'), '-ml')]",
         "keyVaultName": "[concat(variables('resourceNamePrefix'), '-kv')]",
+        "computeName": "[concat(variables('resourceNamePrefix'), '-mlc')]",
         "containerRegistryName": "[replace(concat(variables('resourceNamePrefix'), 'acr'), '-', '')]",
         "storageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]"
     },
@@ -194,12 +195,51 @@
                                 "containerRegistry": "[concat(subscription().id, '/resourceGroups/', variables('resourceGroupName'), '/providers/Microsoft.ContainerRegistry/registries/', variables('containerRegistryName'))]",
                                 "hbiWorkspace": "[parameters('confidential_data')]",
                                 "systemDatastoresAuthMode": "identity"
-                            }
+                            },
+                            "resources": [
+                                {
+                                    "type": "computes",
+                                    "apiVersion": "2021-07-01",
+                                    "name": "[variables('computeName')]",
+                                    "location": "[parameters('resourceGroupLocation')]",
+                                    "properties": {
+                                        "computeType": "AmlCompute",
+                                        "disableLocalAuth": true,
+                                        "properties": {
+                                            "remoteLoginPortPublicAccess": "NotSpecified",
+                                            "scaleSettings": {
+                                                "maxNodeCount": 1,
+                                                "minNodeCount": 0,
+                                                "nodeIdleTimeBeforeScaleDown": "PT300S"
+                                            },
+                                            "vmPriority": "LowPriority",
+                                            "vmSize": "Standard_D1_v2"
+                                        }
+                                    },
+                                    "dependsOn": [
+                                        "[variables('workspaceName')]"
+                                    ]
+                                }
+                            ]
                         }
                     ],
                     "outputs": {}
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+        "WorkspaceName": {
+            "type": "string",
+            "value": "[variables('workspaceName')]"
+        },
+        "ResourceGroupName": {
+            "type": "string",
+            "value": "[variables('resourceGroupName')]"
+        },
+        "ComputeName": {
+            "type": "string",
+            "value": "[variables('computeName')]"
+        }
+    }
 }
