@@ -66,7 +66,7 @@
             "name": "ml-resources",
             "resourceGroup": "[variables('resourceGroupName')]",
             "dependsOn": [
-                "[subscriptionResourceId('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
+                "[concat('Microsoft.Resources/resourceGroups/', variables('resourceGroupName'))]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -181,16 +181,16 @@
                                 "type": "systemAssigned"
                             },
                             "dependsOn": [
-                                "[resourceId(variables('resourceGroupName'), 'Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                                "[resourceId(variables('resourceGroupName'), 'Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                                "[resourceId(variables('resourceGroupName'), 'Microsoft.Insights/components', variables('appInsightsName'))]"
+                                "[variables('storageAccountName')]",
+                                "[variables('keyVaultName')]",
+                                "[variables('appInsightsName')]"
                             ],
                             "properties": {
                                 "friendlyName": "[variables('workspaceName')]",
-                                "storageAccount": "[resourceId(variables('resourceGroupName'), 'Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                                "keyVault": "[resourceId(variables('resourceGroupName'), 'Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
-                                "applicationInsights": "[resourceId(variables('resourceGroupName'), 'Microsoft.Insights/components', variables('appInsightsName'))]",
-                                "containerRegistry": "[resourceId(variables('resourceGroupName'), 'Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
+                                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+                                "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
+                                "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
                                 "hbiWorkspace": "[parameters('confidential_data')]"
                             }
                         }
