@@ -192,7 +192,8 @@
                                 "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
                                 "applicationInsights": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
                                 "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('containerRegistryName'))]",
-                                "hbiWorkspace": "[parameters('confidential_data')]"
+                                "hbiWorkspace": "[parameters('confidential_data')]",
+                                "systemDatastoresAuthMode": "identity"
                             }
                         }
                     ],
