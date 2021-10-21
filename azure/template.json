@@ -48,7 +48,7 @@
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
         "workspaceName": "[concat(variables('resourceNamePrefix'), '-ml')]",
         "keyVaultName": "[concat(variables('resourceNamePrefix'), '-kv')]",
-        "computeName": "[concat(variables('resourceNamePrefix'), '-mlc')]",
+        "computeName": "cpucluster",
         "containerRegistryName": "[replace(concat(variables('resourceNamePrefix'), 'acr'), '-', '')]",
         "storageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]"
     },
@@ -200,7 +200,7 @@
                                 {
                                     "type": "computes",
                                     "apiVersion": "2021-07-01",
-                                    "name": "cpucluster",
+                                    "name": "[variables('computeName')]",
                                     "location": "[parameters('resourceGroupLocation')]",
                                     "properties": {
                                         "computeType": "AmlCompute",
