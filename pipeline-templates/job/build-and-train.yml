@@ -18,6 +18,7 @@ jobs:
                 Environment: ${{ parameters.Environment }}
                 TemplatePath: azure/template.json
                 ParametersPath: azure/template.parameters.json
+                IsMultiRepoCheckout: true
   - job: BuildAndTrain
     dependsOn: DeployInfra
     variables:
