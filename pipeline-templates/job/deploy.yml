@@ -1,0 +1,18 @@
+parameters:  
+  Environment:
+  ServiceConnection:
+
+jobs:
+- job: DeployInfra
+  variables:
+  - group: BUILD Management Resources
+  steps:
+    - template: azure-pipelines-templates/deploy/step/arm-deploy.yml@das-platform-building-blocks
+      parameters:
+        ServiceConnection: ${{ parameters.ServiceConnection }}
+        SubscriptionId: $(SubscriptionId)
+        Location: $(ResourceGroupLocation)
+        Environment: ${{ parameters.Environment }}
+        TemplatePath: $(Pipeline.Workspace)/drop/azure/template.json
+        ParametersPath: $(Pipeline.Workspace)/drop/azure/template.parameters.json
+        IsMultiRepoCheckout: false
