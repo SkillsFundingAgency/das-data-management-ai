@@ -48,7 +48,7 @@
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
         "workspaceName": "[concat(variables('resourceNamePrefix'), '-ml')]",
         "keyVaultName": "[concat(variables('resourceNamePrefix'), '-kv')]",
-        "containerRegistryName": "[concat(variables('resourceNamePrefix'), '-acr')]",
+        "containerRegistryName": "[replace(concat(variables('resourceNamePrefix'), 'acr'), '-', '')]",
         "storageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]"
     },
     "resources": [
