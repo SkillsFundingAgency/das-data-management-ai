@@ -212,13 +212,13 @@
                         "value": "[variables('workspaceName')]"
                     },
                     "storageAccountResourceId": {
-                        "type": "[reference('ml-storage').outputs.storageResourceId.value]"
+                        "value": "[reference('ml-storage').outputs.storageResourceId.value]"
                     },
                     "keyVaultResourceId": {
-                        "type": "[reference('ml-keyvault').outputs.KeyVaultResourceId.value]"
+                        "value": "[reference('ml-keyvault').outputs.KeyVaultResourceId.value]"
                     },
                     "appInsightsResourceId": {
-                        "type": "[reference('ml-app-insights').outputs.AppInsightsResourceId.value]"
+                        "value": "[reference('ml-app-insights').outputs.AppInsightsResourceId.value]"
                     },
                     "confidentialData": {
                         "value": "[parameters('confidential_data')]"
