@@ -165,15 +165,6 @@
                 "parameters": {
                     "keyVaultName": {
                         "value": "[variables('keyVaultName')]"
-                    },
-                    "storageKind": {
-                        "value": "StorageV2"
-                    },
-                    "allowSharedKeyAccess": {
-                        "value": false
-                    },
-                    "subnetResourceIdList": {
-                        "value": []
                     }
                 }
             },
@@ -252,6 +243,9 @@
                     },
                     "computeName":{
                         "value": "[variables('computeName')]"
+                    },
+                    "computeType": {
+                        "value": "AmlCompute"
                     }
                 }
             },
