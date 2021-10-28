@@ -98,7 +98,7 @@
         //     "apiVersion": "2020-10-01",
         //     "name": "container-registry",
         //     "type": "Microsoft.Resources/deployments",
-        //     "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+        //     "resourceGroup": "[variables('resourceGroupName')]",
         //     "properties": {
         //         "mode": "Incremental",
         //         "templateLink": {
@@ -125,7 +125,7 @@
             "apiVersion": "2020-10-01",
             "name": "ml-storage",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -155,7 +155,7 @@
             "apiVersion": "2020-10-01",
             "name": "ml-keyvault",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -176,7 +176,7 @@
             "apiVersion": "2020-10-01",
             "name": "ml-app-insights",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -197,7 +197,7 @@
             "apiVersion": "2020-10-01",
             "name": "ml-workspace",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -230,7 +230,7 @@
             "apiVersion": "2020-10-01",
             "name": "ml-compute",
             "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
