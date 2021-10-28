@@ -237,7 +237,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "ml-workspace",
+            "name": "ml-compute",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
