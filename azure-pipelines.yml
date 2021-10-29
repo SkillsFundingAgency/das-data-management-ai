@@ -31,7 +31,7 @@ resources:
 
 stages:
 - stage: BuildAndTrain
-  # condition: and(succeeded(), eq(variables.Deploy, 'true'))
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
