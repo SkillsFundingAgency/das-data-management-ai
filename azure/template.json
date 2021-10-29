@@ -142,7 +142,7 @@
                     },
                     "subnetResourceIdList": {
                         "value": [
-                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                            // "[reference('ml-subnet').outputs.SubnetResourceId.value]"
                         ]
                     }
                 }
