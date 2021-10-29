@@ -257,6 +257,15 @@
                     },
                     "computeType": {
                         "value": "AmlCompute"
+                    },
+                    "vnetResourceGroupName": {
+                        "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "vnetName": {
+                        "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetObject').name]"
                     }
                 }
             },
