@@ -265,7 +265,7 @@
                         "value": "[variables('workspaceName')]"
                     },
                     "storageAccountResourceId": {
-                        "value": "[reference('ml-storage').outputs.storageResourceId.value]"
+                        "value": "[reference('ml-default-storage').outputs.storageResourceId.value]"
                     },
                     "keyVaultResourceId": {
                         "value": "[reference('ml-keyvault').outputs.KeyVaultResourceId.value]"
