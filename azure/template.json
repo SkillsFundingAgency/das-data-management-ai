@@ -139,9 +139,6 @@
                     "storageKind": {
                         "value": "StorageV2"
                     },
-                    "allowSharedKeyAccess": {
-                        "value": false
-                    },
                     "subnetResourceIdList": {
                         "value": []
                     }
