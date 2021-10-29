@@ -84,15 +84,9 @@
                     },
                     "serviceEndpointList": {
                         "value": [
-                            {
-                                "service": "Microsoft.Storage"
-                            },
-                            {
-                                "service": "Microsoft.KeyVault"
-                            },
-                            {
-                                "service": "Microsoft.ContainerRegistry"
-                            }
+                            "Microsoft.Storage",
+                            "Microsoft.KeyVault",
+                            "Microsoft.ContainerRegistry"
                         ]
                     }
                 }
