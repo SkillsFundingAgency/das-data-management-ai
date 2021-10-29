@@ -1,11 +1,16 @@
 import pickle
 import os
 from azureml.core.run import Run
+from azureml.core import Workspace, Datastore
+
+ws = Workspace.from_config()
+datastore = Datastore.get(ws, datastore_name='trainingdata')
 
 os.makedirs('./outputs', exist_ok=True)
 
 run = Run.get_context()
-run.log('thest log', 'test log')
+run.log('test log', 'test log')
+
 # Save model in the outputs folder so it automatically get uploaded when running on AML Compute
 model_file_name = 'output.pkl'
 with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
