@@ -27,13 +27,13 @@
         },
         "sharedEnvResourceGroup": {
             "type": "string"
-        }//,
-        // "sharedEnvVirtualNetworkName": {
-        //     "type": "string"
-        // },
-        // "subnetObject": {
-        //     "type": "object"
-        // },
+        },
+        "sharedEnvVirtualNetworkName": {
+            "type": "string"
+        },
+        "subnetObject": {
+            "type": "object"
+        } //,
         // "subnetServiceEndpointList": {
         //     "type": "array"
         // },
@@ -61,66 +61,78 @@
             "tags": "[parameters('tags')]",
             "properties": {}
         },
-        // {
-        //     "apiVersion": "2020-10-01",
-        //     "name": "ml-subnet",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "virtualNetworkName": {
-        //                 "value": "[parameters('sharedEnvVirtualNetworkName')]"
-        //             },
-        //             "subnetName": {
-        //                 "value": "[parameters('subnetObject').name]"
-        //             },
-        //             "subnetAddressPrefix": {
-        //                 "value": "[parameters('subnetObject').addressSpace]"
-        //             },
-        //             "serviceEndpointList": {
-        //                 "value": "[parameters('subnetServiceEndpointList')]"
-        //             },
-        //             "delegations": {
-        //                 "value": "[parameters('subnetDelegations')]"
-        //             }
-        //         }
-        //     },
-        //     "dependsOn": [
-        //         "[variables('resourceGroupName')]"
-        //     ]
-        // },
-        // {
-        //     "apiVersion": "2020-10-01",
-        //     "name": "container-registry",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "resourceGroup": "[variables('resourceGroupName')]",
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[concat(variables('deploymentUrlBase'),'container-registry.json')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "registryName": {
-        //                 "value": "[variables('containerRegistryName')]"
-        //             },
-        //             "registrySkuName": {
-        //                 "value": "Basic"
-        //             },
-        //             "subnetResourceIdList": {
-        //                 "value": []
-        //             }
-        //         }
-        //     },
-        //     "dependsOn": [
-        //         "[variables('resourceGroupName')]"
-        //     ]
-        // },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-subnet",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetObject').name]"
+                    },
+                    "subnetAddressPrefix": {
+                        "value": "[parameters('subnetObject').addressSpace]"
+                    },
+                    "serviceEndpointList": {
+                        "value": [
+                            {
+                                "service": "Microsoft.Storage"
+                            },
+                            {
+                                "service": "Microsoft.KeyVault"
+                            },
+                            {
+                                "service": "Microsoft.ContainerRegistry"
+                            }
+                        ]
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-container-registry",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'container-registry.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "registryName": {
+                        "value": "[variables('containerRegistryName')]"
+                    },
+                    "registrySkuName": {
+                        "value": "Basic"
+                    },
+                    "subnetResourceIdList": {
+                        "value": [
+                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                        ]
+                    },
+                    "adminUserEnabled": {
+                        "value": true
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
         {
             "apiVersion": "2020-10-01",
             "name": "ml-storage",
@@ -140,7 +152,9 @@
                         "value": "StorageV2"
                     },
                     "subnetResourceIdList": {
-                        "value": []
+                        "value": [
+                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                        ]
                     }
                 }
             },
@@ -165,6 +179,11 @@
                     },
                     "enableSoftDelete": {
                         "value": true
+                    },
+                    "subnetResourceIdList": {
+                        "value": [
+                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                        ]
                     }
                 }
             },
@@ -217,6 +236,9 @@
                     "appInsightsResourceId": {
                         "value": "[reference('ml-app-insights').outputs.AppInsightsResourceId.value]"
                     },
+                    "containerRegistryResourceId": {
+                        "value": "[reference('ml-container-registry').outputs.acrResourceId.value]"
+                    },
                     "confidentialData": {
                         "value": "[parameters('confidential_data')]"
                     }
@@ -241,7 +263,7 @@
                     "workspaceName": {
                         "value": "[variables('workspaceName')]"
                     },
-                    "computeName":{
+                    "computeName": {
                         "value": "[variables('computeName')]"
                     },
                     "computeType": {
