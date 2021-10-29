@@ -113,11 +113,6 @@
                     "registrySkuName": {
                         "value": "Basic"
                     },
-                    "subnetResourceIdList": {
-                        "value": [
-                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
-                        ]
-                    },
                     "adminUserEnabled": {
                         "value": true
                     }
