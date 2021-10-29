@@ -1,10 +1,11 @@
 import pickle
 import os
 from azureml.core.run import Run
-from azureml.core import Workspace, Datastore
+from azureml.core import Datastore
 
-ws = Workspace.from_config()
-datastore = Datastore.get(ws, datastore_name='trainingdata')
+
+aml_workspace = Run.get_context().experiment.workspace
+datastore = Datastore.get(aml_workspace, datastore_name='trainingdata')
 
 os.makedirs('./outputs', exist_ok=True)
 
