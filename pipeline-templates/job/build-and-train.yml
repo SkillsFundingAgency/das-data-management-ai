@@ -30,9 +30,6 @@ jobs:
         value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
     steps:
       - checkout: self
-
-      ## Run some tests
-
       - task: AzureCLI@2
         displayName: "Train and Register"
         inputs:

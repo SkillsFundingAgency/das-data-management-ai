@@ -8,13 +8,9 @@
         "serviceName": {
             "type": "string"
         },
-        "confidential_data": {
-            "type": "string",
-            "defaultValue": "false",
-            "allowedValues": [
-                "false",
-                "true"
-            ],
+        "confidentialData": {
+            "type": "bool",
+            "defaultValue": true,
             "metadata": {
                 "description": "Specifies that the Azure Machine Learning workspace holds highly confidential data."
             }
@@ -36,7 +32,7 @@
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/ml/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
@@ -257,7 +253,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-workspace.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-workspace.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -277,7 +273,7 @@
                         "value": "[reference('ml-container-registry').outputs.acrResourceId.value]"
                     },
                     "confidentialData": {
-                        "value": "[parameters('confidential_data')]"
+                        "value": "[parameters('confidentialData')]"
                     }
                 }
             },
@@ -293,7 +289,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-compute.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-compute.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -330,7 +326,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-datastore.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-datastore-blob.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -345,9 +341,6 @@
                     },
                     "storageAccountName": {
                         "value": "[variables('dataStorageAccountName')]"
-                    },
-                    "datastoreType": {
-                        "value": "AzureBlob"
                     }
                 }
             },
