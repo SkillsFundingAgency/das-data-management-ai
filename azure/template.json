@@ -1,0 +1,365 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceEnvironmentName": {
+            "type": "string"
+        },
+        "serviceName": {
+            "type": "string"
+        },
+        "confidentialData": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Specifies that the Azure Machine Learning workspace holds highly confidential data."
+            }
+        },
+        "tags": {
+            "type": "object"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
+        "sharedEnvResourceGroup": {
+            "type": "string"
+        },
+        "sharedEnvVirtualNetworkName": {
+            "type": "string"
+        },
+        "subnetObject": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
+        "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
+        "workspaceName": "[concat(variables('resourceNamePrefix'), '-ml')]",
+        "keyVaultName": "[concat(variables('resourceNamePrefix'), '-kv')]",
+        "computeName": "cpucluster",
+        "containerRegistryName": "[replace(concat(variables('resourceNamePrefix'), 'acr'), '-', '')]",
+        "defaultStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]",
+        "dataStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'datastr'), '-', '')]",
+        "dataStorageContainerName": "trainingdata"
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-10-01",
+            "name": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {}
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-subnet",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'subnet.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetObject').name]"
+                    },
+                    "subnetAddressPrefix": {
+                        "value": "[parameters('subnetObject').addressSpace]"
+                    },
+                    "serviceEndpointList": {
+                        "value": [
+                            "Microsoft.Storage",
+                            "Microsoft.KeyVault",
+                            "Microsoft.ContainerRegistry"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-container-registry",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'container-registry.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "registryName": {
+                        "value": "[variables('containerRegistryName')]"
+                    },
+                    "registrySkuName": {
+                        "value": "Basic"
+                    },
+                    "adminUserEnabled": {
+                        "value": true
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-default-storage",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'storage-account-arm.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[variables('defaultStorageAccountName')]"
+                    },
+                    "storageKind": {
+                        "value": "StorageV2"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-data-storage",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'storage-account-arm.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[variables('dataStorageAccountName')]"
+                    },
+                    "storageKind": {
+                        "value": "StorageV2"
+                    },
+                    "subnetResourceIdList": {
+                        "value": [
+                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                        ]
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-data-container",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'storage-container.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[variables('dataStorageAccountName')]"
+                    },
+                    "containerName": {
+                        "value": "[variables('dataStorageContainerName')]"
+                    },
+                    "publicAccess": {
+                        "value": "None"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]",
+                "ml-data-storage"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-keyvault",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'keyvault.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultName": {
+                        "value": "[variables('keyVaultName')]"
+                    },
+                    "enableSoftDelete": {
+                        "value": true
+                    },
+                    "subnetResourceIdList": {
+                        "value": [
+                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                        ]
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-app-insights",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('appInsightsName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-workspace",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-workspace.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "workspaceName": {
+                        "value": "[variables('workspaceName')]"
+                    },
+                    "storageAccountResourceId": {
+                        "value": "[reference('ml-default-storage').outputs.storageResourceId.value]"
+                    },
+                    "keyVaultResourceId": {
+                        "value": "[reference('ml-keyvault').outputs.KeyVaultResourceId.value]"
+                    },
+                    "appInsightsResourceId": {
+                        "value": "[reference('ml-app-insights').outputs.AppInsightsResourceId.value]"
+                    },
+                    "containerRegistryResourceId": {
+                        "value": "[reference('ml-container-registry').outputs.acrResourceId.value]"
+                    },
+                    "confidentialData": {
+                        "value": "[parameters('confidentialData')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-compute",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-compute.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "workspaceName": {
+                        "value": "[variables('workspaceName')]"
+                    },
+                    "computeName": {
+                        "value": "[variables('computeName')]"
+                    },
+                    "computeType": {
+                        "value": "AmlCompute"
+                    },
+                    "vnetResourceGroupName": {
+                        "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "vnetName": {
+                        "value": "[parameters('sharedEnvVirtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetObject').name]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]",
+                "ml-workspace"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-datastore",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-datastore-blob.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "workspaceName": {
+                        "value": "[variables('workspaceName')]"
+                    },
+                    "datastoreName": {
+                        "value": "[variables('dataStorageContainerName')]"
+                    },
+                    "blobContainerName": {
+                        "value": "[variables('dataStorageContainerName')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('dataStorageAccountName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]",
+                "ml-workspace",
+                "ml-data-container"
+            ]
+        }
+    ],
+    "outputs": {
+        "WorkspaceName": {
+            "type": "string",
+            "value": "[variables('workspaceName')]"
+        },
+        "ResourceGroupName": {
+            "type": "string",
+            "value": "[variables('resourceGroupName')]"
+        },
+        "ComputeName": {
+            "type": "string",
+            "value": "[variables('computeName')]"
+        }
+    }
+}
