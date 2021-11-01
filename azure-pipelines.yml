@@ -21,7 +21,7 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/heads/ml
+    ref: refs/tags/0.4.14
     endpoint: SkillsFundingAgency
   - repository: das-platform-automation
     type: github
@@ -33,7 +33,7 @@ stages:
 ## Add linting and unit tests
 
 - stage: BuildAndTrain
-  # condition: and(succeeded(), eq(variables.Deploy, 'true'))
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
