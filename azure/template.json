@@ -82,10 +82,7 @@
                         ]
                     }
                 }
-            },
-            "dependsOn": [
-                "[variables('resourceGroupName')]"
-            ]
+            }
         },
         {
             "apiVersion": "2020-10-01",
@@ -334,7 +331,7 @@
                         "value": "[variables('workspaceName')]"
                     },
                     "datastoreName": {
-                        "value": "trainingdata"
+                        "value": "[variables('dataStorageContainerName')]"
                     },
                     "blobContainerName": {
                         "value": "[variables('dataStorageContainerName')]"
