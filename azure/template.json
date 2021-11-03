@@ -29,10 +29,16 @@
         },
         "subnetObject": {
             "type": "object"
+        },
+        "dataMgmtDbName": {
+            "type": "string"
+        },
+        "sharedSQLServerName": {
+            "type": "string"
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/ml-sql-datastore/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
@@ -317,7 +323,7 @@
         },
         {
             "apiVersion": "2020-10-01",
-            "name": "ml-datastore",
+            "name": "ml-storage-datastore",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -345,6 +351,37 @@
                 "[variables('resourceGroupName')]",
                 "ml-workspace",
                 "ml-data-container"
+            ]
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "ml-sql-datastore",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'machine-learning-services/machine-learning-datastore-azuresql.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "workspaceName": {
+                        "value": "[variables('workspaceName')]"
+                    },
+                    "datastoreName": {
+                        "value": "datamgmtdb"
+                    },
+                    "databaseName": {
+                        "value": "[parameters('dataMgmtDbName')]"
+                    },
+                    "serverName": {
+                        "value": "[parameters('sharedSQLServerName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]",
+                "ml-workspace"
             ]
         }
     ],
