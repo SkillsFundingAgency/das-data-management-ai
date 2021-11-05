@@ -1,8 +1,6 @@
 # set up libraries
 import pandas as pd
 
-# set up the connection string
-# conn = 
 #read the data from sql
 df = pd.read_sql('SELECT * from test_data',conn)
 
