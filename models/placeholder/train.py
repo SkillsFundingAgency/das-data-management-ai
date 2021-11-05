@@ -1,5 +1,6 @@
 import pickle
 import os
+import pandas as pd
 from azureml.core.run import Run
 from azureml.core import Datastore
 
