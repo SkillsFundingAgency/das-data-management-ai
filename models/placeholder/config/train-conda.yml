@@ -1,6 +1,6 @@
 name: placeholder-training-env
 dependencies:
 - python=3.6.2
-- pandas
 - pip:
   - azureml-defaults
+  - pandas
