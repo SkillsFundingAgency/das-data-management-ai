@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from azureml.core.run import Run
 from azureml.core import Datastore
+from azureml.data.datapath import DataPath
 
 aml_workspace = Run.get_context().experiment.workspace
 # datastore = Datastore.get(aml_workspace, datastore_name='trainingdata')
