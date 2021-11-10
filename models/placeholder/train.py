@@ -37,7 +37,7 @@ run = Run.get_context()
 run.log('test log', 'test log')
 
 # Save model in the outputs folder so it automatically get uploaded when running on AML Compute
-# model_file_name = 'output.pkl'
-# with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
-#     pickle.dump('placeholder', file)
+model_file_name = 'test_model.pkl'
+with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
+    pickle.dump(clf, file)
 
