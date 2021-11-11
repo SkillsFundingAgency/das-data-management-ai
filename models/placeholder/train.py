@@ -29,6 +29,11 @@ x_train.head(5)
 #build logistic model
 clf=LogisticRegression(random_state=0).fit(x_train,y_train)
 
+#score dataset back onto the base
+scored=clf.predict_proba(x_train)
+df['model_prediction']=scored[:,1]
+print(df.head(5))
+
 #print model coefficients
 print(clf.coef_)
 print(clf.intercept_)
@@ -40,4 +45,4 @@ run.log('test log', 'test log')
 model_file_name = 'test_model.pkl'
 with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
     pickle.dump(clf, file)
-
+    
