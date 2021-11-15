@@ -1,6 +1,8 @@
 import pickle
 import os
 import pandas as pd
+import pyarrow.csv as pv
+import pyarrow.parquet as pq
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore
 from azureml.data.datapath import DataPath
@@ -45,4 +47,6 @@ run.log('test log', 'test log')
 model_file_name = 'test_model.pkl'
 with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
     pickle.dump(clf, file)
-    
+
+#write out scored file to parquet
+df.to_parquet('./outputs/test_scored_model.parquet')
