@@ -1,7 +1,6 @@
 import pickle
 import os
 import pandas as pd
-import pyarrow.csv as pv
 import pyarrow.parquet as pq
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore
