@@ -7,3 +7,4 @@ dependencies:
     - azureml-defaults
     - pandas
     - sklearn
+    - pyarrow
