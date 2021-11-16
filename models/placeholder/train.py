@@ -12,7 +12,7 @@ source_dir = "./outputs"
 score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
-    target=compute_target,
+    compute_target=compute_target,
     source_directory=source_dir)
 
 steps = [score_step]
