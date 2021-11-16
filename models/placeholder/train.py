@@ -1,5 +1,5 @@
 import azureml.core
-from azureml.core import Workspace, Datastore, Dataset, ComputeTarget
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment
 from azureml.core.run import Run
 
 ws = Run.get_context().experiment.workspace
