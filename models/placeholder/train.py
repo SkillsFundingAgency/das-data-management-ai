@@ -3,7 +3,7 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget
 from azureml.core.run import Run
 
 ws = Run.get_context().experiment.workspace
-compute_target = ws.compute_targets["STANDARD_D1_V2"]
+compute_target = ws.compute_targets["cpucluster"]
 experiment = Experiment(ws, 'placeholder-exp') 
 
 score_step = PythonScriptStep(
