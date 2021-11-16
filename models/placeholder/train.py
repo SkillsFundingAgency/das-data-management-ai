@@ -7,7 +7,7 @@ compute_target = ws.compute_targets["STANDARD_NC6"]
 experiment = Experiment(ws, 'placeholder-exp') 
 
 score_step = PythonScriptStep(
-    name='scoring'
+    name='scoring',
     script_name="model_scoring.py",
     target=compute_target,
     source_directory=placeholder)
