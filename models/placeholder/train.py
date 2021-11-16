@@ -1,20 +1,22 @@
 import azureml.core
-from azureml.core import Workspace, Datastore, Dataset
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget
 from azureml.core.run import Run
 
 ws = Run.get_context().experiment.workspace
-compute_target = ws.compute_targets["STANDARD_NC6"]
-experiment = Experiment(ws, 'placeholder-exp') 
+ComputeTarget.list(ws): List[ComputeTarget]
 
-score_step = PythonScriptStep(
-    name='scoring',
-    script_name="model_scoring.py",
-    target=compute_target,
-    source_directory=placeholder)
+# compute_target = ws.compute_targets["STANDARD_NC6"]
+# experiment = Experiment(ws, 'placeholder-exp') 
 
-steps = [score_step]
+# score_step = PythonScriptStep(
+#     name='scoring',
+#     script_name="model_scoring.py",
+#     target=compute_target,
+#     source_directory=placeholder)
 
-pipeline = Pipeline(workspace=ws, steps=steps)
+# steps = [score_step]
 
-pipeline_run = experiment.submit(pipeline)
-pipeline_run.wait_for_completion()
+# pipeline = Pipeline(workspace=ws, steps=steps)
+
+# pipeline_run = experiment.submit(pipeline)
+# pipeline_run.wait_for_completion()
