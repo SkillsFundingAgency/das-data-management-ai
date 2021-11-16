@@ -7,12 +7,13 @@ from azureml.pipeline.core import Pipeline, PipelineData
 ws = Run.get_context().experiment.workspace
 compute_target = ws.compute_targets["cpucluster"]
 experiment = Experiment(ws, 'placeholder-exp') 
+source_dir = "./outputs"
 
 score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
     target=compute_target,
-    source_directory=placeholder)
+    source_directory=source_dir)
 
 steps = [score_step]
 
