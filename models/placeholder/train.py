@@ -1,6 +1,7 @@
 import azureml.core
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment
 from azureml.core.run import Run
+from azureml.pipeline.steps import PythonScriptStep
 
 ws = Run.get_context().experiment.workspace
 compute_target = ws.compute_targets["cpucluster"]
