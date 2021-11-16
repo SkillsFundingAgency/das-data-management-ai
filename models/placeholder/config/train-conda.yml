@@ -5,6 +5,7 @@ dependencies:
   - numpy
   - pip:
     - azureml-defaults
+    - azureml-pipeline
     - pandas
     - sklearn
     - pyarrow
