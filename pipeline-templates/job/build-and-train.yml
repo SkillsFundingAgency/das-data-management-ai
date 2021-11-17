@@ -46,5 +46,5 @@ jobs:
         az ml run submit-script --run-configuration-name config/train --target $(ComputeName) --experiment-name placeholder-exp --output-metadata-file run.json train.py
         ## Validate output before registering?
         Write-Host "Register model"
-        az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/output.pkl --output-metadata-file model.json
+        az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/test_model.pkl --output-metadata-file model.json
 

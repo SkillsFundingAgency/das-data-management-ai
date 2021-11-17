@@ -1,17 +1,35 @@
-import pickle
-import os
+import azureml.core
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig
 from azureml.core.run import Run
-from azureml.core import Datastore
+from azureml.core.runconfig import RunConfiguration
+from azureml.pipeline.steps import PythonScriptStep
+from azureml.pipeline.core import Pipeline, PipelineData
+from azureml.pipeline.core import PublishedPipeline
 
-aml_workspace = Run.get_context().experiment.workspace
-datastore = Datastore.get(aml_workspace, datastore_name='trainingdata')
+ws = Run.get_context().experiment.workspace
+compute_target = ws.compute_targets["cpucluster"]
+experiment = Experiment(ws, 'placeholder-exp') 
+source_dir = "./"
 
-os.makedirs('./outputs', exist_ok=True)
+config = ScriptRunConfig(source_directory='./config', script='train.runconfig',
+        run_config=RunConfiguration())
+run = experiment.submit(config)    
+    
+score_step = PythonScriptStep(
+    name='scoring',
+    script_name="model_scoring.py",
+    compute_target=compute_target,
+    runconfig=RunConfiguration(),
+    source_directory=source_dir)
 
-run = Run.get_context()
-run.log('test log', 'test log')
+steps = [score_step]
 
-# Save model in the outputs folder so it automatically get uploaded when running on AML Compute
-model_file_name = 'output.pkl'
-with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
-    pickle.dump('placeholder', file)
+# Create pipeline
+pipeline = Pipeline(workspace=ws, steps=steps)
+pipeline.validate()
+
+# Publish pipeline to AzureML
+published_pipeline = pipeline.publish('model-scoring-pipeline')
+
+# pipeline_run = experiment.submit(pipeline)
+# pipeline_run.wait_for_completion()
