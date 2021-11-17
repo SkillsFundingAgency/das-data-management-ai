@@ -1,5 +1,5 @@
 import azureml.core
-from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig
 from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
