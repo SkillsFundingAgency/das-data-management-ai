@@ -11,7 +11,7 @@ compute_target = ws.compute_targets["cpucluster"]
 experiment = Experiment(ws, 'placeholder-exp') 
 source_dir = "./"
 
-config = ScriptRunConfig(source_directory='./config', script='train.runconfig',
+config = ScriptRunConfig(source_directory='config', script='train.runconfig',
         run_config=RunConfiguration())
 run = experiment.submit(config)    
     
@@ -19,7 +19,7 @@ score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
     compute_target=compute_target,
-    runconfig=RunConfiguration(),
+    run_config=RunConfiguration(),
     source_directory=source_dir)
 
 steps = [score_step]
