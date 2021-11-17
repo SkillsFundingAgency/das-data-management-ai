@@ -19,7 +19,7 @@ x_train=df[['dep_var2','dep_var3']]
 os.makedirs('./outputs', exist_ok=True)
 
 # load the model from disk
-loaded_model = pickle.load(open('C:/Users/rober/Documents/Atos/test_model.pkl','rb'))
+loaded_model = pickle.load(open('./outputs/test_model.pkl','rb'))
 
 #score dataset back onto the base
 scored=loaded_model.predict_proba(x_train)
