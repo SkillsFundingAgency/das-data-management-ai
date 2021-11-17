@@ -1,6 +1,7 @@
 import azureml.core
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment
 from azureml.core.run import Run
+from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData
 from azureml.pipeline.core import PublishedPipeline
@@ -14,6 +15,7 @@ score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
     compute_target=compute_target,
+    runconfig=RunConfiguration(),
     source_directory=source_dir)
 
 steps = [score_step]
