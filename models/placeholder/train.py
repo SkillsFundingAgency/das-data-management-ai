@@ -19,7 +19,7 @@ score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
     compute_target=compute_target,
-    run_config=RunConfiguration(),
+    runconfig=RunConfiguration(),
     source_directory=source_dir)
 
 steps = [score_step]
