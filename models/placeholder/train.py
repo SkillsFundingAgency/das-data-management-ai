@@ -10,7 +10,7 @@ ws = Run.get_context().experiment.workspace
 compute_target = ws.compute_targets["cpucluster"]
 experiment = Experiment(ws, 'placeholder-exp') 
 source_dir = "./"
-
+  
 config = ScriptRunConfig(source_directory='config', script='train.runconfig',
         run_config=RunConfiguration())
 run = experiment.submit(config)    
