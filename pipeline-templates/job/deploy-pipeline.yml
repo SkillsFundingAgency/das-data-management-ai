@@ -19,7 +19,7 @@ jobs:
             TemplatePath: das-data-management-ai/azure/template.json
             ParametersPath: das-data-management-ai/azure/template.parameters.json
             IsMultiRepoCheckout: true
-- job: BuildAndTrain
+- job: DeployPipelines
   dependsOn: DeployInfra
   variables:
   - name: WorkspaceName
@@ -30,21 +30,23 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
   steps:
   - checkout: self
-  - task: AzureCLI@2
-    displayName: "Train and Register"
+  - task: AzurePowerShell@5
     inputs:
       azureSubscription: ${{ parameters.ServiceConnection }}
-      workingDirectory: models/placeholder
+      scriptType: filePath
+      scriptPath: $(Build.SourcesDirectory)/azure/New-MLConfigFile.ps1
+      scriptArguments:
+        -ResourceGroupName $(WorkspaceName) `
+        -WorkspaceName $(WorkspaceName)
+      azurePowerShellVersion: latestVersion
+      pwsh: true
+  - task: AzureCLI@2
+    displayName: "Deploy ML pipelines"
+    inputs:
+      azureSubscription: ${{ parameters.ServiceConnection }}
+      workingDirectory: $(Build.SourcesDirectory)
       scriptLocation: inlineScript
       scriptType: "pscore"
+      failOnStandardError: true
       inlineScript: |
-        Write-Host "Installing ML CLI"
-        az extension add -n azure-cli-ml
-        Write-Host "Attaching folder"
-        az ml folder attach --workspace-name $(WorkspaceName) --resource-group $(ResourceGroupName)
-        Write-Host "Train"
-        az ml run submit-script --run-configuration-name config/train --target $(ComputeName) --experiment-name placeholder-exp --output-metadata-file run.json train.py
-        ## Validate output before registering?
-        Write-Host "Register model"
-        az ml model register --name placeholder-model --run-metadata-file run.json --asset-path outputs/output.pkl --output-metadata-file model.json
-
+        python -m ml_service.pipelines.employer_engagement_build_pipeline

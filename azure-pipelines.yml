@@ -38,7 +38,7 @@ stages:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
   jobs:
-  - template: pipeline-templates/job/build-and-train.yml
+  - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
