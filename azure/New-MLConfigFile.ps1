@@ -14,7 +14,7 @@ $ConfigBody = @"
 "@
 
 
-$Folder = Get-Item ".azureml/" 
+$Folder = Get-Item ".azureml/" -ErrorAction SilentlyContinue
 if(!$Folder){
     New-Item -Name .azureml -ItemType Directory
 }
