@@ -28,6 +28,10 @@ resources:
     name: SkillsFundingAgency/das-platform-automation
     ref: refs/tags/4.5.0
     endpoint: SkillsFundingAgency
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
 
 stages:
 ## Add linting and unit tests
@@ -38,7 +42,7 @@ stages:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
   jobs:
-  - template: pipeline-templates/job/build-and-train.yml
+  - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
