@@ -33,23 +33,16 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
   steps:
   - checkout: self
-  - task: AzurePowerShell@5
-    inputs:
-      azureSubscription: ${{ parameters.ServiceConnection }}
-      scriptType: filePath
-      scriptPath: $(Build.SourcesDirectory)/azure/New-MLConfigFile.ps1
-      scriptArguments:
-        -ResourceGroupName $(WorkspaceName) `
-        -WorkspaceName $(WorkspaceName)
-      azurePowerShellVersion: latestVersion
-      pwsh: true
   - task: AzureCLI@2
     displayName: "Deploy ML pipelines"
     inputs:
       azureSubscription: ${{ parameters.ServiceConnection }}
       workingDirectory: $(Build.SourcesDirectory)
       scriptLocation: inlineScript
-      scriptType: "pscore"
-      failOnStandardError: true
+      scriptType: bash
       inlineScript: |
+        set -e # fail on error
+        export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+        export WORKSPACE_NAME=$(WorkspaceName)
+        export RESOURCE_GROUP=$(ResourceGroupName)
         python -m ml_service.pipelines.employer_engagement_build_pipeline
