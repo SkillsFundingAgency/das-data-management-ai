@@ -14,7 +14,7 @@ source_dir = "./"
 config = ScriptRunConfig(source_directory='config', script='train.runconfig',
         run_config=RunConfiguration())
 run = experiment.submit(config)    
-  
+#test
 score_step = PythonScriptStep(
     name='scoring',
     script_name="model_scoring.py",
