@@ -21,6 +21,8 @@ jobs:
             IsMultiRepoCheckout: true
 - job: DeployPipelines
   dependsOn: DeployInfra
+  pool:
+    vmImage: windows-2022
   variables:
   - name: WorkspaceName
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.WorkspaceName'] ]
