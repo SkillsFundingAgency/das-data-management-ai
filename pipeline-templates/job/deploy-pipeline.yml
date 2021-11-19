@@ -22,7 +22,8 @@ jobs:
 - job: DeployPipelines
   dependsOn: DeployInfra
   pool:
-    vmImage: windows-2022
+    vmImage: ubuntu-latest
+  container: mlops
   variables:
   - name: WorkspaceName
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.WorkspaceName'] ]
