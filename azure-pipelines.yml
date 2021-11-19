@@ -8,7 +8,7 @@ variables:
 - group: RELEASE das-data-management-ai
 - group: RELEASE Management Resources
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
 pool:
   name: DAS - Continuous Deployment Agents
