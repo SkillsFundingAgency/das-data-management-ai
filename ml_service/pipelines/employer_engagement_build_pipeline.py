@@ -68,16 +68,16 @@ train_step = PythonScriptStep(
     runconfig=pipeline_run_config,
     source_directory=train_source_dir)
 
-score_source_dir="./employer-engagement/scoring"
-score_step = PythonScriptStep(
-    name='scoring',
-    script_name="score.py",
-    compute_target=aml_compute,
-    runconfig=pipeline_run_config,
-    source_directory=score_source_dir)
+# score_source_dir="./employer-engagement/scoring"
+# score_step = PythonScriptStep(
+    # name='scoring',
+    # script_name="score.py",
+    # compute_target=aml_compute,
+    # runconfig=pipeline_run_config,
+    # source_directory=score_source_dir)
 
 
-steps = [score_step, train_step]
+steps = [train_step]
 # Create pipeline
 pipeline = Pipeline(workspace=aml_workspace, steps=steps)
 pipeline.validate()
