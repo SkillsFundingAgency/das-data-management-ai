@@ -26,10 +26,13 @@ resource_group=e.resource_group,
 print("get_workspace:")
 print(aml_workspace)
 
-aml_compute = get_compute(aml_workspace, e.compute_name, e.vm_size)
-if aml_compute is not None:
-    print("aml_compute:")
-    print(aml_compute)
+# aml_compute = get_compute(aml_workspace, e.compute_name, e.vm_size)
+# if aml_compute is not None:
+    # print("aml_compute:")
+    # print(aml_compute)
+
+aml_compute = aml_workspace.compute_targets["cpucluster"]
+
 
 # environment = get_environment(
     # aml_workspace,
