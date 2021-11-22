@@ -60,7 +60,7 @@ print ("Run configuration created.")
 # run_config.environment = environment
 
 
-score_source_dir="/employer-engagement/scoring"
+score_source_dir="./employer-engagement/scoring"
 score_step = PythonScriptStep(
     name='scoring',
     script_name="score.py",
