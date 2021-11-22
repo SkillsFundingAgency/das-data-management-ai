@@ -26,6 +26,8 @@ resource_group=e.resource_group,
 print("get_workspace:")
 print(aml_workspace)
 
+experiment = Experiment(aml_workspace, "employer-engagement")
+
 # aml_compute = get_compute(aml_workspace, e.compute_name, e.vm_size)
 # if aml_compute is not None:
     # print("aml_compute:")
