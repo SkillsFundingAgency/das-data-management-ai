@@ -35,27 +35,18 @@ aml_compute = aml_workspace.compute_targets["cpucluster"]
 
 experiment_folder = 'employer-engagement'
 
-
 # Create a Python environment for the experiment (from a .yml file)
 environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_dependencies.yml")
-
 # Register the environment 
 environment.register(workspace=aml_workspace)
 registered_env = Environment.get(aml_workspace, 'environment')
-
 # Create a new runconfig object for the pipeline
 pipeline_run_config = RunConfiguration()
-
 # Use the compute you created above. 
 pipeline_run_config.target = aml_compute
-
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
-
 print ("Run configuration created.")
-
-
-
 
 # environment = get_environment(
     # aml_workspace,
@@ -67,14 +58,13 @@ print ("Run configuration created.")
 # run_config.environment = environment
 
 
-
-
-# score_step = PythonScriptStep(
-    # name='scoring',
-    # script_name="model_scoring.py",
-    # compute_target=aml_compute,
-    # runconfig=run_config,
-    # source_directory=source_dir)
+score_source_directory="./scoring"
+score_step = PythonScriptStep(
+    name='scoring',
+    script_name="score.py",
+    compute_target=aml_compute,
+    runconfig=pipeline_run_config,
+    source_directory=score_source_dir)
 
 # steps = [score_step]
 
