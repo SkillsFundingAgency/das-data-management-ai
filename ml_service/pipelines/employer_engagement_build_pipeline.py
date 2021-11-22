@@ -34,14 +34,14 @@ print(aml_workspace)
 aml_compute = aml_workspace.compute_targets["cpucluster"]
 
 
-# environment = get_environment(
-    # aml_workspace,
-    # e.aml_env_name,
-    # conda_dependencies_file=e.aml_env_train_conda_dep_file,
-    # create_new=e.rebuild_env,
-# )  
-# run_config = RunConfiguration()
-# run_config.environment = environment
+environment = get_environment(
+    aml_workspace,
+    e.aml_env_name,
+    conda_dependencies_file=e.aml_env_train_conda_dep_file,
+    create_new=e.rebuild_env,
+)  
+run_config = RunConfiguration()
+run_config.environment = environment
 
 # score_step = PythonScriptStep(
     # name='scoring',
