@@ -60,6 +60,14 @@ print ("Run configuration created.")
 # run_config.environment = environment
 
 
+train_source_dir="./employer-engagement/training"
+train_step = PythonScriptStep(
+    name='model_build',
+    script_name="train.py",
+    compute_target=aml_compute,
+    runconfig=pipeline_run_config,
+    source_directory=train_source_dir)
+
 score_source_dir="./employer-engagement/scoring"
 score_step = PythonScriptStep(
     name='scoring',
@@ -69,7 +77,7 @@ score_step = PythonScriptStep(
     source_directory=score_source_dir)
 
 
-steps = [score_step]
+steps = [train_step, score_step]
 # Create pipeline
 pipeline = Pipeline(workspace=aml_workspace, steps=steps)
 pipeline.validate()
