@@ -60,21 +60,21 @@ print ("Run configuration created.")
 # run_config.environment = environment
 
 
-train_source_dir="./employer-engagement/training"
-train_step = PythonScriptStep(
-    name='model_build',
-    script_name="train.py",
-    compute_target=aml_compute,
-    runconfig=pipeline_run_config,
-    source_directory=train_source_dir)
-
-# score_source_dir="./employer-engagement/scoring"
-# score_step = PythonScriptStep(
-    # name='scoring',
-    # script_name="score.py",
+# train_source_dir="./employer-engagement/training"
+# train_step = PythonScriptStep(
+    # name='model_build',
+    # script_name="train.py",
     # compute_target=aml_compute,
     # runconfig=pipeline_run_config,
-    # source_directory=score_source_dir)
+    # source_directory=train_source_dir)
+
+score_source_dir="./employer-engagement/scoring"
+score_step = PythonScriptStep(
+    name='scoring',
+    script_name="score.py",
+    compute_target=aml_compute,
+    runconfig=pipeline_run_config,
+    source_directory=score_source_dir)
 
 
 steps = [train_step]
