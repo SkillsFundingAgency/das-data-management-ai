@@ -77,7 +77,7 @@ score_step = PythonScriptStep(
     source_directory=score_source_dir)
 
 
-steps = [train_step, score_step]
+steps = [score_step, train_step]
 # Create pipeline
 pipeline = Pipeline(workspace=aml_workspace, steps=steps)
 pipeline.validate()
