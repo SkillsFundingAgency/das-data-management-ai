@@ -68,13 +68,13 @@ score_step = PythonScriptStep(
     runconfig=pipeline_run_config,
     source_directory=score_source_dir)
 
-# steps = [score_step]
 
+steps = [score_step]
 # Create pipeline
-# pipeline = Pipeline(workspace=aml_workspace, steps=steps)
-# pipeline.validate()
+pipeline = Pipeline(workspace=aml_workspace, steps=steps)
+pipeline.validate()
 
 # Publish pipeline to AzureML
-# published_pipeline = pipeline.publish('model-scoring-pipeline')
+published_pipeline = pipeline.publish('model-scoring-pipeline')
 
 
