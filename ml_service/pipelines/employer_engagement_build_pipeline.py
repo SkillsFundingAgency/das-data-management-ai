@@ -83,6 +83,6 @@ pipeline = Pipeline(workspace=aml_workspace, steps=steps)
 pipeline.validate()
 
 # Publish pipeline to AzureML
-published_pipeline = pipeline.publish('model-scoring-pipeline')
+published_pipeline = pipeline.publish('model-scoring-pipeline2')
 
 
