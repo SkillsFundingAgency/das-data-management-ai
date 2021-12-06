@@ -1,6 +1,6 @@
 import azureml.core
 import os
-from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model, StepSequence
 from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
@@ -78,9 +78,9 @@ score_step = PythonScriptStep(
     source_directory=score_source_dir)
 
 
-pipeline_steps = [train_step, score_step]
+step_sequence = StepSequence(pipeline_steps = [train_step, score_step])
 # Create pipeline
-pipeline = Pipeline(workspace=aml_workspace, steps=pipeline_steps)
+pipeline = Pipeline(workspace=aml_workspace, steps=step_sequence)
 pipeline.validate()
 
 # Run the pipeline
