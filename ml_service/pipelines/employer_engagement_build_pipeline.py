@@ -1,11 +1,10 @@
 import azureml.core
 import os
-from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model, StepSequence
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
 from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
-from azureml.pipeline.core import Pipeline, PipelineData
-from azureml.pipeline.core import PublishedPipeline
+from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 # from azureml.widgets import RunDetails
 from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
