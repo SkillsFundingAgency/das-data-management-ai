@@ -42,4 +42,4 @@ joblib.dump(value=clf, filename=model_file)
 print('Registering model...')
 Model.register(workspace=aml_workspace,
                model_path = model_file,
-               model_name = 'test_model')
+               model_name = 'test_model_XX')
