@@ -19,7 +19,12 @@ x_train=df[['dep_var2','dep_var3']]
 # os.makedirs('./outputs', exist_ok=True)
 
 # load the model from disk
-loaded_model = pickle.load(open('./outputs/test_model.pkl','rb'))
+# loaded_model = pickle.load(open('./outputs/test_model.pkl','rb'))
+
+model_path = os.path.join('outputs')
+
+model_path = Model.get_model_path('test_model')
+loaded_model = joblib.load(model_path)
 
 #score dataset back onto the base
 scored=loaded_model.predict_proba(x_train)

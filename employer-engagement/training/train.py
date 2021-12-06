@@ -59,8 +59,8 @@ joblib.dump(value=clf, filename=model_file)
 print('Registering model...')
 Model.register(workspace=aml_workspace,
                model_path = model_file,
-               model_name = 'test_model',
-#               tags={'Training context':'Pipeline'},
+               model_name = 'test_model')
+#                tags={'Training context':'Pipeline'}
 #               properties={'AUC': np.float(auc), 'Accuracy': np.float(acc)})
 
 

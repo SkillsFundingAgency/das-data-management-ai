@@ -60,13 +60,13 @@ print ("Run configuration created.")
 # run_config.environment = environment
 
 
-# train_source_dir="./employer-engagement/training"
-# train_step = PythonScriptStep(
-    # name='model_build',
-    # script_name="train.py",
-    # compute_target=aml_compute,
-    # runconfig=pipeline_run_config,
-    # source_directory=train_source_dir)
+train_source_dir="./employer-engagement/training"
+train_step = PythonScriptStep(
+    name='model_build',
+    script_name="train.py",
+    compute_target=aml_compute,
+    runconfig=pipeline_run_config,
+    source_directory=train_source_dir)
 
 score_source_dir="./employer-engagement/scoring"
 score_step = PythonScriptStep(
@@ -77,13 +77,20 @@ score_step = PythonScriptStep(
     source_directory=score_source_dir)
 
 
-steps = [score_step]
+pipeline_steps = [train_step, score_step]
 # Create pipeline
-pipeline = Pipeline(workspace=aml_workspace, steps=steps)
+pipeline = Pipeline(workspace=aml_workspace, steps=pipeline_steps)
 pipeline.validate()
 
+# Run the pipeline
+pipeline_run = experiment.submit(pipeline, regenerate_outputs=True)
+print("Pipeline submitted for execution.")
+RunDetails(pipeline_run).show()
+pipeline_run.wait_for_completion(show_output=True)
+
+
 # Publish pipeline to AzureML
-published_pipeline = pipeline.publish('model-scoring-pipeline2')
+# published_pipeline = pipeline.publish('model-scoring-pipeline2')
 
 
     
