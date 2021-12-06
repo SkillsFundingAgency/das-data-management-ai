@@ -43,9 +43,26 @@ run = Run.get_context()
 run.log('test log', 'test log')
 
 # Save model in the outputs folder so it automatically get uploaded when running on AML Compute
-model_file_name = 'test_model.pkl'
-with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
-    pickle.dump(clf, file)
+# model_file_name = 'test_model.pkl'
+# with open(os.path.join('./outputs/', model_file_name), 'wb') as file:
+#     pickle.dump(clf, file)
+
+
+
+# Save the trained model in the outputs folder
+print("Saving model...")
+os.makedirs('outputs', exist_ok=True)
+model_file = os.path.join('outputs', 'test_model.pkl')
+joblib.dump(value=clf, filename=model_file)
+
+# Register the model
+print('Registering model...')
+Model.register(workspace=aml_workspace,
+               model_path = model_file,
+               model_name = 'test_model',
+#               tags={'Training context':'Pipeline'},
+#               properties={'AUC': np.float(auc), 'Accuracy': np.float(acc)})
+
 
 # write out scored file to parquet
 # df.to_parquet('./outputs/test_scored_model.parquet')
