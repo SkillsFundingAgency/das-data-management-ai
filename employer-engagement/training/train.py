@@ -35,7 +35,7 @@ run.log('test log', 'test log')
 # Save the trained model in the outputs folder
 print("Saving model...")
 os.makedirs('outputs', exist_ok=True)
-model_file = os.path.join('outputs', 'test_model.pkl')
+model_file = os.path.join('outputs', 'test_model_XX.pkl')
 joblib.dump(value=clf, filename=model_file)
 
 # Register the model to pick up in scoring
