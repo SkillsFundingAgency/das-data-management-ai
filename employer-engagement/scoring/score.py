@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import pyarrow.parquet as pq
 from azureml.core.run import Run
-from azureml.core import Dataset, Datastore
+from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
 from sklearn.linear_model import LogisticRegression
 
