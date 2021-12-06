@@ -6,7 +6,7 @@ from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData
 from azureml.pipeline.core import PublishedPipeline
-from azureml.widgets import RunDetails
+# from azureml.widgets import RunDetails
 from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
@@ -84,14 +84,14 @@ pipeline = Pipeline(workspace=aml_workspace, steps=pipeline_steps)
 pipeline.validate()
 
 # Run the pipeline
-pipeline_run = experiment.submit(pipeline, regenerate_outputs=True)
-print("Pipeline submitted for execution.")
-RunDetails(pipeline_run).show()
-pipeline_run.wait_for_completion(show_output=True)
+# pipeline_run = experiment.submit(pipeline, regenerate_outputs=True)
+# print("Pipeline submitted for execution.")
+# RunDetails(pipeline_run).show()
+# pipeline_run.wait_for_completion(show_output=True)
 
 
 # Publish pipeline to AzureML
-# published_pipeline = pipeline.publish('model-scoring-pipeline2')
+published_pipeline = pipeline.publish('model-scoring-pipeline2')
 
 
     

@@ -21,7 +21,8 @@ x_train=df[['dep_var2','dep_var3']]
 # load the model from disk
 # loaded_model = pickle.load(open('./outputs/test_model.pkl','rb'))
 
-model_path = os.path.join('outputs')
+# model_path = os.path.join('outputs')
+global loaded_model
 
 model_path = Model.get_model_path('test_model')
 loaded_model = joblib.load(model_path)
