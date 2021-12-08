@@ -36,4 +36,4 @@ run = Run.get_context()
 run.log('test log', 'test log')
 
 #write out scored file to parquet
-df.to_parquet('./outputs/test_scored_model_scoring2.parquet')
+df.to_parquet('./outputs/test_scored_model_scoring3.parquet')
