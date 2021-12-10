@@ -71,6 +71,9 @@ step_sequence = StepSequence(steps = [score_step])
 pipeline = Pipeline(workspace=aml_workspace, steps=step_sequence)
 pipeline.validate()
 
+pipeline_run = experiment.submit(pipeline,regenerate_outputs=True)
+
+
 # Publish pipeline to AzureML
 published_pipeline = pipeline.publish('model-scoring-pipeline2')
     
