@@ -13,12 +13,11 @@ aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 # Remove parquet file as a starting point
-rm_file = 'test_scored_model_scoring3.parquet'
-rm_location = "./outputs"
+# rm_file = 'test_scored_model_scoring3.parquet'
+# rm_location = "./outputs"
 # Path
-rm_path = os.path.join(rm_location, rm_file)
-os.remove(rm_path)
-
+# rm_path = os.path.join(rm_location, rm_file)
+# os.remove(rm_path)
 
 # Create model scoring data into x_train dataframe
 query = DataPath(datastore, 'SELECT * FROM Stg.AI_TestData')

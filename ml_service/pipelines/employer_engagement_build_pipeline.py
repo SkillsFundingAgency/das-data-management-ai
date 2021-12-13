@@ -62,7 +62,8 @@ score_step = PythonScriptStep(
     script_name="score.py",
     compute_target=aml_compute,
     runconfig=pipeline_run_config,
-    source_directory=score_source_dir)
+    source_directory=score_source_dir,
+    allow_reuse=False)
 
 # Create sequence of steps
 step_sequence = StepSequence(steps = [score_step])
@@ -73,6 +74,8 @@ pipeline.validate()
 
 pipeline_run = experiment.submit(pipeline,regenerate_outputs=True)
 
+RunDetails(pipeline_run).show()
+pipeline_run.wait_for_completion()
 
 # Publish pipeline to AzureML
 published_pipeline = pipeline.publish('model-scoring-pipeline2')
