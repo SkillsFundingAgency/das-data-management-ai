@@ -47,6 +47,13 @@ pipeline_run_config.target = aml_compute
 pipeline_run_config.environment = registered_env
 print ("Run configuration created.")
 
+# Remove parquet file as a starting point
+rm_file = 'test_scored_model_scoring3.parquet'
+rm_location = "./outputs"
+# Path
+rm_path = os.path.join(rm_location, rm_file)
+os.remove(rm_path)
+
 
 # train_source_dir="./employer-engagement/training"
 # train_step = PythonScriptStep(
