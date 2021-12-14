@@ -5,7 +5,6 @@ from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
-# from azureml.widgets import RunDetails
 from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
@@ -48,7 +47,7 @@ pipeline_run_config.target = aml_compute
 pipeline_run_config.environment = registered_env
 print ("Run configuration created.")
 
-
+# Use train step to build and model
 # train_source_dir="./employer-engagement/training"
 # train_step = PythonScriptStep(
 #     name='model_build',
