@@ -48,13 +48,13 @@ pipeline_run_config.environment = registered_env
 print ("Run configuration created.")
 
 # Use train step to build and model
-# train_source_dir="./employer-engagement/training"
-# train_step = PythonScriptStep(
-#     name='model_build',
-#     script_name="train.py",
-#     compute_target=aml_compute,
-#     runconfig=pipeline_run_config,
-#     source_directory=train_source_dir)
+train_source_dir="./employer-engagement/training"
+train_step = PythonScriptStep(
+    name='model_build',
+    script_name="train.py",
+    compute_target=aml_compute,
+    runconfig=pipeline_run_config,
+    source_directory=train_source_dir)
 
 score_source_dir="./employer-engagement/scoring"
 score_step = PythonScriptStep(
@@ -65,17 +65,33 @@ score_step = PythonScriptStep(
     source_directory=score_source_dir,
     allow_reuse=False)
 
-# Create sequence of steps
-step_sequence = StepSequence(steps = [score_step])
+# Create sequence of steps for model train
+train_step_sequence = StepSequence(steps = [train_step])
 
 # Create pipeline
-pipeline = Pipeline(workspace=aml_workspace, steps=step_sequence)
-pipeline.validate()
+train_pipeline = Pipeline(workspace=aml_workspace, steps=train_step_sequence)
+train_pipeline.validate()
 
-pipeline_run = experiment.submit(pipeline,regenerate_outputs=True)
+train_pipeline_run = experiment.submit(train_pipeline,regenerate_outputs=True)
 
 # RunDetails(pipeline_run).show()
-pipeline_run.wait_for_completion()
+train_pipeline_run.wait_for_completion()
 
 # Publish pipeline to AzureML
-published_pipeline = pipeline.publish('model-scoring-pipeline2')
+train_published_pipeline = train_pipeline.publish('train-pipeline')
+
+
+# Create sequence of steps
+score_step_sequence = StepSequence(steps = [score_step])
+
+# Create pipeline
+score_pipeline = Pipeline(workspace=aml_workspace, steps=score_step_sequence)
+score_pipeline.validate()
+
+score_pipeline_run = experiment.submit(score_pipeline,regenerate_outputs=True)
+
+# RunDetails(pipeline_run).show()
+score_pipeline_run.wait_for_completion()
+
+# Publish pipeline to AzureML
+score_published_pipeline = score_pipeline.publish('scoring-pipeline')
