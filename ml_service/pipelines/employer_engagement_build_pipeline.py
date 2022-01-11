@@ -79,4 +79,3 @@ pipeline_run.wait_for_completion()
 
 # Publish pipeline to AzureML
 published_pipeline = pipeline.publish('model-scoring-pipeline2')
-    
