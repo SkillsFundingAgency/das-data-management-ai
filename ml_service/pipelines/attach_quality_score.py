@@ -1,7 +1,5 @@
 from azureml.core import Workspace
-from azureml.core.compute import AmlCompute
 from azureml.core.compute import ComputeTarget
-from azureml.exceptions import ComputeTargetException
 from ml_service.util.env_variables import Env
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
