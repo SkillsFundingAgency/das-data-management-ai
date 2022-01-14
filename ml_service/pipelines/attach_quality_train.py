@@ -50,7 +50,7 @@ from ml_service.util.manage_environment import get_environment
 # print ("Run configuration created.")
 
 
-def get_quality_train(workspace: Workspace) :
+def get_quality_train(aml_workspace: Workspace, aml_compute: str) :
 # Use train step to build and model
     train_source_dir="./employer-engagement/training"
     train_step = PythonScriptStep(
