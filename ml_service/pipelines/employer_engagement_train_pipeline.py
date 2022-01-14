@@ -106,5 +106,5 @@ print ("Run configuration created.")
 
 # get_compute(aml_workspace, e.compute_name, e.vm_size)
 
-get_quality_train(aml_workspace)
+get_quality_train(aml_workspace, aml_compute)
 # get_quality_score()
