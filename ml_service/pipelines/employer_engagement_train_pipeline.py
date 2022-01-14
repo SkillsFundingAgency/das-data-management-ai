@@ -104,5 +104,7 @@ print ("Run configuration created.")
 # Publish pipeline to AzureML
 # quality_score_published_pipeline = quality_score_pipeline.publish('quality-scoring-pipeline')
 
-get_quality_train()
-get_quality_score()
+# get_compute(aml_workspace, e.compute_name, e.vm_size)
+
+get_quality_train(aml_workspace)
+# get_quality_score()
