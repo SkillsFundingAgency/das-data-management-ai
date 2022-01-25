@@ -107,4 +107,5 @@ print ("Run configuration created.")
 # get_compute(aml_workspace, e.compute_name, e.vm_size)
 
 get_quality_train(aml_workspace, aml_compute, pipeline_run_config, experiment)
-# get_quality_score()
+
+# get_quality_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
