@@ -24,7 +24,7 @@ pd.options.mode.chained_assignment = None
 # 2018 H1
 
 
-query_2018_H1 = DataPath(datastore, 'SELECT C.A3 AS account_id \
+query_2018_H1 = DataPath(datastore, """SELECT C.A3 AS account_id \
 , C.levy_split \
 , C.account_created \
 , C.completed_commitment \
@@ -60,8 +60,8 @@ GROUP BY C.A3  \
 , C.completed_commitment \
 , C.apprenticeship_id \
 , C.commitment_date \
-') 
-tabular_2018_H1 = Dataset.Tabular.from_sql_query(query_2018_H1, query_timeout=10)
+""") 
+tabular_2018_H1 = Dataset.Tabular.from_sql_query(query_2018_H1, query_timeout=1000)
 quality_model_set_2018_H1 = tabular_2018_H1.to_pandas_dataframe()
 
 
