@@ -38,10 +38,10 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM STG.PT_A WHERE A2<cast('2018-07-01' as date)) A  \
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2018-07-01' as date)) A  \
 INNER JOIN  \
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-FROM STG.PT_B \
+FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) >= cast('2018-01-01' as date) AND CAST(B2 AS DATE) < cast('2018-07-01' as date) \
 AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
@@ -49,7 +49,7 @@ AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
 (SELECT B10, CAST(B2 AS DATE) as B2 \
-FROM STG.PT_B  \
+FROM PDS_AI.PT_B  \
 WHERE CAST(B2 AS DATE) < cast('2018-07-01' as date) \
 AND B3 IN (2,3,4,5)  \
 ) D  \
