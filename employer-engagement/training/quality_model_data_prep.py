@@ -73,4 +73,4 @@ print(quality_model_set_2018_H1)
 
 
 run = Run.get_context()
-run.log('quality_model_data_prep.log')
+run.log('quality_model_data_prep.log','quality_model_data_prep.log')
