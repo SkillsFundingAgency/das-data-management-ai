@@ -186,7 +186,7 @@ FROM (SELECT A.A3 \
 FROM \
 (SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-09-01' as date)) A \
 INNER JOIN \
-(SELECT B10, B6, B15, B3, B13, B12, CAST(B2 AS DATE) AS commitment_date, B11, B1 \
+(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) >= cast('2019-07-01' as date) AND CAST(B2 AS DATE) < cast('2019-09-01' as date) \
 AND B3 IN (2,3,4,5) \
@@ -205,8 +205,7 @@ GROUP BY C.A3 \
 , C.account_created \
 , C.completed_commitment \
 , C.apprenticeship_id \
-, C.commitment_date \
-""")
+, C.commitment_date """)
 tabular_2019_H2 = Dataset.Tabular.from_sql_query(query_2019_H2, query_timeout=10)
 quality_model_set_2019_H2 = tabular_2019_H2.to_pandas_dataframe()
 
@@ -242,8 +241,7 @@ A.B1 as apprenticeship_id \
 FROM PDS_AI.PT_B A \
 WHERE CAST(B2 AS DATE) >= cast('2018-01-01' as date) AND CAST(B2 AS DATE) < cast('2020-01-01' as date) \
 AND B3 IN (2,3,4,5) \
-AND (B15=1 OR B16 IS NOT NULL) \
-""")
+AND (B15=1 OR B16 IS NOT NULL) """)
 tabular_commitment_info_all = Dataset.Tabular.from_sql_query(query_commitment_info_all, query_timeout=10)
 quality_commitment_info_all = tabular_commitment_info_all.to_pandas_dataframe()
 
@@ -347,8 +345,7 @@ FROM PDS_AI.PT_D \
 ) B \
 ON A.A3=B.D15 \
 GROUP BY A3, A1 \
-) c \
-""")
+) c """)
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 quality_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
