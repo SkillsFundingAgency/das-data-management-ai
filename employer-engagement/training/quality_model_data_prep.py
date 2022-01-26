@@ -113,7 +113,7 @@ quality_model_set_2018_H2 = tabular_2018_H2.to_pandas_dataframe()
 
 
 
-print(quality_model_set_2018_H2)
+#print(quality_model_set_2018_H2)
 
 
 
@@ -164,10 +164,10 @@ quality_model_set_2019_H1 = tabular_2019_H1.to_pandas_dataframe()
 
 
 
-print(quality_model_set_2019_H1)
+#print(quality_model_set_2019_H1)
 
 
-
+############################# Add back in ################################
 
 # 2019 H2
 
@@ -249,7 +249,7 @@ quality_commitment_info_all = tabular_commitment_info_all.to_pandas_dataframe()
 
 
 
-print(quality_commitment_info_all)
+#print(quality_commitment_info_all)
 
 
 
@@ -258,12 +258,14 @@ print(quality_commitment_info_all)
 
 # Union the four unique date ranges together
 
-#quality_model_set_all=pd.concat([quality_comp_model_set_2019_H2,quality_comp_model_set_2019_H1,quality_comp_model_set_2018_H2,quality_comp_model_set_2018_H1])
+############################# Add back in ################################
+
+#quality_model_set_all=pd.concat([quality_model_set_2019_H2,quality_model_set_2019_H1,quality_model_set_2018_H2,quality_model_set_2018_H1])
 quality_model_set_all=pd.concat([quality_model_set_2019_H1,quality_model_set_2018_H2,quality_model_set_2018_H1])
 
 
 
-print(quality_model_set_all)
+#print(quality_model_set_all)
 
 
 
@@ -278,7 +280,7 @@ quality_model_set = pd.merge(quality_model_set_all, \
 
 
 
-print(quality_model_set)
+#print(quality_model_set)
 
 
 
@@ -392,7 +394,7 @@ quality_model_set['early_adopter']=quality_model_set.apply(fn_early_adopter,axis
 
 
 
-print(quality_model_set)
+#print(quality_model_set)
 
 
 
@@ -400,24 +402,47 @@ print(quality_model_set)
 
 
 # Sample data for modelling
+
+############################# Add back in ################################
+
 # quality_sample_data=quality_model_set.sample(50000)
 quality_sample_data=quality_model_set.sample(19)
 
 # Only keep relevant variables and rename accordingly
+
+############################# Add back in ################################
+
+#model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
+#                    'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
+#                    'occupation_1','occupation_2','occupation_3','occupation_7', \
+#                    'occupation_13','occupation_14','occupation_15','occupation_17','occupation_20','occupation_22', \
+#                    'occupation_24','months_since_sign_up2','employees','scheme_start_year','comp_type_C','comp_type_E', \
+#                    'comp_type_F','comp_type_I','comp_type_L','comp_type_P','comp_type_S','comp_type_X','tpr_match', \
+#                    'new_company','early_adopter','years_since_tpr_signup','company_status','commitment_date']
+#quality_sample_data = quality_sample_data[model_cols_to_keep]
+#quality_sample_data.columns = ['account_id','levy_non_levy','completed_commitment','previous_12mon_commitments', \
+#                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer','occupation_1','occupation_2', \
+#                     'occupation_3','occupation_7','occupation_13','occupation_14','occupation_15','occupation_17', \
+#                     'occupation_20','occupation_22','occupation_24','as_months_since_sign_up','employees', \
+#                     'tpr_scheme_start_year','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
+#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
+#                     'years_since_tpr_signup','company_status','commitment_date']
+
+
 model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
                     'occupation_1','occupation_2','occupation_3','occupation_7', \
                     'occupation_13','occupation_14','occupation_15','occupation_17','occupation_20','occupation_22', \
-                    'occupation_24','months_since_sign_up2','employees','scheme_start_year','comp_type_C','comp_type_E', \
-                    'comp_type_F','comp_type_I','comp_type_L','comp_type_P','comp_type_S','comp_type_X','tpr_match', \
+                    'occupation_24','months_since_sign_up2','employees','scheme_start_year','comp_type_C', \
+                    'comp_type_I','comp_type_X','tpr_match', \
                     'new_company','early_adopter','years_since_tpr_signup','company_status','commitment_date']
 quality_sample_data = quality_sample_data[model_cols_to_keep]
 quality_sample_data.columns = ['account_id','levy_non_levy','completed_commitment','previous_12mon_commitments', \
                      'apprenticeship_level','apprentice_age','funded_by_levy_transfer','occupation_1','occupation_2', \
                      'occupation_3','occupation_7','occupation_13','occupation_14','occupation_15','occupation_17', \
                      'occupation_20','occupation_22','occupation_24','as_months_since_sign_up','employees', \
-                     'tpr_scheme_start_year','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
+                     'tpr_scheme_start_year','comp_type_C','comp_type_I', \
+                     'comp_type_X','tpr_match','new_company','early_adopter', \
                      'years_since_tpr_signup','company_status','commitment_date']
 
 # Take logs to standardise the scale
