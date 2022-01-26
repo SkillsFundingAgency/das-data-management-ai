@@ -36,30 +36,30 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-01-01' as date)) A  \
-INNER JOIN \ 
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-01-01' as date)) A \
+INNER JOIN \
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) >= cast('2018-07-01' as date) AND CAST(B2 AS DATE) < cast('2019-01-01' as date) \
-AND B3 IN (2,3,4,5)  \
+AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-) B  \
+) B \
 ON A.A3=B.B10) C \
-LEFT JOIN  \
+LEFT JOIN \
 (SELECT B10, CAST(B2 AS DATE) as B2 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) < cast('2019-01-01' as date) AND CAST(B2 AS DATE) >= cast('2017-07-01' as date) \
 AND B3 IN (2,3,4,5) \
 ) D  \
 ON C.A3=D.B10 \
-GROUP BY C.A3  \
+GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
 , C.completed_commitment \
 , C.apprenticeship_id \
 , C.commitment_date \
 """)
-tabular_2018_H2 = Dataset.Tabular.from_sql_query(query_2018_H2, query_timeout=10)
+tabular_2018_H2 = Dataset.Tabular.from_sql_query(query_2018_H2, query_timeout=1000)
 quality_model_set_2018_H2 = tabular_2018_H2.to_pandas_dataframe()
 
 
