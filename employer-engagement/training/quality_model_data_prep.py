@@ -134,7 +134,7 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE cast(A2<'2019-07-01' as date)) A \
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-07-01' as date)) A \
 INNER JOIN \
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
 FROM PDS_AI.PT_B \
