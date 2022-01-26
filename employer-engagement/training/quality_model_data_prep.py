@@ -39,23 +39,23 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2018-07-01' as date)) A  \
-INNER JOIN  \
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2018-07-01' as date)) A \
+INNER JOIN \
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) >= cast('2018-01-01' as date) AND CAST(B2 AS DATE) < cast('2018-07-01' as date) \
 AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-) B  \
+) B \
 ON A.A3=B.B10) C \
-LEFT JOIN  \
+LEFT JOIN \
 (SELECT B10, CAST(B2 AS DATE) as B2 \
-FROM PDS_AI.PT_B  \
+FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) < cast('2018-07-01' as date) \
-AND B3 IN (2,3,4,5)  \
-) D  \
+AND B3 IN (2,3,4,5) \
+) D \
 ON C.A3=D.B10 \
-GROUP BY C.A3  \
+GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
 , C.completed_commitment \
@@ -98,7 +98,7 @@ LEFT JOIN \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) < cast('2019-01-01' as date) AND CAST(B2 AS DATE) >= cast('2017-07-01' as date) \
 AND B3 IN (2,3,4,5) \
-) D  \
+) D \
 ON C.A3=D.B10 \
 GROUP BY C.A3 \
 , C.levy_split \
@@ -133,23 +133,23 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE cast(A2<'2019-09-01' as date)) A  \
-INNER JOIN \ 
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE cast(A2<'2019-09-01' as date)) A \
+INNER JOIN 
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
 FROM PDS_AI.PT_B \
-WHERE CAST(B2 AS DATE) >= cast('2019-01-01' as date) AND CAST(B2 AS DATE) < cast('2019-07-01' as date) \
-AND B3 IN (2,3,4,5)  \
+WHERE CAST(B2 AS DATE) >= cast('2019-01-01' as date) AND CAST(B2 AS DATE) < cast('2019-09-01' as date) \
+AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-) B  \
+) B \
 ON A.A3=B.B10) C \
-LEFT JOIN  \
+LEFT JOIN \
 (SELECT B10, CAST(B2 AS DATE) as B2 \
 FROM PDS_AI.PT_B \
-WHERE CAST(B2 AS DATE) < cast('2019-07-01' as date) AND CAST(B2 AS DATE) >= cast('2018-01-01' as date) \
+WHERE CAST(B2 AS DATE) < cast('2019-09-01' as date) AND CAST(B2 AS DATE) >= cast('2018-01-01' as date) \
 AND B3 IN (2,3,4,5) \
-) D  \
+) D \
 ON C.A3=D.B10 \
-GROUP BY C.A3  \
+GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
 , C.completed_commitment \
@@ -185,23 +185,23 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-09-01' as date)) A  \
-INNER JOIN  \
+(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-09-01' as date)) A \
+INNER JOIN \
 (SELECT B10, B6, B15, B3, B13, B12, CAST(B2 AS DATE) AS commitment_date, B11, B1 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) >= cast('2019-07-01' as date) AND CAST(B2 AS DATE) < cast('2020-01-01' as date) \
-AND B3 IN (2,3,4,5)  \
+AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-) B  \
+) B \
 ON A.A3=B.B10) C \
-LEFT JOIN  \
+LEFT JOIN \
 (SELECT B10, CAST(B2 AS DATE) as B2 \
 FROM PDS_AI.PT_B \
 WHERE CAST(B2 AS DATE) < cast('2020-01-01' as date) AND CAST(B2 AS DATE) >= cast('2018-07-01' as date) \
 AND B3 IN (2,3,4,5) \
-) D  \
+) D \
 ON C.A3=D.B10 \
-GROUP BY C.A3  \
+GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
 , C.completed_commitment \
@@ -223,7 +223,7 @@ print(quality_model_set_2019_H2)
 
 # Create commitments plus proportion in each occupation in SQL for each cohort
 
-query_commitment_info_all = DataPath(datastore, """SELECT  \
+query_commitment_info_all = DataPath(datastore, """SELECT \
 A.B1 as apprenticeship_id \
 , A.B3 AS apprenticeship_level \
 , A.B13 AS apprentice_age \
@@ -242,7 +242,7 @@ A.B1 as apprenticeship_id \
 , CASE WHEN A.B6 = '24' THEN 1 ELSE 0 END AS occupation_24 \
 FROM PDS_AI.PT_B A \
 WHERE CAST(B2 AS DATE) >= cast('2018-01-01' as date) AND CAST(B2 AS DATE) < cast('2020-01-01' as date) \
-AND B3 IN (2,3,4,5)  \
+AND B3 IN (2,3,4,5) \
 AND (B15=1 OR B16 IS NOT NULL) \
 """)
 tabular_commitment_info_all = Dataset.Tabular.from_sql_query(query_commitment_info_all, query_timeout=10)
@@ -271,7 +271,7 @@ print(quality_model_set_all)
 
 # Add on the commitment info leading up to the commitment in question
 
-quality_model_set = pd.merge(quality_comp_model_set_all,  \
+quality_model_set = pd.merge(quality_comp_model_set_all, \
                   quality_commitment_info_all, \
                   left_on='apprenticeship_id', \
                   right_on='apprenticeship_id', \
@@ -336,16 +336,16 @@ SELECT A3 \
 , MIN(YEAR(D6)) AS scheme_start_year \
 , MAX(SUBSTRING(D12,1,1)) AS company_type \
 , MAX(D8) AS company_status \
-FROM  \
+FROM \
 (SELECT A3 \
 , A1 \
 FROM PDS_AI.PT_A \
 WHERE A2<cast('2019-09-01' as date) \
-) A  \
-LEFT JOIN  \
+) A \
+LEFT JOIN \
 (SELECT D15, D10, D6, D12, D8 \
 FROM PDS_AI.PT_D \
-) B  \
+) B \
 ON A.A3=B.D15 \
 GROUP BY A3, A1 \
 ) c \
@@ -354,7 +354,7 @@ tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, qu
 quality_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
 # Join TPR data to model set
-quality_model_set = pd.merge(quality_model_set,  \
+quality_model_set = pd.merge(quality_model_set, \
                   quality_tpr_aggregated, \
                   left_on='account_id', \
                   right_on='A3', \
