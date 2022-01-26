@@ -57,8 +57,7 @@ GROUP BY C.A3 \
 , C.account_created \
 , C.completed_commitment \
 , C.apprenticeship_id \
-, C.commitment_date \
-""")
+, C.commitment_date """)
 tabular_2018_H2 = Dataset.Tabular.from_sql_query(query_2018_H2, query_timeout=1000)
 quality_model_set_2018_H2 = tabular_2018_H2.to_pandas_dataframe()
 
