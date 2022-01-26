@@ -269,7 +269,7 @@ print(quality_model_set_all)
 
 # Add on the commitment info leading up to the commitment in question
 
-quality_model_set = pd.merge(quality_comp_model_set_all, \
+quality_model_set = pd.merge(quality_model_set_all, \
                   quality_commitment_info_all, \
                   left_on='apprenticeship_id', \
                   right_on='apprenticeship_id', \
