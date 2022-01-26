@@ -1,6 +1,7 @@
 import pickle
 import os
 import pandas as pd
+import numpy as np
 import pyarrow.parquet as pq
 import joblib
 import datetime
