@@ -82,12 +82,12 @@ FROM (SELECT A.A3 \
 , B.commitment_date \
 FROM \
     (SELECT A3, A1 as levy_split, A2 \
-    FROM STG.PT_A \
+    FROM PDS_AI.PT_A \
     WHERE A2<'2019-01-01' \
     ) A  \
 INNER JOIN \ 
     (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) >= '2018-07-01' AND CAST(B2 AS DATE) < '2019-01-01' \
     AND B3 IN (2,3,4,5)  \
 	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
@@ -95,7 +95,7 @@ INNER JOIN \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
     (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) < '2019-01-01' AND CAST(B2 AS DATE) >= '2017-07-01' \
     AND B3 IN (2,3,4,5) \
     ) D  \
@@ -137,12 +137,12 @@ FROM (SELECT A.A3 \
 , B.commitment_date \
 FROM \
     (SELECT A3, A1 as levy_split, A2 \
-    FROM STG.PT_A \
+    FROM PDS_AI.PT_A \
     WHERE A2<'2019-09-01' \
     ) A  \
 INNER JOIN \ 
     (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) >= '2019-01-01' AND CAST(B2 AS DATE) < '2019-07-01' \
     AND B3 IN (2,3,4,5)  \
 	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
@@ -150,7 +150,7 @@ INNER JOIN \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
     (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) < '2019-07-01' AND CAST(B2 AS DATE) >= '2018-01-01' \
     AND B3 IN (2,3,4,5) \
     ) D  \
@@ -192,12 +192,12 @@ FROM (SELECT A.A3 \
 , B.commitment_date \
 FROM \
     (SELECT A3, A1 as levy_split, A2 \
-    FROM STG.PT_A \
+    FROM PDS_AI.PT_A \
     WHERE A2<'2019-09-01' \
     ) A  \
 INNER JOIN  \
     (SELECT B10, B6, B15, B3, B13, B12, CAST(B2 AS DATE) AS commitment_date, B11, B1 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) >= '2019-07-01' AND CAST(B2 AS DATE) < '2020-01-01' \
     AND B3 IN (2,3,4,5)  \
 	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
@@ -205,7 +205,7 @@ INNER JOIN  \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
     (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM STG.PT_B \
+    FROM PDS_AI.PT_B \
     WHERE CAST(B2 AS DATE) < '2020-01-01' AND CAST(B2 AS DATE) >= '2018-07-01' \
     AND B3 IN (2,3,4,5) \
     ) D  \
@@ -249,7 +249,7 @@ A.B1 as apprenticeship_id \
 , CASE WHEN A.B6 = '20' THEN 1 ELSE 0 END AS occupation_20 \
 , CASE WHEN A.B6 = '22' THEN 1 ELSE 0 END AS occupation_22 \
 , CASE WHEN A.B6 = '24' THEN 1 ELSE 0 END AS occupation_24 \
-FROM STG.PT_B A \
+FROM PDS_AI.PT_B A \
 WHERE CAST(B2 AS DATE) >= '2018-01-01' AND CAST(B2 AS DATE) < '2020-01-01' \
 AND B3 IN (2,3,4,5)  \
 AND (B15=1 OR B16 IS NOT NULL) \
@@ -348,12 +348,12 @@ SELECT A3 \
 FROM  \
     (SELECT A3 \
     , A1 \
-    FROM STG.PT_A \
+    FROM PDS_AI.PT_A \
     WHERE A2<'2019-09-01' \
     ) A  \
 LEFT JOIN  \
     (SELECT D15, D10, D6, D12, D8 \
-    FROM STG.PT_D \
+    FROM PDS_AI.PT_D \
     ) B  \
 ON A.A3=B.D15 \
 GROUP BY A3, A1 \
