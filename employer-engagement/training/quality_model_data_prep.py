@@ -400,7 +400,8 @@ print(quality_model_set)
 
 
 # Sample data for modelling
-quality_sample_data=quality_model_set.sample(50000)
+# quality_sample_data=quality_model_set.sample(50000)
+quality_sample_data=quality_model_set.sample(19)
 
 # Only keep relevant variables and rename accordingly
 model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
@@ -434,4 +435,4 @@ print(quality_sample_data2)
 
 
 run = Run.get_context()
-run.log('quality_model_data_prep.log','quality_model_data_prep.log')
+run.log('quality_model_data_prep_log','quality_model_data_prep_log')
