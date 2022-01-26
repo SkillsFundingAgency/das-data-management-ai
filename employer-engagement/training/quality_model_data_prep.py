@@ -81,24 +81,24 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-    (SELECT A3, A1 as levy_split, A2 \
-    FROM PDS_AI.PT_A \
-    WHERE A2<'2019-01-01' \
-    ) A  \
+(SELECT A3, A1 as levy_split, A2 \
+FROM PDS_AI.PT_A \
+WHERE A2<'2019-01-01' \
+) A  \
 INNER JOIN \ 
-    (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) >= '2018-07-01' AND CAST(B2 AS DATE) < '2019-01-01' \
-    AND B3 IN (2,3,4,5)  \
-	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-    ) B  \
+(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) >= '2018-07-01' AND CAST(B2 AS DATE) < '2019-01-01' \
+AND B3 IN (2,3,4,5)  \
+AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
+) B  \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
-    (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) < '2019-01-01' AND CAST(B2 AS DATE) >= '2017-07-01' \
-    AND B3 IN (2,3,4,5) \
-    ) D  \
+(SELECT B10, CAST(B2 AS DATE) as B2 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) < '2019-01-01' AND CAST(B2 AS DATE) >= '2017-07-01' \
+AND B3 IN (2,3,4,5) \
+) D  \
 ON C.A3=D.B10 \
 GROUP BY C.A3  \
 , C.levy_split \
@@ -136,24 +136,24 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-    (SELECT A3, A1 as levy_split, A2 \
-    FROM PDS_AI.PT_A \
-    WHERE A2<'2019-09-01' \
-    ) A  \
+(SELECT A3, A1 as levy_split, A2 \
+FROM PDS_AI.PT_A \
+WHERE A2<'2019-09-01' \
+) A  \
 INNER JOIN \ 
-    (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) >= '2019-01-01' AND CAST(B2 AS DATE) < '2019-07-01' \
-    AND B3 IN (2,3,4,5)  \
-	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-    ) B  \
+(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) >= '2019-01-01' AND CAST(B2 AS DATE) < '2019-07-01' \
+AND B3 IN (2,3,4,5)  \
+AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
+) B  \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
-    (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) < '2019-07-01' AND CAST(B2 AS DATE) >= '2018-01-01' \
-    AND B3 IN (2,3,4,5) \
-    ) D  \
+(SELECT B10, CAST(B2 AS DATE) as B2 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) < '2019-07-01' AND CAST(B2 AS DATE) >= '2018-01-01' \
+AND B3 IN (2,3,4,5) \
+) D  \
 ON C.A3=D.B10 \
 GROUP BY C.A3  \
 , C.levy_split \
@@ -191,24 +191,24 @@ FROM (SELECT A.A3 \
 , B.B1 as apprenticeship_id \
 , B.commitment_date \
 FROM \
-    (SELECT A3, A1 as levy_split, A2 \
-    FROM PDS_AI.PT_A \
-    WHERE A2<'2019-09-01' \
-    ) A  \
+(SELECT A3, A1 as levy_split, A2 \
+FROM PDS_AI.PT_A \
+WHERE A2<'2019-09-01' \
+) A  \
 INNER JOIN  \
-    (SELECT B10, B6, B15, B3, B13, B12, CAST(B2 AS DATE) AS commitment_date, B11, B1 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) >= '2019-07-01' AND CAST(B2 AS DATE) < '2020-01-01' \
-    AND B3 IN (2,3,4,5)  \
-	AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-    ) B  \
+(SELECT B10, B6, B15, B3, B13, B12, CAST(B2 AS DATE) AS commitment_date, B11, B1 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) >= '2019-07-01' AND CAST(B2 AS DATE) < '2020-01-01' \
+AND B3 IN (2,3,4,5)  \
+AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
+) B  \
 ON A.A3=B.B10) C \
 LEFT JOIN  \
-    (SELECT B10, CAST(B2 AS DATE) as B2 \
-    FROM PDS_AI.PT_B \
-    WHERE CAST(B2 AS DATE) < '2020-01-01' AND CAST(B2 AS DATE) >= '2018-07-01' \
-    AND B3 IN (2,3,4,5) \
-    ) D  \
+(SELECT B10, CAST(B2 AS DATE) as B2 \
+FROM PDS_AI.PT_B \
+WHERE CAST(B2 AS DATE) < '2020-01-01' AND CAST(B2 AS DATE) >= '2018-07-01' \
+AND B3 IN (2,3,4,5) \
+) D  \
 ON C.A3=D.B10 \
 GROUP BY C.A3  \
 , C.levy_split \
@@ -346,15 +346,15 @@ SELECT A3 \
 , MAX(SUBSTRING(D12,1,1)) AS company_type \
 , MAX(D8) AS company_status \
 FROM  \
-    (SELECT A3 \
-    , A1 \
-    FROM PDS_AI.PT_A \
-    WHERE A2<'2019-09-01' \
-    ) A  \
+(SELECT A3 \
+, A1 \
+FROM PDS_AI.PT_A \
+WHERE A2<'2019-09-01' \
+) A  \
 LEFT JOIN  \
-    (SELECT D15, D10, D6, D12, D8 \
-    FROM PDS_AI.PT_D \
-    ) B  \
+(SELECT D15, D10, D6, D12, D8 \
+FROM PDS_AI.PT_D \
+) B  \
 ON A.A3=B.D15 \
 GROUP BY A3, A1 \
 ) c \
