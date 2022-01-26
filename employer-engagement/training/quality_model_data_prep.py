@@ -258,7 +258,7 @@ print(quality_commitment_info_all)
 # Union the four unique date ranges together
 
 #quality_model_set_all=pd.concat([quality_comp_model_set_2019_H2,quality_comp_model_set_2019_H1,quality_comp_model_set_2018_H2,quality_comp_model_set_2018_H1])
-quality_model_set_all=pd.concat([quality_comp_model_set_2019_H1,quality_comp_model_set_2018_H2,quality_comp_model_set_2018_H1])
+quality_model_set_all=pd.concat([quality_model_set_2019_H1,quality_model_set_2018_H2,quality_model_set_2018_H1])
 
 
 
