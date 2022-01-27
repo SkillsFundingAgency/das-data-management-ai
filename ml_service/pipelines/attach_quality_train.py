@@ -39,7 +39,7 @@ def get_quality_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
 
     # Create sequence of steps for model train
 #    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step, quality_model_train_step, quality_model_accuracy_register_step])
-    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step])
+    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step, quality_model_train_step])
 
     # Create pipeline
     quality_model_train_pipeline = Pipeline(workspace=aml_workspace, steps=quality_model_train_step_sequence)
