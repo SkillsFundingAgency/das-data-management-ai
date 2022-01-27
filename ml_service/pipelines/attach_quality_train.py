@@ -21,13 +21,13 @@ def get_quality_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
         runconfig=pipeline_run_config,
         source_directory=train_source_dir)
 
-    # quality model train step
-    quality_model_train_step = PythonScriptStep(
-        name='quality_model_train',
-        script_name="quality_model_train.py",
-        compute_target=aml_compute,
-        runconfig=pipeline_run_config,
-        source_directory=train_source_dir)
+#    # quality model train step
+#    quality_model_train_step = PythonScriptStep(
+#        name='quality_model_train',
+#        script_name="quality_model_train.py",
+#        compute_target=aml_compute,
+#        runconfig=pipeline_run_config,
+#        source_directory=train_source_dir)
 
 #    # quality model accuracy and register step
 #    quality_model_accuracy_register_step = PythonScriptStep(
@@ -39,7 +39,7 @@ def get_quality_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
 
     # Create sequence of steps for model train
 #    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step, quality_model_train_step, quality_model_accuracy_register_step])
-    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step, quality_model_train_step])
+    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step])
 
     # Create pipeline
     quality_model_train_pipeline = Pipeline(workspace=aml_workspace, steps=quality_model_train_step_sequence)
