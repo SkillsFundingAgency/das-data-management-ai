@@ -452,6 +452,9 @@ quality_sample_data['log_employees'] = np.log2(quality_sample_data['employees']+
 quality_sample_data2 = quality_sample_data[(quality_sample_data.employees <=20000) & (quality_sample_data.tpr_match ==1) & (quality_sample_data.company_status==3)]
 #quality_sample_data2.to_parquet('C:/Users/rober/Documents/Atos/data/completion_model_sample_data_subset.parquet')
 
+ws = Workspace.from_config()
+datastore = Datastore.get(aml_workspace, 'trainingdata')
+dataset = Dataset.Tabular.register_pandas_dataframe(quality_sample_data2, datastore, "quality_train_model_sample", show_progress=True)
 
 
 print(quality_sample_data2)
