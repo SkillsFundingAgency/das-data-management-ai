@@ -505,9 +505,11 @@ xgb_model = xgb.XGBClassifier()
 xgb_model.fit(X_train, y_train)
 
 explainer = shap.TreeExplainer(xgb_model)
-shap_values = explainer.shap_values(X_train)
+############################# Add back in ################################
+#shap_values = explainer.shap_values(X_train)
 
-shap.summary_plot(shap_values, X_train)
+############################# Add back in ################################
+#shap.summary_plot(shap_values, X_train)
 
 
 run = Run.get_context()
