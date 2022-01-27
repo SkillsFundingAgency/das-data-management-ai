@@ -491,7 +491,7 @@ X = quality_sample_data2[['levy_non_levy','previous_12mon_commitments','apprenti
 ############################# Add back in ################################
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5, random_state=99)
 
 xgb_model = xgb.XGBClassifier()
 xgb_model.fit(X_train, y_train)
