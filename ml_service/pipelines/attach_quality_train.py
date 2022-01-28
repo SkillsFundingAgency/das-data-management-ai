@@ -10,7 +10,6 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experimen
 from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
 
-
 def get_quality_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
     # quality_model data prep step
     train_source_dir="./employer-engagement/training"
@@ -21,21 +20,6 @@ def get_quality_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
         runconfig=pipeline_run_config,
         source_directory=train_source_dir)
 
-#    # quality model train step
-#    quality_model_train_step = PythonScriptStep(
-#        name='quality_model_train',
-#        script_name="quality_model_train.py",
-#        compute_target=aml_compute,
-#        runconfig=pipeline_run_config,
-#        source_directory=train_source_dir)
-
-#    # quality model accuracy and register step
-#    quality_model_accuracy_register_step = PythonScriptStep(
-#        name='quality_model_accuracy_register',
-#        script_name="quality_model_accuracy_register.py",
-#        compute_target=aml_compute,
-#        runconfig=pipeline_run_config,
-#        source_directory=train_source_dir)
 
     # Create sequence of steps for model train
 #    quality_model_train_step_sequence = StepSequence(steps = [quality_model_data_prep_step, quality_model_train_step, quality_model_accuracy_register_step])
