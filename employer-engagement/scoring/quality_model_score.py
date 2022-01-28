@@ -33,7 +33,7 @@ FROM \
 (SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A) A \
 INNER JOIN \
 (SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-FROM PDS_AI.CompletionDate
+FROM PDS_AI.PT_B
 PT_B \
 WHERE B3 IN (2,3,4,5) \
 AND (B15=0 AND B16 IS NULL AND B19=0) \
