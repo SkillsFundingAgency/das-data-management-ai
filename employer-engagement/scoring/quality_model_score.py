@@ -32,7 +32,7 @@ FROM (SELECT A.A3 \
 FROM \
 (SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A) A \
 INNER JOIN \
-(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
+(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 as apprenticeship_id \
 FROM PDS_AI.PT_B \
 WHERE B3 IN (2,3,4,5) \
 AND (B15=0 AND B16 IS NULL AND B19=0) \
@@ -48,7 +48,6 @@ ON C.A3=D.B10 \
 GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
-, C.completed_commitment \
 , C.apprenticeship_id \
 , C.commitment_date \
 """) 
