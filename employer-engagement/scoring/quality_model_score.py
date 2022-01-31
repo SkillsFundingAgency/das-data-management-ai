@@ -18,6 +18,7 @@ datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 
 # Create model scoring data into x_train dataframe
+
 quality_model_score_query = DataPath(datastore, """SELECT C.A3 AS account_id \
 , C.levy_split \
 , C.account_created \
@@ -49,10 +50,9 @@ GROUP BY C.A3 \
 , C.levy_split \
 , C.account_created \
 , C.apprenticeship_id \
-, C.commitment_date \
-""") 
-quality_model_tabular_2018_H1 = Dataset.Tabular.from_sql_query(quality_model_score_query, query_timeout=1000)
-quality_model_score_set = quality_model_tabular_2018_H1.to_pandas_dataframe()
+, C.commitment_date """) 
+quality_model_tabular_current = Dataset.Tabular.from_sql_query(quality_model_score_query, query_timeout=1000)
+quality_model_score_set = quality_model_tabular_current.to_pandas_dataframe()
 
 
 
@@ -262,7 +262,7 @@ scored=loaded_model.predict_proba(X)
 quality_df_scored['quality_model_prediction']=scored[:,1]
 
 run = Run.get_context()
-run.log('test log', 'test log')
+run.log('quality_model_score_log', 'quality_model_score_log')
 
 #write out scored file to parquet
 quality_df_scored.to_parquet('./outputs/quality_model_scored.parquet')
