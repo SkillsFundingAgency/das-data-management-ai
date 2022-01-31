@@ -491,11 +491,14 @@ GROUP BY A3, A1 \
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
+print("Printing levy model set")
+print(levy_model_set)
+
 
 # Join TPR data to model set
 levy_model_set = pd.merge(levy_model_set, \
                   levy_tpr_aggregated, \
-                  left_on='account_id', \
+                  left_on='A3', \
                   right_on='A3', \
                   how='left')
 

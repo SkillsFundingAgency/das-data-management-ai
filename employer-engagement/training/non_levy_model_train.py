@@ -216,7 +216,7 @@ non_levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 # Join TPR data to model set
 non_levy_model_set = pd.merge(non_levy_model_set, \
                   non_levy_tpr_aggregated, \
-                  left_on='account_id', \
+                  left_on='A3', \
                   right_on='A3', \
                   how='left')
 
