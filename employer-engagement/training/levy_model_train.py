@@ -166,7 +166,7 @@ levy_model_set_2018_2019_part2 = tabular_2018_2019_part2.to_pandas_dataframe()
 
 # 2019/2020 cohort Part 1
 
-query_2018_2019_part1 = DataPath(datastore, """SELECT A3 \
+query_2019_2020_part1 = DataPath(datastore, """SELECT A3 \
 , '2020' as cohort \
 , total_commitments \
 , CASE \
