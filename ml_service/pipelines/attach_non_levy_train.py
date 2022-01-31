@@ -13,7 +13,7 @@ from ml_service.util.manage_environment import get_environment
 def get_non_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
     # non_levy_model data prep step
     train_source_dir="./employer-engagement/training"
-    non_levy_model_data_prep_step = PythonScriptStep(
+    non_levy_model_train_step = PythonScriptStep(
         name='non_levy_model_train',
         script_name="non_levy_model_train.py",
         compute_target=aml_compute,
