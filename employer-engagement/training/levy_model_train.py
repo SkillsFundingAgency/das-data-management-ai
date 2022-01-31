@@ -584,13 +584,13 @@ y = levy_model_set2['adjusted_commitments']
 
 ############################# Add back in ################################
 
-X = levy_model_set2[['levy_non_levy','account_id','cohort','as_months_since_sign_up','adjusted_commitments','occupation_1', \
+X = levy_model_set2[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
+                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null', \
                      'years_since_tpr_signup','comp_type_C','comp_type_I', \
-                     'comp_type_X','tpr_match','new_company','early_adopter', \
+                     'comp_type_X','new_company','early_adopter', \
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-                     'levy_sending_company','current_live_commitments','company_status']]
+                     'levy_sending_company','current_live_commitments']]
 
 
 # get code from Vemal for train, accuracy and add below and register
