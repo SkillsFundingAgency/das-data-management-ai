@@ -5,10 +5,19 @@ import numpy as np
 import pyarrow.parquet as pq
 import joblib
 import datetime
+import shap
+import xgboost as xgb
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
 from sklearn.linear_model import LogisticRegression
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import KFold
+
+
+
 
 # Set up config of workspace and datastore
 
@@ -490,9 +499,6 @@ GROUP BY A3, A1 \
 ) c """)
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
-
-print("Printing levy model set")
-print(levy_model_set)
 
 
 # Join TPR data to model set
