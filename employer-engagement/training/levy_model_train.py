@@ -489,7 +489,7 @@ ON A.A3=B.D15 \
 GROUP BY A3, A1 \
 ) c """)
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
-levy_model_set_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
+levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
 
 # Join TPR data to model set
