@@ -321,11 +321,16 @@ loaded_model = joblib.load(model_path)
 
 #score dataframe using saved model onto the base
 scored=loaded_model.predict(X)
-levy_df_scored['levy_model_prediction']=scored[:,1]
+model_score= pd.DataFrame(scored, columns=['levy_model_prediction'])
+levy_df_scored = levy_score_set.merge(model_score, left_index=True, right_index=True)
+
+final_scoring_cols_to_keep=['account_id', 'levy_model_prediction'] 
+levy_df_scored2 = levy_df_scored[final_scoring_cols_to_keep]
+
 
 run = Run.get_context()
 run.log('levy_model_score_log', 'levy_model_score_log')
 
 #write out scored file to parquet
-levy_df_scored.to_parquet('./outputs/levy_model_scored.parquet')
-levy_df_scored.to_csv('./outputs/levy_model_scored.csv')
+levy_df_scored2.to_parquet('./outputs/levy_model_scored.parquet')
+levy_df_scored2.to_csv('./outputs/levy_model_scored.csv')
