@@ -113,8 +113,8 @@ print ("Run configuration created.")
 #get_quality_train(aml_workspace, aml_compute, pipeline_run_config, experiment) # successful
 #get_quality_score(aml_workspace, aml_compute, pipeline_run_config, experiment) # bad default data 
 
-get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+#get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 #get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
 
-#get_non_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment)
+get_non_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment)
 #get_non_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)

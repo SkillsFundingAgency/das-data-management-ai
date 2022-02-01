@@ -25,8 +25,7 @@ pd.options.mode.chained_assignment = None
 
 # Create model build data into dataframe
 
-# Create df with all accounts and early adopter flag
-
+### Create df with all accounts and early adopter flag
 
 query_non_levy_model_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=0""")
 tabular_non_levy_model_set = Dataset.Tabular.from_sql_query(query_non_levy_model_set, query_timeout=10)
@@ -41,33 +40,28 @@ non_levy_model_set["months_since_sign_up2"] =non_levy_model_set["months_since_si
 
 
 
-# 2018/2019 cohort Part 1
+# take last 12 months of non-levy commitments and adjust according to when they started
+# Take all non-levy companies (A)
+# Join all commitments in the last 12 months (B)
+# Match all commitments in the preceding 12 months (12-24 months ago)
+# work out number of commitments due to end in the last 12 month period
+# take number of live commitments as at 1 year ago
+
 
 query_non_levy_commitments = DataPath(datastore, """SELECT A3 \
 , total_commitments \
 , CASE \
-WHEN levy_split=1 AND yearmon_created = '2019-3' THEN total_commitments * 12.54 \
-WHEN levy_split=1 AND yearmon_created = '2019-2' THEN total_commitments * 6.22 \
-WHEN levy_split=1 AND yearmon_created = '2019-1' THEN total_commitments * 4.16 \
-WHEN levy_split=1 AND yearmon_created = '2018-12' THEN total_commitments * 3.24 \
-WHEN levy_split=1 AND yearmon_created = '2018-11' THEN total_commitments * 2.41 \
-WHEN levy_split=1 AND yearmon_created = '2018-10' THEN total_commitments * 1.82 \
-WHEN levy_split=1 AND yearmon_created = '2018-9' THEN total_commitments * 1.54 \
-WHEN levy_split=1 AND yearmon_created = '2018-8' THEN total_commitments * 1.40 \
-WHEN levy_split=1 AND yearmon_created = '2018-7' THEN total_commitments * 1.27 \
-WHEN levy_split=1 AND yearmon_created = '2018-6' THEN total_commitments * 1.17 \
-WHEN levy_split=1 AND yearmon_created = '2018-5' THEN total_commitments * 1.08 \
-WHEN levy_split=0 AND yearmon_created = '2019-3' THEN total_commitments * 3.73 \
-WHEN levy_split=0 AND yearmon_created = '2019-2' THEN total_commitments * 2.01 \
-WHEN levy_split=0 AND yearmon_created = '2019-1' THEN total_commitments * 1.47 \
-WHEN levy_split=0 AND yearmon_created = '2018-12' THEN total_commitments * 1.40 \
-WHEN levy_split=0 AND yearmon_created = '2018-11' THEN total_commitments * 1.33 \
-WHEN levy_split=0 AND yearmon_created = '2018-10' THEN total_commitments * 1.22 \
-WHEN levy_split=0 AND yearmon_created = '2018-9' THEN total_commitments * 1.15 \
-WHEN levy_split=0 AND yearmon_created = '2018-8' THEN total_commitments * 1.12 \
-WHEN levy_split=0 AND yearmon_created = '2018-7' THEN total_commitments * 1.07 \
-WHEN levy_split=0 AND yearmon_created = '2018-6' THEN total_commitments * 1.03 \
-WHEN levy_split=0 AND yearmon_created = '2018-5' THEN total_commitments * 1.02 \
+WHEN levy_split=0 AND yearmon_created = '2021-12' THEN total_commitments * 3.73 \
+WHEN levy_split=0 AND yearmon_created = '2021-11' THEN total_commitments * 2.01 \
+WHEN levy_split=0 AND yearmon_created = '2021-10' THEN total_commitments * 1.47 \
+WHEN levy_split=0 AND yearmon_created = '2021-9' THEN total_commitments * 1.40 \
+WHEN levy_split=0 AND yearmon_created = '2021-8' THEN total_commitments * 1.33 \
+WHEN levy_split=0 AND yearmon_created = '2021-7' THEN total_commitments * 1.22 \
+WHEN levy_split=0 AND yearmon_created = '2021-6' THEN total_commitments * 1.15 \
+WHEN levy_split=0 AND yearmon_created = '2021-5' THEN total_commitments * 1.12 \
+WHEN levy_split=0 AND yearmon_created = '2021-4' THEN total_commitments * 1.07 \
+WHEN levy_split=0 AND yearmon_created = '2021-3' THEN total_commitments * 1.03 \
+WHEN levy_split=0 AND yearmon_created = '2021-2' THEN total_commitments * 1.02 \
 ELSE total_commitments END AS adjusted_commitments \
 , occupation_1 \
 , occupation_2 \
@@ -152,7 +146,7 @@ non_levy_model_set = pd.merge(non_levy_model_set, \
 # Fill commitments with 0 if missing
 non_levy_model_set = non_levy_model_set.fillna(0)
 
-# TPR data
+# TPR data - fill in missing data with average values
 query_tpr_aggregated = DataPath(datastore, """SELECT A3 \
 , CASE WHEN employees IS NULL THEN 0 ELSE 1 END AS tpr_match \
 , CASE WHEN scheme_start_year IS NOT NULL THEN scheme_start_year \
@@ -285,7 +279,6 @@ non_levy_model_set['log_employees'] = np.log2(non_levy_model_set['employees']+1)
 non_levy_model_set2 = non_levy_model_set[(non_levy_model_set.employees <=20000) & (non_levy_model_set.tpr_match ==1) & (non_levy_model_set.company_status ==3)]
 
 
-
 print(non_levy_model_set2)
 
 
@@ -327,7 +320,7 @@ X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
 y_train= pd.concat([y,y,y,y,y,y,y,y,y,y,y,y,y],ignore_index=True)
 y_test= pd.concat([y,y,y,y,y,y,y,y,y],ignore_index=True)
 
-
+# Build XGB model as placeholder for Vemal's model
 
 xgb_model = xgb.XGBRegressor(objective ='reg:linear')
 xgb_model.fit(X_train, y_train)
@@ -339,9 +332,6 @@ explainer = shap.TreeExplainer(xgb_model)
 ############################# Add back in ################################
 #shap.summary_plot(shap_values, X_train)
 
-
-run = Run.get_context()
-run.log('non_levy_model_train_log','non_levy_model_train_log')
 
 # Save the trained model in the outputs folder
 print("Saving model...")
