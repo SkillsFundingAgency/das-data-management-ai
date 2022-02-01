@@ -303,7 +303,7 @@ print(levy_score_set)
 ############################# Add back in ################################
 
 
-X = levy_score_set[['levy_non_levy','account_id','as_months_since_sign_up','adjusted_commitments','occupation_1', \
+X = levy_score_set[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
                      'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null', \
                      'years_since_tpr_signup','comp_type_C','comp_type_I', \
