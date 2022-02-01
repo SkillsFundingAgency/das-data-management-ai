@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import pyarrow.parquet as pq
 import joblib
+import xgboost as xgb
+
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
@@ -319,7 +321,7 @@ loaded_model = joblib.load(model_path)
 
 #score dataframe using saved model onto the base
 scored=loaded_model.predict_proba(X)
-levy_df_scored['levy_model_prediction']=scored[:,1]
+    levy_df_scored['levy_model_prediction']=scored[:,1]
 
 run = Run.get_context()
 run.log('levy_model_score_log', 'levy_model_score_log')
