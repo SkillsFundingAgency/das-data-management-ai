@@ -254,8 +254,8 @@ print("post functions")
 #                    'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
 #                    'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
 #                    'levy_sending_company','current_live_commitments','company_status']
-#scoring_set = scoring_set[scoring_cols_to_keep]
-#scoring_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
+#levy_scoring_set = levy_score_set[scoring_cols_to_keep]
+#levy_scoring_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
 #                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
 #                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
 #                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
@@ -270,8 +270,8 @@ scoring_cols_to_keep=['A1','A3','months_since_sign_up2','occupation_1', \
                     'comp_type_X','tpr_match','new_company','early_adopter', \
                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                     'levy_sending_company','current_live_commitments','company_status']
-scoring_set = scoring_set[scoring_cols_to_keep]
-scoring_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
+levy_score_set = levy_score_set[scoring_cols_to_keep]
+levy_score_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
                      'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
                      'years_since_tpr_signup','comp_type_C','comp_type_I', \
