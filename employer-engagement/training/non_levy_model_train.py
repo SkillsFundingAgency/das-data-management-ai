@@ -34,7 +34,7 @@ non_levy_model_set = tabular_non_levy_model_set.to_pandas_dataframe()
 
 # change to today
 # months since apprenticeship account sign-up
-non_levy_model_set["months_since_sign_up"] = (pd.Timestamp(2022,01,30) - pd.to_datetime(non_levy_model_set["A2"]))/ np.timedelta64(1, "M")
+non_levy_model_set["months_since_sign_up"] = (pd.Timestamp(2022,2,1) - pd.to_datetime(non_levy_model_set["A2"]))/ np.timedelta64(1, "M")
 # make the months since sign-up discrete for analysis purposes
 non_levy_model_set["months_since_sign_up2"] =non_levy_model_set["months_since_sign_up"].apply(np.floor)
 
