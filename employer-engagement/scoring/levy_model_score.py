@@ -210,7 +210,7 @@ ON A.A3=B.D15 \
 GROUP BY A3, A1 \
 ) c """)
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
-levy_score_set_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
+levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
 
 # Join TPR data to model set
@@ -298,13 +298,13 @@ print(levy_score_set)
 # Take logs to standardise the scale
 levy_score_set['log_employees'] = np.log2(levy_score_set['employees']+1)
 
-X = levy_score_set[['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
+X = levy_score_set[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
+                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null', \
                      'years_since_tpr_signup','comp_type_C','comp_type_I', \
-                     'comp_type_X','tpr_match','new_company','early_adopter', \
+                     'comp_type_X','new_company','early_adopter', \
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-                     'levy_sending_company','current_live_commitments','company_status']]
+                     'levy_sending_company','current_live_commitments']]
 
 
 # load registered model 
