@@ -143,7 +143,7 @@ levy_commitments = pd.merge(levy_commitments_p1, \
 
 
 # add commitment data onto account selection
-levy_score_set = pd.merge(levy_score_set, \ 
+levy_score_set = pd.merge(levy_score_set, \
                   levy_commitments, \
                   left_on=['A3'], \
                   right_on=['A3'], \
