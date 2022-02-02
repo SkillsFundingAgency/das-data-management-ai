@@ -51,10 +51,10 @@ non_levy_model_set["months_since_sign_up2"] =non_levy_model_set["months_since_si
 # take number of live commitments as at 1 year ago
 
 ###################Add back in to statement below####################
-(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
-FROM PDS_AI.PT_A \
-WHERE A1=0 \
-) A \
+#(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
+#FROM PDS_AI.PT_A \
+#WHERE A1=0 \
+#) A \
 
 
 query_non_levy_commitments = DataPath(datastore, """SELECT A3 \
