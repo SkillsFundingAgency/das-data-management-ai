@@ -27,7 +27,10 @@ pd.options.mode.chained_assignment = None
 
 ### Create df with all accounts and early adopter flag
 
-query_non_levy_model_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=0""")
+#####################Add back in#########################
+#query_non_levy_model_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=0""")
+query_non_levy_model_set = DataPath(datastore, """SELECT 0 AS A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A""")
+
 tabular_non_levy_model_set = Dataset.Tabular.from_sql_query(query_non_levy_model_set, query_timeout=10)
 non_levy_model_set = tabular_non_levy_model_set.to_pandas_dataframe()
 
@@ -46,6 +49,12 @@ non_levy_model_set["months_since_sign_up2"] =non_levy_model_set["months_since_si
 # Match all commitments in the preceding 12 months (12-24 months ago)
 # work out number of commitments due to end in the last 12 month period
 # take number of live commitments as at 1 year ago
+
+###################Add back in to statement below####################
+(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
+FROM PDS_AI.PT_A \
+WHERE A1=0 \
+) A \
 
 
 query_non_levy_commitments = DataPath(datastore, """SELECT A3 \
@@ -81,9 +90,8 @@ ELSE total_commitments END AS adjusted_commitments \
 , A7 as levy_sending_company \
 , current_live_commitments \
 FROM \
-(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
+(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, 0 as levy_split, A2, A7 \
 FROM PDS_AI.PT_A \
-WHERE A1=0 \
 ) A \
 LEFT JOIN  \
 (SELECT B10, count(*) AS total_commitments \
