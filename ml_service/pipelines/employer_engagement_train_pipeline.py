@@ -5,7 +5,6 @@ from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
-# from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
 import os
@@ -56,3 +55,9 @@ print ("Run configuration created.")
 #Create pipelines for levy models
 get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
+
+get_non_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+get_non_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
+
+get_quality_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+get_quality_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
