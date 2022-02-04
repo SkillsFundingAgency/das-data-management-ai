@@ -11,7 +11,7 @@ from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
 
 def get_non_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
-    # non_levy_model data prep step
+    # non_levy_model train step
     train_source_dir="./employer-engagement/training"
     non_levy_model_train_step = PythonScriptStep(
         name='non_levy_model_train',
@@ -22,7 +22,6 @@ def get_non_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_
 
 
     # Create sequence of steps for model train
-#    non_levy_model_train_step_sequence = StepSequence(steps = [non_levy_model_data_prep_step, non_levy_model_train_step, non_levy_model_accuracy_register_step])
     non_levy_model_train_step_sequence = StepSequence(steps = [non_levy_model_train_step])
 
     # Create pipeline

@@ -24,8 +24,6 @@ query_non_levy_score_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN C
 tabular_non_levy_score_set = Dataset.Tabular.from_sql_query(query_non_levy_score_set, query_timeout=10)
 non_levy_score_set = tabular_non_levy_score_set.to_pandas_dataframe()
 
-
-# change to today
 # months since apprenticeship account sign-up
 non_levy_score_set["months_since_sign_up"] = (pd.Timestamp(2022,01,30) - pd.to_datetime(non_levy_score_set["A2"]))/ np.timedelta64(1, "M")
 # make the months since sign-up discrete for analysis purposes
@@ -186,10 +184,6 @@ company_type=pd.get_dummies(non_levy_score_set['company_type'],prefix='comp_type
 non_levy_score_set = non_levy_score_set.merge(company_type, left_index=True, right_index=True)
 
 # Create year account created variable
-#levy_score_set['cohort'] = levy_score_set['account_created'].dt.year
-
-##########################Change current year########################
-# Alter tpr_scheme_start_year to years_since_tpr_signup
 non_levy_score_set['years_since_tpr_signup']=2022-non_levy_score_set['scheme_start_year']
 
 # Function for new company flag
@@ -229,17 +223,6 @@ print(non_levy_score_set)
 
 
 # Select model variables only
-
-#X = non_levy_score_set[['levy_non_levy','as_months_since_sign_up','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']]
-
-############################# Add back in ################################
-
 
 # Take logs to standardise the scale
 non_levy_score_set['log_employees'] = np.log2(non_levy_score_set['employees']+1)

@@ -25,17 +25,13 @@ pd.options.mode.chained_assignment = None
 
 # Create model build data into dataframe
 
-### Create df with all accounts and early adopter flag
-
-#####################Add back in#########################
-#query_non_levy_model_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=0""")
+# Create df with all accounts and early adopter flag
 query_non_levy_model_set = DataPath(datastore, """SELECT 0 AS A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A""")
 
 tabular_non_levy_model_set = Dataset.Tabular.from_sql_query(query_non_levy_model_set, query_timeout=10)
 non_levy_model_set = tabular_non_levy_model_set.to_pandas_dataframe()
 
 
-# change to today
 # months since apprenticeship account sign-up
 non_levy_model_set["months_since_sign_up"] = (pd.Timestamp(2022,2,1) - pd.to_datetime(non_levy_model_set["A2"]))/ np.timedelta64(1, "M")
 # make the months since sign-up discrete for analysis purposes
@@ -49,13 +45,6 @@ non_levy_model_set["months_since_sign_up2"] =non_levy_model_set["months_since_si
 # Match all commitments in the preceding 12 months (12-24 months ago)
 # work out number of commitments due to end in the last 12 month period
 # take number of live commitments as at 1 year ago
-
-###################Add back in to statement below####################
-#(SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
-#FROM PDS_AI.PT_A \
-#WHERE A1=0 \
-#) A \
-
 
 query_non_levy_commitments = DataPath(datastore, """SELECT A3 \
 , total_commitments \
@@ -226,10 +215,6 @@ non_levy_model_set = pd.merge(non_levy_model_set, \
 company_type=pd.get_dummies(non_levy_model_set['company_type'],prefix='comp_type')
 non_levy_model_set = non_levy_model_set.merge(company_type, left_index=True, right_index=True)
 
-# Create year account created variable
-#levy_model_set['cohort'] = levy_model_set['account_created'].dt.year
-
-##########################Change current year########################
 # Alter tpr_scheme_start_year to years_since_tpr_signup
 non_levy_model_set['years_since_tpr_signup']=2022-non_levy_model_set['scheme_start_year']
 
@@ -243,24 +228,6 @@ def fn_new_company(row):
     return val
 
 non_levy_model_set['new_company']=non_levy_model_set.apply(fn_new_company,axis=1)
-
-########################add back in##################
-# Only keep relevant variables and rename accordingly
-#model_cols_to_keep=['A1','A3','months_since_sign_up2','adjusted_commitments','occupation_1', \
-#                    'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                    'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                    'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                    'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                    'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                    'levy_sending_company','current_live_commitments','company_status']
-#non_levy_model_set = non_levy_model_set[model_cols_to_keep]
-#non_levy_model_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','adjusted_commitments','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']
 
 model_cols_to_keep=['A1','A3','months_since_sign_up2','adjusted_commitments','occupation_1', \
                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -292,15 +259,6 @@ print(non_levy_model_set2)
 
 # split the data into target and predictors
 y = non_levy_model_set2['adjusted_commitments']
-#X = non_levy_model_set[['levy_non_levy','as_months_since_sign_up','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']]
-
-############################# Add back in ################################
 
 X = non_levy_model_set2[['levy_non_levy','as_months_since_sign_up','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -311,16 +269,7 @@ X = non_levy_model_set2[['levy_non_levy','as_months_since_sign_up','occupation_1
                      'levy_sending_company','current_live_commitments','company_status']]
 
 
-# get code from Vemal for train, accuracy and add below and register
-
-# need to group final model score up to account level
-
 # Create train and test sets
-
-############################# Add back in ################################
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
-
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5, random_state=99)
 
 X_train= pd.concat([X,X,X,X,X,X,X,X,X,X,X,X,X],ignore_index=True)
 X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
@@ -334,12 +283,6 @@ xgb_model = xgb.XGBRegressor(objective ='reg:linear')
 xgb_model.fit(X_train, y_train)
 
 explainer = shap.TreeExplainer(xgb_model)
-############################# Add back in ################################
-#shap_values = explainer.shap_values(X_train)
-
-############################# Add back in ################################
-#shap.summary_plot(shap_values, X_train)
-
 
 # Save the trained model in the outputs folder
 print("Saving model...")

@@ -529,23 +529,7 @@ def fn_new_company(row):
 
 levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
 
-########################add back in##################
 # Only keep relevant variables and rename accordingly
-#model_cols_to_keep=['A1','A3','cohort','months_since_sign_up2','adjusted_commitments','occupation_1', \
-#                    'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                    'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                    'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                    'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                    'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                    'levy_sending_company','current_live_commitments','company_status']
-#levy_model_set = levy_model_set[model_cols_to_keep]
-#levy_model_set.columns = ['levy_non_levy','account_id','cohort','as_months_since_sign_up','adjusted_commitments','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']
 
 model_cols_to_keep=['A1','A3','cohort','months_since_sign_up2','adjusted_commitments','occupation_1', \
                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -574,15 +558,6 @@ levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_mode
 
 # split the data into target and predictors
 y = levy_model_set2['adjusted_commitments']
-#X = non_levy_model_set[['levy_non_levy','account_id','cohort','as_months_since_sign_up','adjusted_commitments','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']]
-
-############################# Add back in ################################
 
 X = levy_model_set2[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -592,18 +567,7 @@ X = levy_model_set2[['levy_non_levy','as_months_since_sign_up','adjusted_commitm
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                      'levy_sending_company','current_live_commitments']]
 
-
-# get code from Vemal for train, accuracy and add below and register
-
-# need to group final model score up to account level
-
 # Create train and test sets
-
-############################# Add back in ################################
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
-
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5, random_state=99)
-
 X_train= pd.concat([X,X,X,X,X,X,X,X,X,X,X,X,X],ignore_index=True)
 X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
 
@@ -625,11 +589,6 @@ xgb_model.fit(X_train, y_train)
 print("model fit")
 
 explainer = shap.TreeExplainer(xgb_model)
-############################# Add back in ################################
-#shap_values = explainer.shap_values(X_train)
-
-############################# Add back in ################################
-#shap.summary_plot(shap_values, X_train)
 print("post shap")
 
 

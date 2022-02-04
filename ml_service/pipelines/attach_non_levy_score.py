@@ -19,7 +19,6 @@ def get_non_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
         source_directory=score_source_dir)
-        #allow_reuse=False)
 
     # Create sequence of steps
     non_levy_model_score_step_sequence = StepSequence(steps = [non_levy_model_score_step])

@@ -96,7 +96,6 @@ quality_model_score_set = pd.merge(quality_model_score_set, \
 
 
 
-############################### Change to today ##############################
 # months since apprenticeship account sign-up
 quality_model_score_set["months_since_sign_up"] = (pd.Timestamp(2022,1,28) - pd.to_datetime(quality_model_score_set["account_created"]))/ np.timedelta64(1, "M")
 
@@ -207,25 +206,6 @@ quality_model_score_set['early_adopter']=quality_model_score_set.apply(fn_early_
 
 
 # Only keep relevant variables and rename accordingly
-
-############################# Add back in ################################
-
-#model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
-#                    'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
-#                    'occupation_1','occupation_2','occupation_3','occupation_7', \
-#                    'occupation_13','occupation_14','occupation_15','occupation_17','occupation_20','occupation_22', \
-#                    'occupation_24','months_since_sign_up2','employees','scheme_start_year','comp_type_C','comp_type_E', \
-#                    'comp_type_F','comp_type_I','comp_type_L','comp_type_P','comp_type_S','comp_type_X','tpr_match', \
-#                    'new_company','early_adopter','years_since_tpr_signup','company_status','commitment_date']
-#quality_sample_data = quality_sample_data[model_cols_to_keep]
-#quality_sample_data.columns = ['account_id','levy_non_levy','completed_commitment','previous_12mon_commitments', \
-#                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer','occupation_1','occupation_2', \
-#                     'occupation_3','occupation_7','occupation_13','occupation_14','occupation_15','occupation_17', \
-#                     'occupation_20','occupation_22','occupation_24','as_months_since_sign_up','employees', \
-#                     'tpr_scheme_start_year','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'years_since_tpr_signup','company_status','commitment_date']
-
 
 quality_model_cols_to_keep=['A3','levy_split','previous_12mon_commitments', \
                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \

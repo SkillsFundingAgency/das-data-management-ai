@@ -118,14 +118,6 @@ tabular_2018_H2 = Dataset.Tabular.from_sql_query(query_2018_H2, query_timeout=10
 quality_model_set_2018_H2 = tabular_2018_H2.to_pandas_dataframe()
 
 
-
-
-#print(quality_model_set_2018_H2)
-
-
-
-
-
 # 2019 H1
 
 query_2019_H1 = DataPath(datastore, """SELECT C.A3 AS account_id \
@@ -168,65 +160,6 @@ tabular_2019_H1 = Dataset.Tabular.from_sql_query(query_2019_H1, query_timeout=10
 quality_model_set_2019_H1 = tabular_2019_H1.to_pandas_dataframe()
 
 
-
-
-
-#print(quality_model_set_2019_H1)
-
-
-############################# Add back in ################################
-
-# 2019 H2
-
-#query_2019_H2 = DataPath(datastore, """SELECT C.A3 AS account_id \
-#, C.levy_split \
-#, C.account_created \
-#, C.completed_commitment \
-#, C.apprenticeship_id \
-#, C.commitment_date \
-#, SUM(CASE WHEN DATEDIFF(day,D.B2, C.commitment_date)<=365 and DATEDIFF(day,D.B2, C.commitment_date)>0 THEN 1 ELSE 0 END) AS previous_12mon_commitments \
-#FROM (SELECT A.A3 \
-#, A.levy_split \
-#, A.A2 AS account_created \
-#, B.B15 AS completed_commitment \
-#, B.B1 as apprenticeship_id \
-#, B.commitment_date \
-#FROM \
-#(SELECT A3, A1 as levy_split, A2 FROM PDS_AI.PT_A WHERE A2<cast('2019-09-01' as date)) A \
-#INNER JOIN \
-#(SELECT B10, B15, B3, CAST(B2 AS DATE) AS commitment_date, B1 \
-#FROM PDS_AI.PT_B \
-#WHERE CAST(B2 AS DATE) >= cast('2019-07-01' as date) AND CAST(B2 AS DATE) < cast('2019-09-01' as date) \
-#AND B3 IN (2,3,4,5) \
-#AND (B15=1 OR B16 IS NOT NULL OR B19=1) \
-#) B \
-#ON A.A3=B.B10) C \
-#LEFT JOIN \
-#(SELECT B10, CAST(B2 AS DATE) as B2 \
-#FROM PDS_AI.PT_B \
-#WHERE CAST(B2 AS DATE) < cast('2019-09-01' as date) AND CAST(B2 AS DATE) >= cast('2018-07-01' as date) \
-#AND B3 IN (2,3,4,5) \
-#) D \
-#ON C.A3=D.B10 \
-#GROUP BY C.A3 \
-#, C.levy_split \
-#, C.account_created \
-#, C.completed_commitment \
-#, C.apprenticeship_id \
-#, C.commitment_date """)
-#tabular_2019_H2 = Dataset.Tabular.from_sql_query(query_2019_H2, query_timeout=10)
-#quality_model_set_2019_H2 = tabular_2019_H2.to_pandas_dataframe()
-
-
-
-
-#print(quality_model_set_2019_H2)
-
-
-
-
-
-
 # Create commitments plus proportion in each occupation in SQL for each cohort
 
 query_commitment_info_all = DataPath(datastore, """SELECT \
@@ -254,28 +187,8 @@ tabular_commitment_info_all = Dataset.Tabular.from_sql_query(query_commitment_in
 quality_commitment_info_all = tabular_commitment_info_all.to_pandas_dataframe()
 
 
-
-
-#print(quality_commitment_info_all)
-
-
-
-
-
-
 # Union the four unique date ranges together
-
-############################# Add back in ################################
-
-#quality_model_set_all=pd.concat([quality_model_set_2019_H2,quality_model_set_2019_H1,quality_model_set_2018_H2,quality_model_set_2018_H1])
 quality_model_set_all=pd.concat([quality_model_set_2019_H1,quality_model_set_2018_H2,quality_model_set_2018_H1])
-
-
-
-#print(quality_model_set_all)
-
-
-
 
 # Add on the commitment info leading up to the commitment in question
 
@@ -284,12 +197,6 @@ quality_model_set = pd.merge(quality_model_set_all, \
                   left_on='apprenticeship_id', \
                   right_on='apprenticeship_id', \
                   how='left')
-
-
-
-#print(quality_model_set)
-
-
 
 
 # months since apprenticeship account sign-up
@@ -400,41 +307,10 @@ quality_model_set['early_adopter']=quality_model_set.apply(fn_early_adopter,axis
 
 
 
-
-#print(quality_model_set)
-
-
-
-
-
-
 # Sample data for modelling
-
-############################# Add back in ################################
-
-# quality_sample_data=quality_model_set.sample(50000)
 quality_sample_data=quality_model_set.sample(19)
 
 # Only keep relevant variables and rename accordingly
-
-############################# Add back in ################################
-
-#model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
-#                    'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
-#                    'occupation_1','occupation_2','occupation_3','occupation_7', \
-#                    'occupation_13','occupation_14','occupation_15','occupation_17','occupation_20','occupation_22', \
-#                    'occupation_24','months_since_sign_up2','employees','scheme_start_year','comp_type_C','comp_type_E', \
-#                    'comp_type_F','comp_type_I','comp_type_L','comp_type_P','comp_type_S','comp_type_X','tpr_match', \
-#                    'new_company','early_adopter','years_since_tpr_signup','company_status','commitment_date']
-#quality_sample_data = quality_sample_data[model_cols_to_keep]
-#quality_sample_data.columns = ['account_id','levy_non_levy','completed_commitment','previous_12mon_commitments', \
-#                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer','occupation_1','occupation_2', \
-#                     'occupation_3','occupation_7','occupation_13','occupation_14','occupation_15','occupation_17', \
-#                     'occupation_20','occupation_22','occupation_24','as_months_since_sign_up','employees', \
-#                     'tpr_scheme_start_year','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'years_since_tpr_signup','company_status','commitment_date']
-
 
 model_cols_to_keep=['A3','levy_split','completed_commitment','previous_12mon_commitments', \
                     'apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
@@ -457,23 +333,12 @@ quality_sample_data['log_employees'] = np.log2(quality_sample_data['employees']+
 
 # Remove outliers and non matched tpr data and tpr closed companies
 quality_sample_data2 = quality_sample_data[(quality_sample_data.employees <=20000) & (quality_sample_data.tpr_match ==1) & (quality_sample_data.company_status==3)]
-#quality_sample_data2.to_parquet('C:/Users/rober/Documents/Atos/data/completion_model_sample_data_subset.parquet')
-
-#datastore = Datastore.get(aml_workspace, 'trainingdata')
-#dataset = Dataset.Tabular.register_pandas_dataframe(quality_sample_data2, datastore, "quality_train_model_sample", show_progress=True)
 
 
 print(quality_sample_data2)
 
 # split the data into target and predictors
 y = quality_sample_data2['completed_commitment']
-#X = quality_sample_data2[['levy_non_levy','previous_12mon_commitments','apprenticeship_level','apprentice_age','funded_by_levy_transfer',
-#                'occupation_1','occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15',
-#                'occupation_17','occupation_20','occupation_22','occupation_24','as_months_since_sign_up','log_employees',
-#                'comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L','comp_type_P','comp_type_S',
-#                'comp_type_X','tpr_match','new_company','early_adopter','years_since_tpr_signup']]
-
-############################# Add back in ################################
 
 X = quality_sample_data2[['levy_non_levy','previous_12mon_commitments','apprenticeship_level','apprentice_age','funded_by_levy_transfer', \
                 'occupation_1','occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -481,18 +346,7 @@ X = quality_sample_data2[['levy_non_levy','previous_12mon_commitments','apprenti
                 'comp_type_C','comp_type_I', \
                 'comp_type_X','tpr_match','new_company','early_adopter','years_since_tpr_signup']]
 
-
-# get code from Vemal for train, accuracy and add below and register
-
-# need to group final model score up to account level
-
 # Create train and test sets
-
-############################# Add back in ################################
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
-
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.5, random_state=99)
-
 X_train= pd.concat([X,X,X,X,X,X,X,X,X,X,X,X,X],ignore_index=True)
 X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
 
@@ -505,12 +359,6 @@ xgb_model = xgb.XGBClassifier(objective='binary:logistic')
 xgb_model.fit(X_train, y_train)
 
 explainer = shap.TreeExplainer(xgb_model)
-############################# Add back in ################################
-#shap_values = explainer.shap_values(X_train)
-
-############################# Add back in ################################
-#shap.summary_plot(shap_values, X_train)
-
 
 run = Run.get_context()
 run.log('quality_model_train_log','quality_model_train_log')

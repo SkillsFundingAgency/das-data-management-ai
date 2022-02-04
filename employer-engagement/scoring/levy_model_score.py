@@ -227,10 +227,6 @@ company_type=pd.get_dummies(levy_score_set['company_type'],prefix='comp_type')
 levy_score_set = levy_score_set.merge(company_type, left_index=True, right_index=True)
 
 # Create year account created variable
-#levy_score_set['cohort'] = levy_score_set['account_created'].dt.year
-
-##########################Change current year########################
-# Alter tpr_scheme_start_year to years_since_tpr_signup
 levy_score_set['years_since_tpr_signup']=2022-levy_score_set['scheme_start_year']
 
 # Function for new company flag
@@ -248,22 +244,6 @@ levy_score_set['new_company']=levy_score_set.apply(fn_new_company,axis=1)
 print("post functions")
 
 # Only keep relevant variables and rename accordingly
-########################add back in ########################
-#scoring_cols_to_keep=['A1','A3','months_since_sign_up2','occupation_1', \
-#                    'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                    'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                    'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                    'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                    'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                    'levy_sending_company','current_live_commitments','company_status']
-#levy_scoring_set = levy_score_set[scoring_cols_to_keep]
-#levy_scoring_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']
 
 scoring_cols_to_keep=['A1','A3','months_since_sign_up2','adjusted_commitments','occupation_1', \
                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
@@ -291,17 +271,6 @@ print("after logs")
 print(levy_score_set)
 
 # Select model variables only
-
-#X = levy_score_set[['levy_non_levy','account_id','as_months_since_sign_up','adjusted_commitments','occupation_1', \
-#                     'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
-#                     'occupation_17','occupation_20','occupation_22','occupation_24','occupation_null','employees', \
-#                     'years_since_tpr_signup','comp_type_C','comp_type_E','comp_type_F','comp_type_I','comp_type_L', \
-#                     'comp_type_P','comp_type_S','comp_type_X','tpr_match','new_company','early_adopter', \
-#                     'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
-#                     'levy_sending_company','current_live_commitments','company_status']]
-
-############################# Add back in ################################
-
 
 X = levy_score_set[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
                      'occupation_2','occupation_3','occupation_7','occupation_13','occupation_14','occupation_15', \
