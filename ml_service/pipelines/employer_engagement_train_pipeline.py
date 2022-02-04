@@ -8,10 +8,6 @@ from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, Publishe
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
 import os
-from ml_service.pipelines.attach_quality_train import get_quality_train
-from ml_service.pipelines.attach_quality_score import get_quality_score
-from ml_service.pipelines.attach_non_levy_train import get_non_levy_train
-from ml_service.pipelines.attach_non_levy_score import get_non_levy_score
 from ml_service.pipelines.attach_levy_train import get_levy_train
 from ml_service.pipelines.attach_levy_score import get_levy_score
 
@@ -55,9 +51,3 @@ print ("Run configuration created.")
 #Create pipelines for levy models
 get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
-
-get_non_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
-get_non_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
-
-get_quality_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
-get_quality_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
