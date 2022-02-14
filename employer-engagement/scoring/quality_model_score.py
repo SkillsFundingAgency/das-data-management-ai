@@ -202,9 +202,6 @@ def fn_early_adopter(row):
 quality_model_score_set['early_adopter']=quality_model_score_set.apply(fn_early_adopter,axis=1)
 
 
-#print(quality_model_score_set)
-
-
 # Only keep relevant variables and rename accordingly
 
 quality_model_cols_to_keep=['A3','levy_split','previous_12mon_commitments', \

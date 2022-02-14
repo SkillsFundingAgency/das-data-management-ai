@@ -213,7 +213,6 @@ GROUP BY A3, A1 \
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
-print("join tpr data to model set")
 # Join TPR data to model set
 levy_score_set = pd.merge(levy_score_set, \
                   levy_tpr_aggregated, \
@@ -230,7 +229,6 @@ levy_score_set['years_since_tpr_signup']=2022-levy_score_set['scheme_start_year'
 
 # Function for new company flag
 
-print("before functions")
 def fn_new_company(row):
     if row['months_since_sign_up2']<=6 :
         val=1
@@ -239,8 +237,6 @@ def fn_new_company(row):
     return val
 
 levy_score_set['new_company']=levy_score_set.apply(fn_new_company,axis=1)
-
-print("post functions")
 
 # Only keep relevant variables and rename accordingly
 
@@ -260,12 +256,9 @@ levy_score_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up'
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                      'levy_sending_company','current_live_commitments','company_status']
 
-print("after renames")
-
 # Take logs to standardise the scale
 levy_score_set['log_adjusted_commitments'] = np.log2(levy_score_set['adjusted_commitments']+1)
 levy_score_set['log_employees'] = np.log2(levy_score_set['employees']+1)
-print("after logs")
 
 print(levy_score_set)
 
@@ -279,7 +272,6 @@ X = levy_score_set[['levy_non_levy','as_months_since_sign_up','adjusted_commitme
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                      'levy_sending_company','current_live_commitments']]
 
-print("after X")
 
 # load registered model 
 global loaded_model

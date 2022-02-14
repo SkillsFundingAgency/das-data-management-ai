@@ -575,22 +575,11 @@ y_train= pd.concat([y,y,y,y,y,y,y,y,y,y,y,y,y],ignore_index=True)
 y_test= pd.concat([y,y,y,y,y,y,y,y,y],ignore_index=True)
 
 
-print("Start model build")
-print(X_train.dtypes)
-
-
-
 xgb_model = xgb.XGBRegressor(objective ='reg:linear')
-
-print("model built")
 
 xgb_model.fit(X_train, y_train)
 
-print("model fit")
-
 explainer = shap.TreeExplainer(xgb_model)
-print("post shap")
-
 
 # Save the trained model in the outputs folder
 print("Saving model...")
