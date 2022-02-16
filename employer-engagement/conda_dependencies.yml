@@ -1,6 +1,6 @@
 name: employer_engagement_env
 dependencies:
-  - python=3.6.2
+  - python=3.9.9
   - scikit-learn
   - numpy
   - shap
