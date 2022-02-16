@@ -7,7 +7,6 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
-import os
 from ml_service.pipelines.attach_levy_train import get_levy_train
 from ml_service.pipelines.attach_levy_score import get_levy_score
 
@@ -23,8 +22,6 @@ name=e.workspace_name,
 subscription_id=e.subscription_id,
 resource_group=e.resource_group,
 )
-print("get_workspace:")
-print(aml_workspace)
 
 # Create experiment if it doesn't exist
 experiment = Experiment(aml_workspace, "employer-engagement")
@@ -46,7 +43,6 @@ pipeline_run_config = RunConfiguration()
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
-print ("Run configuration created.")
 
 #Create pipelines for levy models
 get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 

@@ -11,13 +11,9 @@ from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
 from sklearn.linear_model import LogisticRegression
-
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-
-
-
 
 # Set up config of workspace and datastore
 
@@ -582,17 +578,14 @@ xgb_model.fit(X_train, y_train)
 explainer = shap.TreeExplainer(xgb_model)
 
 # Save the trained model in the outputs folder
-print("Saving model...")
 os.makedirs('outputs', exist_ok=True)
 model_file = os.path.join('outputs', 'levy_model.pkl')
 joblib.dump(value=xgb_model, filename=model_file)
 
 # Register the model to pick up in scoring
-print('Registering model...')
 Model.register(workspace=aml_workspace, \
                model_path = model_file, \
                model_name = 'levy_model')
-
 
 run = Run.get_context()
 run.log('levy_model_train','levy_model_train')

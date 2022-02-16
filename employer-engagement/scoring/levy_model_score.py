@@ -260,8 +260,6 @@ levy_score_set.columns = ['levy_non_levy','account_id','as_months_since_sign_up'
 levy_score_set['log_adjusted_commitments'] = np.log2(levy_score_set['adjusted_commitments']+1)
 levy_score_set['log_employees'] = np.log2(levy_score_set['employees']+1)
 
-print(levy_score_set)
-
 # Select model variables only
 
 X = levy_score_set[['levy_non_levy','as_months_since_sign_up','adjusted_commitments','occupation_1', \
@@ -292,5 +290,4 @@ run = Run.get_context()
 run.log('levy_model_score_log', 'levy_model_score_log')
 
 #write out scored file to parquet
-levy_df_scored2.to_parquet('./outputs/levy_model_scored.parquet')
 levy_df_scored2.to_csv('./outputs/levy_model_scored.csv')
