@@ -13,4 +13,4 @@ dependencies:
     - sklearn
     - pyarrow
     - joblib
-    - python = 3.9.2
+    - python==3.9.2
