@@ -34,6 +34,8 @@ experiment_folder = 'employer-engagement'
  
 # Create a Python environment for the experiment (from a .yml file)
 environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_dependencies.yml")
+environment.docker.enabled = True
+environment.docker.base_image = 'mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04'
 # Register the environment 
 environment.register(workspace=aml_workspace)
 registered_env = Environment.get(aml_workspace, 'environment')
