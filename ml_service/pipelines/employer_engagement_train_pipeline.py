@@ -43,7 +43,7 @@ pipeline_run_config = RunConfiguration()
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
-
+ 
 #Create pipelines for levy models
 get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)
