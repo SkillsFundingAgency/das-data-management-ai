@@ -32,19 +32,14 @@ aml_compute = aml_workspace.compute_targets["cpucluster"]
 # Set up experiment folder
 experiment_folder = 'employer-engagement'
  
-# Create a Python environment for the experiment (from a .yml file)
-environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_dependencies.yml")
-environment.docker.enabled = True
-environment.docker.base_image = 'mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04'
-# Register the environment 
-environment.register(workspace=aml_workspace)
-registered_env = Environment.get(aml_workspace, 'environment')
+environment = Environment.get(workspace=aml_workspace, name="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu")
+
 # Create a new runconfig object for the pipeline
 pipeline_run_config = RunConfiguration()
 # Use the compute you created above. 
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
-pipeline_run_config.environment = registered_env
+pipeline_run_config.environment = environment
 
 #Create pipelines for levy models
 get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
