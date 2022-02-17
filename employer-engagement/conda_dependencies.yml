@@ -4,7 +4,7 @@ dependencies:
   - scikit-learn
   - numpy
   - shap
-  - xgboost
+  - xgboost=1.4.2
   - pip:
     - azureml-defaults
     - azureml-pipeline
