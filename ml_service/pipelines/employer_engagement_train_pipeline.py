@@ -1,12 +1,7 @@
-import azureml.core
 import os
-from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
-from azureml.core.run import Run
+from azureml.core import Workspace, Experiment, Environment
 from azureml.core.runconfig import RunConfiguration
-from azureml.pipeline.steps import PythonScriptStep
-from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
-from ml_service.util.manage_environment import get_environment
 from ml_service.pipelines.attach_levy_train import get_levy_train
 from ml_service.pipelines.attach_levy_score import get_levy_score
 
@@ -32,7 +27,7 @@ aml_compute = aml_workspace.compute_targets["cpucluster"]
 # Set up experiment folder
 experiment_folder = 'employer-engagement'
  
-environment = Environment.get(workspace=aml_workspace, name="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu")
+environment = Environment.get(workspace=aml_workspace, name="AzureML-xgboost-0.9-ubuntu18.04-py37-cpu-inference")
 
 # Create a new runconfig object for the pipeline
 pipeline_run_config = RunConfiguration()

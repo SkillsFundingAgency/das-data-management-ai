@@ -1,14 +1,9 @@
-import pickle
-import os
 import pandas as pd
 import numpy as np
-import pyarrow.parquet as pq
 import joblib
-import xgboost as xgb
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
-from sklearn.linear_model import LogisticRegression
 
 # Set up config of workspace and datastore
 aml_workspace = Run.get_context().experiment.workspace

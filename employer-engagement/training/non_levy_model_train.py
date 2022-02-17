@@ -1,19 +1,12 @@
-import pickle
 import os
 import pandas as pd
 import numpy as np
-import pyarrow.parquet as pq
 import joblib
-import datetime
 import shap
 import xgboost as xgb
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import KFold
 
 # Set up config of workspace and datastore
 
