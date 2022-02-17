@@ -434,6 +434,10 @@ levy_model_set = pd.merge(levy_model_set, \
 # Fill commitments with 0 if missing
 levy_model_set = levy_model_set.fillna(0)
 
+print("levy model set 1")
+levy_model_set
+
+
 # 2019 H1
 
 query_tpr_aggregated = DataPath(datastore, """SELECT A3 \
@@ -551,6 +555,8 @@ levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 # Remove outliers and non matched tpr data and tpr closed companies
 levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
+print("levy model set 2")
+levy_model_set2
 
 # split the data into target and predictors
 y = levy_model_set2['adjusted_commitments']
@@ -570,6 +576,8 @@ X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
 y_train= pd.concat([y,y,y,y,y,y,y,y,y,y,y,y,y],ignore_index=True)
 y_test= pd.concat([y,y,y,y,y,y,y,y,y],ignore_index=True)
 
+print("X_train")
+X_train
 
 xgb_model = xgb.XGBRegressor(objective ='reg:linear')
 
