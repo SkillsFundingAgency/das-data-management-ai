@@ -32,6 +32,9 @@ query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A
 tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
 levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
+print("levy_model_accounts")
+levy_model_accounts
+
 # Select all accounts data for three time periods in model build
 
 levy_model_accounts_2020 = levy_model_accounts[(levy_model_accounts.A2 <'2020-04-01')]
