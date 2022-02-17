@@ -13,4 +13,3 @@ dependencies:
     - sklearn
     - pyarrow
     - joblib
-    - python==3.10.0
