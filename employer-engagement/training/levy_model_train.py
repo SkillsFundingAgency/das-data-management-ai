@@ -58,6 +58,10 @@ levy_model_set=pd.concat([levy_model_accounts_2022,levy_model_accounts_2020,levy
 # make the months since sign-up discrete for analysis purposes
 levy_model_set["months_since_sign_up2"] =levy_model_set["months_since_sign_up"].apply(np.floor)
 
+print("levy_model_set1")
+print(levy_model_set)
+print(levy_model_set.A1.value_counts())
+
 # 2018/2019 cohort Part 1
 
 query_2018_2019_part1 = DataPath(datastore, """SELECT A3 \
@@ -435,6 +439,10 @@ levy_model_set = pd.merge(levy_model_set, \
                   right_on=['A3','cohort'], \
                   how='left')
 
+print("levy_model_set2")
+print(levy_model_set)
+print(levy_model_set.A1.value_counts())
+
 # Fill commitments with 0 if missing
 levy_model_set = levy_model_set.fillna(0)
 
@@ -512,6 +520,10 @@ levy_model_set = pd.merge(levy_model_set, \
                   right_on='A3', \
                   how='left')
 
+print("levy_model_set3")
+print(levy_model_set)
+print(levy_model_set.A1.value_counts())
+
 # Create dummy variables for company type
 company_type=pd.get_dummies(levy_model_set['company_type'],prefix='comp_type')
 levy_model_set = levy_model_set.merge(company_type, left_index=True, right_index=True)
@@ -521,6 +533,10 @@ levy_model_set = levy_model_set.merge(company_type, left_index=True, right_index
 
 # Alter tpr_scheme_start_year to years_since_tpr_signup
 levy_model_set['years_since_tpr_signup']=levy_model_set['cohort'].astype(int)-levy_model_set['scheme_start_year']
+
+print("levy_model_set4")
+print(levy_model_set)
+print(levy_model_set.A1.value_counts())
 
 # Function for new company flag
 
@@ -533,6 +549,9 @@ def fn_new_company(row):
 
 levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
 
+print("levy_model_set5")
+print(levy_model_set)
+print(levy_model_set.A1.value_counts())
 # Only keep relevant variables and rename accordingly
 
 model_cols_to_keep=['A1','A3','cohort','months_since_sign_up2','adjusted_commitments','occupation_1', \
@@ -556,11 +575,16 @@ levy_model_set.columns = ['levy_non_levy','account_id','cohort','as_months_since
 levy_model_set['log_adjusted_commitments'] = np.log2(levy_model_set['adjusted_commitments']+1)
 levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
+print("levy_model_set6")
+print(levy_model_set)
+print(levy_model_set.levy_non_levy.value_counts())
+
 # Remove outliers and non matched tpr data and tpr closed companies
 levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
-print("levy model set 2")
-levy_model_set2
+print("levy model set 2_v1")
+print(levy_model_set2)
+print(levy_model_set2.levy_non_levy.value_counts())
 
 # split the data into target and predictors
 y = levy_model_set2['adjusted_commitments']
