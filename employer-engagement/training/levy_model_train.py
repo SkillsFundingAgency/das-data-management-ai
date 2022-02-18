@@ -495,6 +495,11 @@ GROUP BY A3, A1 \
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
+print("levy_tpr_aggregated")
+print(levy_tpr_aggregated)
+print(levy_tpr_aggregated.tpr_match.value_counts()
+print(levy_tpr_aggregated.company_status.value_counts()
+
 
 # Join TPR data to model set
 levy_model_set = pd.merge(levy_model_set, \
@@ -502,6 +507,14 @@ levy_model_set = pd.merge(levy_model_set, \
                   left_on='A3', \
                   right_on='A3', \
                   how='left')
+
+print("levy_model_set5")
+print(levy_model_set)
+print(levy_model_set.employees.value_counts())
+print(levy_model_set.tpr_match.value_counts())
+print(levy_model_set.company_status.value_counts())
+print(levy_model_set.A1.value_counts())
+
 
 # Create dummy variables for company type
 company_type=pd.get_dummies(levy_model_set['company_type'],prefix='comp_type')
