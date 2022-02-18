@@ -33,7 +33,8 @@ tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, quer
 levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
 print("levy_model_accounts")
-levy_model_accounts
+print(levy_model_accounts)
+print(levy_model_accounts.a1.value_counts())
 
 # Select all accounts data for three time periods in model build
 
