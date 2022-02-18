@@ -497,8 +497,8 @@ levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
 print("levy_tpr_aggregated")
 print(levy_tpr_aggregated)
-print(levy_tpr_aggregated.tpr_match.value_counts()
-print(levy_tpr_aggregated.company_status.value_counts()
+print(levy_tpr_aggregated.tpr_match.value_counts())
+print(levy_tpr_aggregated.company_status.value_counts())
 
 
 # Join TPR data to model set
