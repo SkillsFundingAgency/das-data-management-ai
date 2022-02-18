@@ -436,7 +436,7 @@ levy_model_set = levy_model_set.fillna(0)
 # 2019 H1
 
 query_tpr_aggregated = DataPath(datastore, """SELECT A3 \
-, CASE WHEN employees IS NOT NULL THEN 1 ELSE 0 END AS tpr_match \
+, CASE WHEN employees IS NULL THEN 0 ELSE 1 END AS tpr_match \
 , CASE WHEN scheme_start_year IS NOT NULL THEN scheme_start_year \
 WHEN A1=0 and company_type='P' THEN 2008 \
 WHEN A1=1 and company_type='C' THEN 2004 \
@@ -569,7 +569,8 @@ print(levy_model_set.company_status.value_counts())
 
 
 # Remove outliers and non matched tpr data and tpr closed companies
-levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
+levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1)]
+# & (levy_model_set.company_status ==3)]
 
 print("levy model set 2_v1")
 print(levy_model_set2)
