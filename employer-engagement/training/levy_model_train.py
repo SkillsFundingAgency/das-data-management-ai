@@ -495,26 +495,12 @@ GROUP BY A3, A1 \
 tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
 levy_tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
 
-print("levy_tpr_aggregated")
-print(levy_tpr_aggregated)
-print(levy_tpr_aggregated.tpr_match.value_counts())
-print(levy_tpr_aggregated.company_status.value_counts())
-
-
 # Join TPR data to model set
 levy_model_set = pd.merge(levy_model_set, \
                   levy_tpr_aggregated, \
                   left_on='A3', \
                   right_on='A3', \
                   how='left')
-
-print("levy_model_set5")
-print(levy_model_set)
-print(levy_model_set.employees.value_counts())
-print(levy_model_set.tpr_match.value_counts())
-print(levy_model_set.company_status.value_counts())
-print(levy_model_set.A1.value_counts())
-
 
 # Create dummy variables for company type
 company_type=pd.get_dummies(levy_model_set['company_type'],prefix='comp_type')
@@ -560,21 +546,9 @@ levy_model_set.columns = ['levy_non_levy','account_id','cohort','as_months_since
 levy_model_set['log_adjusted_commitments'] = np.log2(levy_model_set['adjusted_commitments']+1)
 levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
-print("levy_model_set6")
-print(levy_model_set)
-print(levy_model_set.levy_non_levy.value_counts())
-print(levy_model_set.employees.value_counts())
-print(levy_model_set.tpr_match.value_counts())
-print(levy_model_set.company_status.value_counts())
-
-
 # Remove outliers and non matched tpr data and tpr closed companies
 levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1)]
 # & (levy_model_set.company_status ==3)]
-
-print("levy model set 2_v1")
-print(levy_model_set2)
-print(levy_model_set2.levy_non_levy.value_counts())
 
 # split the data into target and predictors
 y = levy_model_set2['adjusted_commitments']
@@ -587,17 +561,12 @@ X = levy_model_set2[['levy_non_levy','as_months_since_sign_up','adjusted_commitm
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                      'levy_sending_company','current_live_commitments']]
 
-print(X.levy_non_levy.value_counts())
-
 # Create train and test sets
 X_train= pd.concat([X,X,X,X,X,X,X,X,X,X,X,X,X],ignore_index=True)
 X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
 
 y_train= pd.concat([y,y,y,y,y,y,y,y,y,y,y,y,y],ignore_index=True)
 y_test= pd.concat([y,y,y,y,y,y,y,y,y],ignore_index=True)
-
-print("X_train")
-X_train
 
 xgb_model = xgb.XGBRegressor(objective ='reg:squarederror')
 
