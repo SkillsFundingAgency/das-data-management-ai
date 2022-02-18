@@ -573,6 +573,8 @@ X = levy_model_set2[['levy_non_levy','as_months_since_sign_up','adjusted_commitm
                      'commitments_ending_12m','prev_12m_new_commitments','prev_12m_new_levy_transfers', \
                      'levy_sending_company','current_live_commitments']]
 
+print(X.levy_non_levy.value_counts())
+
 # Create train and test sets
 X_train= pd.concat([X,X,X,X,X,X,X,X,X,X,X,X,X],ignore_index=True)
 X_test= pd.concat([X,X,X,X,X,X,X,X,X],ignore_index=True)
@@ -583,7 +585,7 @@ y_test= pd.concat([y,y,y,y,y,y,y,y,y],ignore_index=True)
 print("X_train")
 X_train
 
-xgb_model = xgb.XGBRegressor(objective ='reg:linear')
+xgb_model = xgb.XGBRegressor(objective ='reg:squarederror')
 
 xgb_model.fit(X_train, y_train)
 
