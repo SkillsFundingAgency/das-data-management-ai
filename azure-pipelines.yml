@@ -8,7 +8,7 @@ variables:
 - group: RELEASE das-data-management-ai
 - group: RELEASE Management Resources
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
 pool:
   name: DAS - Continuous Deployment Agents
@@ -28,6 +28,10 @@ resources:
     name: SkillsFundingAgency/das-platform-automation
     ref: refs/tags/4.5.9
     endpoint: SkillsFundingAgency
+  containers:
+  - container: mlops
+    image: mcr.microsoft.com/mlops/python:latest
+
 
 stages:
 ## Add linting and unit tests
@@ -38,7 +42,7 @@ stages:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
   jobs:
-  - template: pipeline-templates/job/build-and-train.yml
+  - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
