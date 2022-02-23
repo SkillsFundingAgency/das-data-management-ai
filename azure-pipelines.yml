@@ -37,6 +37,7 @@ stages:
 ## Add linting and unit tests
 
 - stage: BuildAndTrain
+  displayName: Build and Train AT
   condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
@@ -46,3 +47,27 @@ stages:
     parameters:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
+
+- stage: BuildAndTrain
+  displayName: Build and Train Test
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
+  variables:
+  - group: DevTest Management Resources
+  - group: TEST DevTest Shared Resources
+  jobs:
+  - template: pipeline-templates/job/deploy-pipeline.yml
+    parameters:
+      Environment: TEST
+      ServiceConnection: SFA-DAS-DevTest-ARM
+
+- stage: BuildAndTrain
+  displayName: Build and Train PreProd
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
+  variables:
+  - group: PreProd Management Resources
+  - group: PreProd DevTest Shared Resources
+  jobs:
+  - template: pipeline-templates/job/deploy-pipeline.yml
+    parameters:
+      Environment: PP
+      ServiceConnection: SFA-DIG-PreProd-ARM
