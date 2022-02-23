@@ -36,7 +36,7 @@ resources:
 stages:
 ## Add linting and unit tests
 
-- stage: BuildAndTrain
+- stage: BuildAndTrainAT
   displayName: Build and Train AT
   condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
@@ -48,7 +48,7 @@ stages:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
 
-- stage: BuildAndTrain
+- stage: BuildAndTrainTest
   displayName: Build and Train Test
   condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
@@ -60,7 +60,7 @@ stages:
       Environment: TEST
       ServiceConnection: SFA-DAS-DevTest-ARM
 
-- stage: BuildAndTrain
+- stage: BuildAndTrainPP
   displayName: Build and Train PreProd
   condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
