@@ -56,7 +56,6 @@ FROM \
 FROM PDS_AI.PT_A \
 WHERE A1=0 \
 ) A \
-LEFT JOIN  \
 LEFT JOIN \
 (SELECT B10 \
 , COUNT(*) AS prev_12m_new_commitments \
