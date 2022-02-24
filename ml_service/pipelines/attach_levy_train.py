@@ -31,7 +31,7 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     levy_model_train_pipeline_run = experiment.submit(levy_model_train_pipeline,regenerate_outputs=True)
 
     # RunDetails(pipeline_run).show()
-    levy_model_train_pipeline_run.wait_for_completion()
+    #levy_model_train_pipeline_run.wait_for_completion()
 
     # Publish pipeline to AzureML
     levy_model_train_published_pipeline = levy_model_train_pipeline.publish('levy-model-train-pipeline')
