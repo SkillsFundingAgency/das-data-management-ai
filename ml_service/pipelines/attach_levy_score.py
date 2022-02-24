@@ -30,7 +30,7 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     levy_model_score_pipeline_run = experiment.submit(levy_model_score_pipeline,regenerate_outputs=True)
 
     # RunDetails(pipeline_run).show()
-    levy_model_score_pipeline_run.wait_for_completion()
+    # levy_model_score_pipeline_run.wait_for_completion()
 
     # Publish pipeline to AzureML
     levy_model_score_published_pipeline = levy_model_score_pipeline.publish('levy-model-score-pipeline')
