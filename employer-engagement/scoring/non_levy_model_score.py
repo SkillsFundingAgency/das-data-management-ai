@@ -101,7 +101,7 @@ tabular_non_levy_commitments = Dataset.Tabular.from_sql_query(query_non_levy_com
 non_levy_commitments = tabular_non_levy_commitments.to_pandas_dataframe()
 
 # add commitment data onto account selection
-non_levy_score_set = pd.merge(non_levy_score_set, \ 
+non_levy_score_set = pd.merge(non_levy_score_set, \
                   non_levy_commitments, \
                   left_on=['A3'], \
                   right_on=['A3'], \
