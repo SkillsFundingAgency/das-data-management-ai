@@ -18,7 +18,8 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
         script_name="levy_model_train.py",
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
-        source_directory=train_source_dir)
+        source_directory=train_source_dir,
+        allow_reuse=False)
 
 
     # Create sequence of steps for model train
