@@ -29,7 +29,7 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     levy_model_score_pipeline = Pipeline(workspace=aml_workspace, steps=levy_model_score_step_sequence)
     levy_model_score_pipeline.validate()
 
-    pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_score_endpoint")
+    pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name='levy-model-score-pipeline')
 
     levy_model_score_pipeline_run = experiment.submit(pipeline_endpoint, levy_model_score_pipeline,regenerate_outputs=True)
 
