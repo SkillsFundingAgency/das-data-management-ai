@@ -32,10 +32,20 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     # Publish pipeline to AzureML
     levy_model_score_published_pipeline = levy_model_score_pipeline.publish('levy-model-score-pipeline')
     
-    pipeline_endpoint= PipelineEndpoint.get(workspace=aml_workspace,
+    pipeline_endpoint = PipelineEndpoint.publish(
+                                     workspace=aml_workspace,
+                                     name="levy_score_model_endpoint",
+                                     pipeline=published,
+                                     description="Endpoint to Levy Score Model",
+                                               )
+    pipeline_endpoint.add_default(levy_model_score_published_pipeline)
+    
+    
+
+    #pipeline_endpoint= PipelineEndpoint.get(workspace=aml_workspace,
                                                     name="levy_model_score_endpoint"
                                            )                                               
-    pipeline_endpoint.add_default(levy_model_score_published_pipeline)
+    #pipeline_endpoint.add_default(levy_model_score_published_pipeline)
 
     #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy-model-score-pipeline")
     #pipeline_endpoint.add(levy_model_score_pipeline)
