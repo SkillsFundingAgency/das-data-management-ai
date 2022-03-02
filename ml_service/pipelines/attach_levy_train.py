@@ -33,7 +33,7 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     # Publish pipeline to AzureML
     levy_model_train_published_pipeline = levy_model_train_pipeline.publish('levy-model-train-pipeline')
 
-    # Publish Pipeline EndPoint
+    # create Pipeline Endpoint if not already exists , if exists add pipeline to the endpoint
     
     try:
           pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_train_model_endpoint")
@@ -46,15 +46,8 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
                                                        )
 
 
-    #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_train_model_endpoint")
-
-
-    #pipeline_endpoint.add_default(levy_model_train_published_pipeline)
-
-    #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy-model-train-pipeline", pipeline_version="0")
-
     #levy_model_train_pipeline_run = experiment.submit(pipeline_endpoint, levy_model_train_pipeline,regenerate_outputs=True)
-    #levy_model_train_pipeline_run = experiment.submit(levy_model_train_pipeline,regenerate_outputs=True)
+    levy_model_train_pipeline_run = experiment.submit(levy_model_train_pipeline,regenerate_outputs=True)
 
     # RunDetails(pipeline_run).show()
     #levy_model_train_pipeline_run.wait_for_completion()
