@@ -29,7 +29,8 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     levy_model_score_pipeline = Pipeline(workspace=aml_workspace, steps=levy_model_score_step_sequence)
     levy_model_score_pipeline.validate()
 
-    #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name='levy-model-score-pipeline', pipeline_version="0")
+    pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy-model-score-pipeline")
+    pipeline_run= experiment.submit(pipeline_endpoint,pipeline_version="0")
 
     #levy_model_score_pipeline_run = experiment.submit(pipeline_endpoint, levy_model_score_pipeline,regenerate_outputs=True)
     levy_model_score_pipeline_run = experiment.submit(levy_model_score_pipeline,regenerate_outputs=True)
@@ -38,6 +39,6 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     # levy_model_score_pipeline_run.wait_for_completion()
 
     # Publish pipeline to AzureML
-    levy_model_score_published_pipeline = levy_model_score_pipeline.publish(name='levy-model-score-pipeline',version='2')
+    levy_model_score_published_pipeline = levy_model_score_pipeline.publish('levy-model-score-pipeline')
 
     return
