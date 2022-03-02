@@ -33,7 +33,7 @@ def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     levy_model_score_published_pipeline = levy_model_score_pipeline.publish('levy-model-score-pipeline')
     
     pipeline_endpoint= PipelineEndpoint.get(workspace=aml_workspace,
-                                                    name="levy_model_endpoint"
+                                                    name="levy_model_score_endpoint"
                                            )                                               
     pipeline_endpoint.add_default(levy_model_score_published_pipeline)
 
