@@ -35,7 +35,16 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
 
     # Publish Pipeline EndPoint
 
-    pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_train_model_endpoint")
+    pipeline_endpoint = PipelineEndpoint.publish(
+            workspace=ws,
+            name="levy_train_model_endpoint",
+            pipeline=levy_model_train_published_pipeline,
+            description="Endpoint to my pipeline",
+       )
+
+    #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_train_model_endpoint")
+
+
     pipeline_endpoint.add_default(levy_model_train_published_pipeline)
 
     #pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy-model-train-pipeline", pipeline_version="0")
