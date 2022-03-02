@@ -36,7 +36,7 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
     # Publish Pipeline EndPoint
 
     pipeline_endpoint = PipelineEndpoint.publish(
-            workspace=ws,
+            workspace=aml_workspace
             name="levy_train_model_endpoint",
             pipeline=levy_model_train_published_pipeline,
             description="Endpoint to my pipeline",
