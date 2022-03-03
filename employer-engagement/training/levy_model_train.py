@@ -39,7 +39,7 @@ pd.options.mode.chained_assignment = None
 # Create model build data into dataframe via processing in SQL
 
 # Create df with all accounts and early adopter flag
-levy_model_accounts=levy_train_01_accounts(20)
+levy_model_accounts=levy_train_01_accounts(aml_workspace, aml_compute, pipeline_run_config, experiment,20)
 
 print (levy_model_accounts)
 
