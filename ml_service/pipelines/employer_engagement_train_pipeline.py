@@ -9,15 +9,6 @@ from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
 from ml_service.pipelines.attach_levy_train import get_levy_train
 from ml_service.pipelines.attach_levy_score import get_levy_score
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_01_accounts
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_02_levy_model_set_2018_2019_part1
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_03_levy_model_set_2018_2019_part2
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_04_levy_model_set_2019_2020_part1
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_05_levy_model_set_2019_2020_part2
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_06_levy_model_set_2022_part1
-from ml_service.util.sql.training.levy_train_sql_functions import levy_train_07_levy_model_set_2022_part2
-from ml_service.util.sql.generic.generic_sql_functions import generic_01_tpr
-from ml_service.util.sql.generic.generic_sql_functions import generic_02_sic
 
 # Set up all environment details
 e = Env()
