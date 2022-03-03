@@ -43,5 +43,5 @@ levy_model_accounts=levy_train_01_accounts(20)
 
 print (levy_model_accounts)
 
-account_list = xx['A3'].tolist()
+account_list = levy_model_accounts['A3'].tolist()
 print(account_list)
