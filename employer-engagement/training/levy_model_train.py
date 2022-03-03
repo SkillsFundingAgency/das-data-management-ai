@@ -18,15 +18,15 @@ from sklearn import datasets, linear_model
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_01_accounts
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_02_levy_model_set_2018_2019_part1
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_03_levy_model_set_2018_2019_part2
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_04_levy_model_set_2019_2020_part1
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_05_levy_model_set_2019_2020_part2
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_06_levy_model_set_2022_part1
-from employer-engagement.training.sql.training.levy_train_sql_functions import levy_train_07_levy_model_set_2022_part2
-from employer-engagement.training.sql.generic.generic_sql_functions import generic_01_tpr
-from employer-engagement.training.sql.generic.generic_sql_functions import generic_02_sic
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_01_accounts
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_02_levy_model_set_2018_2019_part1
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_03_levy_model_set_2018_2019_part2
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_04_levy_model_set_2019_2020_part1
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_05_levy_model_set_2019_2020_part2
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_06_levy_model_set_2022_part1
+from employer-engagement.sql.training.levy_train_sql_functions import levy_train_07_levy_model_set_2022_part2
+from employer-engagement.sql.generic.generic_sql_functions import generic_01_tpr
+from employer-engagement.sql.generic.generic_sql_functions import generic_02_sic
 
 # Set up config of workspace and datastore
 
