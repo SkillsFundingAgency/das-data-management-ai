@@ -13,7 +13,7 @@ from ml_service.util.manage_environment import get_environment
 
 def get_levy_score(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
     # levy model score step
-    score_source_dir="./employer-engagement/scoring"
+    score_source_dir="./employer_engagement/scoring"
     levy_model_score_step = PythonScriptStep(
         name='levy_model_score',
         script_name="levy_model_score.py",
