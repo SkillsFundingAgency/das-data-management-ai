@@ -40,7 +40,7 @@ pd.options.mode.chained_assignment = None
 
 # Create df with all accounts and early adopter flag
 levy_model_accounts=levy_train_01_accounts(aml_workspace, aml_compute, pipeline_run_config, experiment,20)
-
+ 
 print (levy_model_accounts)
 
 account_list = levy_model_accounts['A3'].tolist()
