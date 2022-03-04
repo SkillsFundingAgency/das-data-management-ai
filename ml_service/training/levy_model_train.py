@@ -18,7 +18,8 @@ from sklearn import datasets, linear_model
 from scipy import stats
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
-from ml_service.training.levy_train_sql_functions import levy_train_01_accounts
+import levy_train_sql_functions as custom
+#from ml_service.training.levy_train_sql_functions import levy_train_01_accounts
 # from employer_engagement.training.levy_train_sql_functions import levy_train_01_accounts
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_01_accounts
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_02_levy_model_set_2018_2019_part1
@@ -42,7 +43,7 @@ pd.options.mode.chained_assignment = None
 
 # aml_workspace, aml_compute, pipeline_run_config, experiment,20
 # Create df with all accounts and early adopter flag
-levy_model_accounts=levy_train_01_accounts()
+levy_model_accounts=custom.levy_train_01_accounts()
  
 print (levy_model_accounts)
 
