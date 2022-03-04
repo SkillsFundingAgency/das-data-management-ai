@@ -30,7 +30,7 @@ experiment = Experiment(aml_workspace, "employer-engagement")
 aml_compute = aml_workspace.compute_targets["cpucluster"]
 
 # Set up experiment folder
-experiment_folder = 'employer-engagement'
+experiment_folder = 'employer_engagement'
  
 # Create a Python environment for the experiment (from a .yml file)
 environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_dependencies.yml")
