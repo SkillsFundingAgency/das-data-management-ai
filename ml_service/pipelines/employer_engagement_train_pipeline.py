@@ -9,7 +9,7 @@ from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
 from ml_service.pipelines.attach_levy_train import get_levy_train
 from ml_service.pipelines.attach_levy_score import get_levy_score
-from ml_service.pipelines.sql.levy_train_sql_functions import levy_train_01_accounts
+# from ml_service.pipelines.sql.levy_train_sql_functions import levy_train_01_accounts
 
 # Set up all environment details
 e = Env()
