@@ -13,7 +13,7 @@ from ml_service.util.manage_environment import get_environment
 
 def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
     # levy_model train step
-    train_source_dir="./employer-engagement/training"
+    train_source_dir="./employer_engagement/training"
     levy_model_train_step = PythonScriptStep(
         name='levy_model_train',
         script_name="levy_model_train.py",
