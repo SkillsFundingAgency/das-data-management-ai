@@ -10,6 +10,7 @@ import os
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
 from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
+from ml_service.pipelines.sql.levy_train_sql_functions import levy_train_01_accounts
 
 def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
     # levy_model train step
