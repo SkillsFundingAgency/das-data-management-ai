@@ -7,6 +7,7 @@ from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.core import PipelineEndpoint
 import azureml.core
 import os
+from azureml.data.datapath import DataPath
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
 from azureml.core.run import Run
 # from ml_service.util.manage_environment import get_environment
