@@ -12,7 +12,12 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experimen
 from azureml.core.run import Run
 # from ml_service.util.manage_environment import get_environment
 
-def levy_train_01_accounts(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str, datastore: str) :
+# Set up config of workspace and datastore
+
+aml_workspace = Run.get_context().experiment.workspace
+datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+
+def levy_train_01_accounts() :
     query_levy_accounts = DataPath(datastore, """SELECT TOP 10 A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
     tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
     levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
