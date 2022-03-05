@@ -54,11 +54,28 @@ levy_model_accounts=levy_train_functions.levy_train_01_accounts()
 
 print (levy_model_accounts)
 
-run.log('log_test_levy_accounts_val_1', levy_model_accounts)
-
 bob='test log string'
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+np.random.seed(19680801)
+data = np.random.randn(2, 100)
+
+fig, axs = plt.subplots(2, 2, figsize=(5, 5))
+axs[0, 0].hist(data[0])
+axs[1, 0].scatter(data[0], data[1])
+axs[0, 1].plot(data[0], data[1])
+axs[1, 1].hist2d(data[0], data[1])
+
+plt.show()
+
+run = Run.get_context()
+run.log('log_test_levy_accounts_val_1', levy_model_accounts)
 run.log('test_log2',bob)
+run.log_image('Log Plot Test', plot=plt)
+
+
 
 # account_list = levy_model_accounts['A3'].tolist()
 # print(account_list)

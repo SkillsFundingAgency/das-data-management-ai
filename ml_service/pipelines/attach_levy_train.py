@@ -48,7 +48,7 @@ def get_levy_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_conf
 
 
     #levy_model_train_pipeline_run = experiment.submit(pipeline_endpoint, levy_model_train_pipeline,regenerate_outputs=True)
-    levy_model_train_pipeline_run = experiment.submit(levy_model_train_pipeline,regenerate_outputs=True)
+    levy_model_train_pipeline_run = experiment.submit(levy_model_train_pipeline,regenerate_outputs=True, show_output=True)
 
     # RunDetails(pipeline_run).show()
     #levy_model_train_pipeline_run.wait_for_completion()
