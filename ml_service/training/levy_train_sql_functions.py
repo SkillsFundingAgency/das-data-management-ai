@@ -1,14 +1,14 @@
-# from azureml.core import Workspace
-# from azureml.core.compute import ComputeTarget
+from azureml.core import Workspace
+from azureml.core.compute import ComputeTarget
 # from ml_service.util.env_variables import Env
-# from azureml.pipeline.steps import PythonScriptStep
-# from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
-# from azureml.core.runconfig import RunConfiguration
-# from azureml.pipeline.core import PipelineEndpoint
-# import azureml.core
-# import os
-# from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
-# from azureml.core.run import Run
+from azureml.pipeline.steps import PythonScriptStep
+from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
+from azureml.core.runconfig import RunConfiguration
+from azureml.pipeline.core import PipelineEndpoint
+import azureml.core
+import os
+from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
+from azureml.core.run import Run
 # from ml_service.util.manage_environment import get_environment
 
 def levy_train_01_accounts() :
