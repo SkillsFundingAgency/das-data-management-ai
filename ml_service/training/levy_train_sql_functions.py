@@ -18,8 +18,8 @@ aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 def levy_train_01_accounts() :
-    bob=1
-    return bob
+    return 1
+
 
 # def levy_train_01_accounts() :
     # query_levy_accounts = DataPath(datastore, """SELECT TOP 10 A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")

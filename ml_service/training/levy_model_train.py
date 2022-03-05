@@ -43,7 +43,12 @@ pd.options.mode.chained_assignment = None
 
 # aml_workspace, aml_compute, pipeline_run_config, experiment,20
 # Create df with all accounts and early adopter flag
-levy_model_accounts=custom.levy_train_01_accounts()
+# levy_model_accounts=custom.levy_train_01_accounts()
+ 
+ 
+query_levy_accounts = DataPath(datastore, """SELECT TOP 10 A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
+tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
+levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
  
 print (levy_model_accounts)
 
