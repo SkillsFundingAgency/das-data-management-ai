@@ -51,8 +51,14 @@ pd.options.mode.chained_assignment = None
 # levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
 levy_model_accounts=levy_train_functions.levy_train_01_accounts()
- 
+
 print (levy_model_accounts)
+
+run.log('log_test_levy_accounts_val_1', levy_model_accounts)
+
+bob='test log string'
+
+run.log('test_log2',bob)
 
 # account_list = levy_model_accounts['A3'].tolist()
 # print(account_list)
