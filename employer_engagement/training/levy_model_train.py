@@ -71,7 +71,7 @@ axs[1, 1].hist2d(data[0], data[1])
 plt.show()
 
 run = Run.get_context()
-run.log('log_test_levy_accounts_val_1', levy_model_accounts)
+run.log('test_log1', levy_model_accounts)
 run.log('test_log2',bob)
 run.log_image('Log Plot Test', plot=plt)
 
