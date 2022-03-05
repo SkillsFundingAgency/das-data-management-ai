@@ -47,8 +47,8 @@ levy_model_accounts=custom.levy_train_01_accounts()
  
 print (levy_model_accounts)
 
-account_list = levy_model_accounts['A3'].tolist()
-print(account_list)
+# account_list = levy_model_accounts['A3'].tolist()
+# print(account_list)
 
 # # Select all accounts data for three time periods in model build
 
