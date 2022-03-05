@@ -43,7 +43,7 @@ pd.options.mode.chained_assignment = None
 
 # aml_workspace, aml_compute, pipeline_run_config, experiment,20
 # Create df with all accounts and early adopter flag
-levy_model_accounts=custom.levy_train_01_accounts()
+levy_model_accounts=custom.levy_train_01_accounts(aml_workspace, aml_compute, pipeline_run_config, experiment, datastore)
  
 print (levy_model_accounts)
 
