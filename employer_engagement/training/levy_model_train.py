@@ -33,11 +33,11 @@ import levy_train_sql_functions as levy_train_functions
  
 # Set up config of workspace and datastore
 
-aml_workspace = Run.get_context().experiment.workspace
-datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+# aml_workspace = Run.get_context().experiment.workspace
+# datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 #prevent SettingWithCopyWarning message from appearing
-pd.options.mode.chained_assignment = None
+# pd.options.mode.chained_assignment = None
 
 # Create model build data into dataframe via processing in SQL
 
@@ -46,11 +46,22 @@ pd.options.mode.chained_assignment = None
 # levy_model_accounts=levy_train_functions.levy_train_01_accounts()
  
  
+aml_workspace = Run.get_context().experiment.workspace
+datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+
+#prevent SettingWithCopyWarning message from appearing
+pd.options.mode.chained_assignment = None
+
+# Create model build data into dataframe
+
+# Create df with all accounts and early adopter flag
+
 query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
 tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
 levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
-levy_model_accounts=levy_train_functions.levy_train_01_accounts()
+
+# levy_model_accounts=levy_train_functions.levy_train_01_accounts()
 
 print (levy_model_accounts)
 
