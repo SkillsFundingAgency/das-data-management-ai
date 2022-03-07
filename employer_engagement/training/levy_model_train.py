@@ -46,9 +46,9 @@ pd.options.mode.chained_assignment = None
 # levy_model_accounts=levy_train_functions.levy_train_01_accounts()
  
  
-# query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
-# tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
-# levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
+query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
+tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
+levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
 levy_model_accounts=levy_train_functions.levy_train_01_accounts()
 
