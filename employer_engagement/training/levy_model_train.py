@@ -74,7 +74,7 @@ run = Run.get_context()
 run.log('test_log1', levy_model_accounts)
 run.log('test_log2',bob)
 run.log_image('Log Plot Test', plot=plt)
-
+ 
 
 
 # account_list = levy_model_accounts['A3'].tolist()
