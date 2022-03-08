@@ -24,6 +24,9 @@
         "sharedEnvResourceGroup": {
             "type": "string"
         },
+        "sharedSQLServerName": {
+            "type": "string"
+        },
         "sharedEnvVirtualNetworkName": {
             "type": "string"
         },
@@ -46,7 +49,7 @@
     },
     "resources": [
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/resourceGroups",
             "location": "[parameters('resourceGroupLocation')]",
@@ -54,7 +57,7 @@
             "properties": {}
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-subnet",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
@@ -78,14 +81,36 @@
                         "value": [
                             "Microsoft.Storage",
                             "Microsoft.KeyVault",
-                            "Microsoft.ContainerRegistry"
+                            "Microsoft.ContainerRegistry",
+                            "Microsoft.Sql"
                         ]
                     }
                 }
             }
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
+            "name": "ml-subnet-firewall-rule",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'), 'sql-server-firewall-rules.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "serverName": {
+                        "value": "[parameters('sharedSQLServerName')]"
+                    },
+                    "subnetResourceIdList": {
+                        "value": "[createArray(reference('ml-subnet').outputs.SubnetResourceId.value)]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2021-04-01",
             "name": "ml-container-registry",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -112,7 +137,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-default-storage",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -136,7 +161,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-data-storage",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -165,7 +190,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-data-container",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -193,7 +218,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-keyvault",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -222,7 +247,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-app-insights",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -243,7 +268,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-workspace",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -279,7 +304,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-compute",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
@@ -316,7 +341,7 @@
             ]
         },
         {
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "ml-datastore",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
