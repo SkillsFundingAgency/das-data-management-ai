@@ -60,8 +60,7 @@ pd.options.mode.chained_assignment = None
 # tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
 # levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
-
-levy_model_accounts=levy_train_functions.levy_train_01_accounts()
+levy_model_accounts=levy_train_functions.levy_train_01_accounts(5)
 
 print (levy_model_accounts)
 
