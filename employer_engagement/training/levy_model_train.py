@@ -20,7 +20,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 import levy_train_sql_functions as levy_train_functions
 #from ml_service.training.levy_train_sql_functions import levy_train_01_accounts
-# from employer_engagement.training.levy_train_sql_functions import levy_train_01_accounts
+#from employer_engagement.training.levy_train_sql_functions import levy_train_01_accounts
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_01_accounts
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_02_levy_model_set_2018_2019_part1
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_03_levy_model_set_2018_2019_part2
@@ -30,7 +30,7 @@ import levy_train_sql_functions as levy_train_functions
 #from employer_engagement.util.sql.training.levy_train_sql_functions import levy_train_07_levy_model_set_2022_part2
 #from employer_engagement.util.sql.generic.generic_sql_functions import generic_01_tpr
 #from employer_engagement.util.sql.generic.generic_sql_functions import generic_02_sic
- 
+
 # Set up config of workspace and datastore
 
 # aml_workspace = Run.get_context().experiment.workspace
@@ -63,28 +63,28 @@ levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
 
 # levy_model_accounts=levy_train_functions.levy_train_01_accounts()
 
-print (levy_model_accounts)
+# print (levy_model_accounts)
 
-bob='test log string'
+# bob='test log string'
 
-import matplotlib.pyplot as plt
-import numpy as np
+# import matplotlib.pyplot as plt
+# import numpy as np
 
-np.random.seed(19680801)
-data = np.random.randn(2, 100)
+# np.random.seed(19680801)
+# data = np.random.randn(2, 100)
 
-fig, axs = plt.subplots(2, 2, figsize=(5, 5))
-axs[0, 0].hist(data[0])
-axs[1, 0].scatter(data[0], data[1])
-axs[0, 1].plot(data[0], data[1])
-axs[1, 1].hist2d(data[0], data[1])
+# fig, axs = plt.subplots(2, 2, figsize=(5, 5))
+# axs[0, 0].hist(data[0])
+# axs[1, 0].scatter(data[0], data[1])
+# axs[0, 1].plot(data[0], data[1])
+# axs[1, 1].hist2d(data[0], data[1])
 
-plt.show()
+# plt.show()
 
-run = Run.get_context()
-run.log('test_log1', levy_model_accounts)
-run.log('test_log2',bob)
-run.log_image('Log Plot Test', plot=plt)
+# run = Run.get_context()
+# run.log('test_log1', levy_model_accounts)
+# run.log('test_log2',bob)
+# run.log_image('Log Plot Test', plot=plt)
  
 
 
