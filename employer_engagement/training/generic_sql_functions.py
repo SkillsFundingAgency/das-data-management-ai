@@ -1,18 +1,22 @@
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget
-from ml_service.util.env_variables import Env
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.core import PipelineEndpoint
 import azureml.core
 import os
+from azureml.data.datapath import DataPath
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
 from azureml.core.run import Run
-from ml_service.util.manage_environment import get_environment
 
-def generic_01_tpr() :
-    query_tpr_aggregated = DataPath(datastore, """SELECT A3 \
+# Set up config of workspace and datastore
+
+aml_workspace = Run.get_context().experiment.workspace
+datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+
+def generic_01_tpr(sql_account_list: str) :
+    query_tpr_aggregated = DataPath(datastore, "SELECT A3 \
     , CASE WHEN employees IS NULL THEN 0 ELSE 1 END AS tpr_match \
     , CASE WHEN scheme_start_year IS NOT NULL THEN scheme_start_year \
     WHEN A1=0 and company_type='P' THEN 2008 \
@@ -60,23 +64,24 @@ def generic_01_tpr() :
     (SELECT A3 \
     , A1 \
     FROM PDS_AI.PT_A \
-    WHERE A2<'2022-01-01' \
+    WHERE A2<'2022-01-01' AND A3 in ({0}) \
     ) A  \
     LEFT JOIN  \
     (SELECT D15, D10, D6, D12, D8 \
     FROM PDS_AI.PT_D \
+    WHERE D15 in ({0}) \
     ) B  \
     ON A.A3=B.D15 \
     GROUP BY A3, A1 \
-    ) c""")
+    ) c".format(sql_account_list))
     tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
     tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
     
     return tpr_aggregated
 
 
-def generic_02_sic() :
-    query_sic_aggrgated = DataPath(datastore, """SELECT d15 \
+def generic_02_sic(sql_account_list: str) :
+    query_sic_aggrgated = DataPath(datastore, "SELECT d15 \
     , new_sic_code \
     , sic_division \
     , CASE WHEN 1*sic_division<=3 THEN 'A' \
@@ -627,12 +632,12 @@ def generic_02_sic() :
     FROM \
     (SELECT MAX(d15) AS d15, d3 \
     FROM PDS_AI.PT_D \
-    WHERE d15 is not null and d15>-1 \
+    WHERE d15 is not null and d15>-1 AND D15 in ({0}) \
     GROUP BY d3) a \
     INNER JOIN (SELECT i1 ,i4 FROM PDS_AI.PT_I) b \
     ON a.d3=b.i1 \
     GROUP BY d15 \
-    ) c) d) e"""
+    ) c) d) e".format(sql_account_list)
     tabular_sic_aggregated = Dataset.Tabular.from_sql_query(query_sic_aggregated, query_timeout=10)
     sic_aggregated = tabular_sic_aggregated.to_pandas_dataframe()
     
