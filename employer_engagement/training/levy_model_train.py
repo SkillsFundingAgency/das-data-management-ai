@@ -64,6 +64,10 @@ levy_model_accounts=levy_train_functions.levy_train_01_accounts(7)
 
 print (levy_model_accounts)
 
+levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(7)
+
+print (levy_model_accounts2)
+
 # bob='test log string'
 
 # import matplotlib.pyplot as plt
