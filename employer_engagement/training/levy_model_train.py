@@ -78,10 +78,10 @@ levy_model_set=pd.concat([levy_model_accounts_2022,levy_model_accounts_2020,levy
 levy_model_set["months_since_sign_up2"] =levy_model_set["months_since_sign_up"].apply(np.floor)
 
 # 2018/2019 cohort Part 1
-levy_model_set_2018_2019_part1=levy_train_02_levy_model_set_2018_2019_part1(sql_account_list)
+levy_model_set_2018_2019_part1=levy_train_functions.levy_train_02_levy_model_set_2018_2019_part1(sql_account_list)
 
 # 2018/2019 cohort Part 2
-levy_model_set_2018_2019_part2=levy_train_03_levy_model_set_2018_2019_part2(sql_account_list)
+levy_model_set_2018_2019_part2=levy_train_functions.levy_train_03_levy_model_set_2018_2019_part2(sql_account_list)
 
 
 print(levy_model_set_2018_2019_part1)
