@@ -78,12 +78,16 @@ print (levy_model_accounts)
 # run.log('test_log1', levy_model_accounts)
 # run.log('test_log2',bob)
 # run.log_image('Log Plot Test', plot=plt)
- 
+
+# select account_ids into list 
 account_list = levy_model_accounts['A3'].tolist()
 print(account_list)
 
-levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(account_list)
+#Remove brackets from list
+sql_account_list=str(account_list)[1:-1]
+print(sql_account_list)
 
+levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(sql_account_list)
 print (levy_model_accounts2)
 
 
