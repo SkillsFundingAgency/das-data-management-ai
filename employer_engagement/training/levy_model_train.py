@@ -32,20 +32,6 @@ import levy_train_sql_functions as levy_train_functions
 #from employer_engagement.util.sql.generic.generic_sql_functions import generic_02_sic
  
 # Set up config of workspace and datastore
-
-# aml_workspace = Run.get_context().experiment.workspace
-# datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-
-#prevent SettingWithCopyWarning message from appearing
-# pd.options.mode.chained_assignment = None
-
-# Create model build data into dataframe via processing in SQL
-
-# aml_workspace, aml_compute, pipeline_run_config, experiment,20
-# Create df with all accounts and early adopter flag
-# levy_model_accounts=levy_train_functions.levy_train_01_accounts()
- 
- 
 aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
@@ -58,27 +44,6 @@ levy_model_accounts=levy_train_functions.levy_train_01_accounts(7)
 
 print (levy_model_accounts)
 
-# bob='test log string'
-
-# import matplotlib.pyplot as plt
-# import numpy as np
-
-# np.random.seed(19680801)
-# data = np.random.randn(2, 100)
-
-# fig, axs = plt.subplots(2, 2, figsize=(5, 5))
-# axs[0, 0].hist(data[0])
-# axs[1, 0].scatter(data[0], data[1])
-# axs[0, 1].plot(data[0], data[1])
-# axs[1, 1].hist2d(data[0], data[1])
-
-# plt.show()
-
-# run = Run.get_context()
-# run.log('test_log1', levy_model_accounts)
-# run.log('test_log2',bob)
-# run.log_image('Log Plot Test', plot=plt)
-
 # select account_ids into list 
 account_list = levy_model_accounts['A3'].tolist()
 print(account_list)
@@ -87,147 +52,40 @@ print(account_list)
 sql_account_list=str(account_list)[1:-1]
 print(sql_account_list)
 
-levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(sql_account_list)
-print (levy_model_accounts2)
+# levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(sql_account_list)
+# print (levy_model_accounts2)
+
+# Select all accounts data for three time periods in model build
+
+levy_model_accounts_2020 = levy_model_accounts[(levy_model_accounts.A2 <'2020-04-01')]
+levy_model_accounts_2020['cohort']='2020'
+# months since apprenticeship account sign-up
+levy_model_accounts_2020["months_since_sign_up"] = (pd.Timestamp(2020,4,1) - pd.to_datetime(levy_model_accounts_2020["A2"]))/ np.timedelta64(1, "M")
+
+levy_model_accounts_2019 = levy_model_accounts[(levy_model_accounts.A2 <'2019-04-01')]
+levy_model_accounts_2019['cohort']='2019'
+levy_model_accounts_2019["months_since_sign_up"] = (pd.Timestamp(2019,4,1) - pd.to_datetime(levy_model_accounts_2019["A2"]))/ np.timedelta64(1, "M")
+
+levy_model_accounts_2022 = levy_model_accounts[(levy_model_accounts.A2 <'2022-01-01')]
+levy_model_accounts_2022['cohort']='2022'
+levy_model_accounts_2022["months_since_sign_up"] = (pd.Timestamp(2022,1,1) - pd.to_datetime(levy_model_accounts_2022["A2"]))/ np.timedelta64(1, "M")
 
 
+# Add all sets of accounts data into one
+levy_model_set=pd.concat([levy_model_accounts_2022,levy_model_accounts_2020,levy_model_accounts_2019])
 
-# # Select all accounts data for three time periods in model build
+# make the months since sign-up discrete for analysis purposes
+levy_model_set["months_since_sign_up2"] =levy_model_set["months_since_sign_up"].apply(np.floor)
 
-# levy_model_accounts_2020 = levy_model_accounts[(levy_model_accounts.A2 <'2020-04-01')]
-# levy_model_accounts_2020['cohort']='2020'
-# # months since apprenticeship account sign-up
-# levy_model_accounts_2020["months_since_sign_up"] = (pd.Timestamp(2020,4,1) - pd.to_datetime(levy_model_accounts_2020["A2"]))/ np.timedelta64(1, "M")
+# 2018/2019 cohort Part 1
+levy_model_set_2018_2019_part1=levy_train_02_levy_model_set_2018_2019_part1(sql_account_list)
 
-# levy_model_accounts_2019 = levy_model_accounts[(levy_model_accounts.A2 <'2019-04-01')]
-# levy_model_accounts_2019['cohort']='2019'
-# levy_model_accounts_2019["months_since_sign_up"] = (pd.Timestamp(2019,4,1) - pd.to_datetime(levy_model_accounts_2019["A2"]))/ np.timedelta64(1, "M")
-
-# levy_model_accounts_2022 = levy_model_accounts[(levy_model_accounts.A2 <'2022-01-01')]
-# levy_model_accounts_2022['cohort']='2022'
-# levy_model_accounts_2022["months_since_sign_up"] = (pd.Timestamp(2022,1,1) - pd.to_datetime(levy_model_accounts_2022["A2"]))/ np.timedelta64(1, "M")
+# 2018/2019 cohort Part 2
+levy_model_set_2018_2019_part2=levy_train_03_levy_model_set_2018_2019_part2(sql_account_list)
 
 
-# # Add all sets of accounts data into one
-# levy_model_set=pd.concat([levy_model_accounts_2022,levy_model_accounts_2020,levy_model_accounts_2019])
-
-# # make the months since sign-up discrete for analysis purposes
-# levy_model_set["months_since_sign_up2"] =levy_model_set["months_since_sign_up"].apply(np.floor)
-
-# # 2018/2019 cohort Part 1
-
-# query_2018_2019_part1 = DataPath(datastore, """SELECT A3 \
-# , '2019' as cohort \
-# , total_commitments \
-# , CASE \
-# WHEN levy_split=1 AND yearmon_created = '2019-3' THEN total_commitments * 12.54 \
-# WHEN levy_split=1 AND yearmon_created = '2019-2' THEN total_commitments * 6.22 \
-# WHEN levy_split=1 AND yearmon_created = '2019-1' THEN total_commitments * 4.16 \
-# WHEN levy_split=1 AND yearmon_created = '2018-12' THEN total_commitments * 3.24 \
-# WHEN levy_split=1 AND yearmon_created = '2018-11' THEN total_commitments * 2.41 \
-# WHEN levy_split=1 AND yearmon_created = '2018-10' THEN total_commitments * 1.82 \
-# WHEN levy_split=1 AND yearmon_created = '2018-9' THEN total_commitments * 1.54 \
-# WHEN levy_split=1 AND yearmon_created = '2018-8' THEN total_commitments * 1.40 \
-# WHEN levy_split=1 AND yearmon_created = '2018-7' THEN total_commitments * 1.27 \
-# WHEN levy_split=1 AND yearmon_created = '2018-6' THEN total_commitments * 1.17 \
-# WHEN levy_split=1 AND yearmon_created = '2018-5' THEN total_commitments * 1.08 \
-# WHEN levy_split=0 AND yearmon_created = '2019-3' THEN total_commitments * 3.73 \
-# WHEN levy_split=0 AND yearmon_created = '2019-2' THEN total_commitments * 2.01 \
-# WHEN levy_split=0 AND yearmon_created = '2019-1' THEN total_commitments * 1.47 \
-# WHEN levy_split=0 AND yearmon_created = '2018-12' THEN total_commitments * 1.40 \
-# WHEN levy_split=0 AND yearmon_created = '2018-11' THEN total_commitments * 1.33 \
-# WHEN levy_split=0 AND yearmon_created = '2018-10' THEN total_commitments * 1.22 \
-# WHEN levy_split=0 AND yearmon_created = '2018-9' THEN total_commitments * 1.15 \
-# WHEN levy_split=0 AND yearmon_created = '2018-8' THEN total_commitments * 1.12 \
-# WHEN levy_split=0 AND yearmon_created = '2018-7' THEN total_commitments * 1.07 \
-# WHEN levy_split=0 AND yearmon_created = '2018-6' THEN total_commitments * 1.03 \
-# WHEN levy_split=0 AND yearmon_created = '2018-5' THEN total_commitments * 1.02 \
-# ELSE total_commitments END AS adjusted_commitments \
-# , occupation_1 \
-# , occupation_2 \
-# , occupation_3 \
-# , occupation_7 \
-# , occupation_13 \
-# , occupation_14 \
-# , occupation_15 \
-# , occupation_17 \
-# , occupation_20 \
-# , occupation_22 \
-# , occupation_24 \
-# , occupation_null \
-# , prev_12m_new_commitments \
-# , prev_12m_new_levy_transfers \
-# , A7 as levy_sending_company \
-# FROM \
-# (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
-# FROM PDS_AI.PT_A \
-# WHERE A2<'2019-04-01' and A1=1 \
-# ) A \
-# LEFT JOIN \
-# (SELECT B10, count(*) AS total_commitments \
-# FROM PDS_AI.PT_B \
-# WHERE cast(B2 as date) >= '2018-04-01' AND cast(B2 as date) < '2019-04-01' \
-# GROUP BY B10 \
-# ) B \
-# ON A.A3=B.B10 \
-# LEFT JOIN \
-# (SELECT B10 \
-# , COUNT(*) AS prev_12m_new_commitments \
-# , SUM(CASE WHEN B12=1 THEN 1 ELSE 0 END) AS prev_12m_new_levy_transfers \
-# , CAST(SUM(CASE WHEN B6 = '1' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_1 \
-# , CAST(SUM(CASE WHEN B6 = '2' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_2 \
-# , CAST(SUM(CASE WHEN B6 = '3' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_3 \
-# , CAST(SUM(CASE WHEN B6 = '7' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_7 \
-# , CAST(SUM(CASE WHEN B6 = '13' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_13 \
-# , CAST(SUM(CASE WHEN B6 = '14' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_14 \
-# , CAST(SUM(CASE WHEN B6 = '15' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_15 \
-# , CAST(SUM(CASE WHEN B6 = '17' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_17 \
-# , CAST(SUM(CASE WHEN B6 = '20' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_20 \
-# , CAST(SUM(CASE WHEN B6 = '22' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_22 \
-# , CAST(SUM(CASE WHEN B6 = '24' THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_24 \
-# , CAST(SUM(CASE WHEN B6 = NULL THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_null \
-# FROM PDS_AI.PT_B \
-# WHERE cast(B2 as date) >= '2017-04-01' AND cast(B2 as date) < '2018-04-01' \
-# GROUP BY B10 \
-# ) C \
-# ON A.A3=C.B10 """)
-# tabular_2018_2019_part1 = Dataset.Tabular.from_sql_query(query_2018_2019_part1, query_timeout=10)
-# levy_model_set_2018_2019_part1 = tabular_2018_2019_part1.to_pandas_dataframe()
-
-# # 2018/2019 cohort Part 2
-
-# query_2018_2019_part2 = DataPath(datastore, """SELECT A3 \
-# , commitments_ending_12m \
-# , current_live_commitments \
-# FROM \
-# (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
-# FROM PDS_AI.PT_A \
-# WHERE A2<'2019-04-01' and A1=1 \
-# ) A \
-# LEFT JOIN \
-# (SELECT B10 \
-# , COUNT(*) AS commitments_ending_12m \
-# FROM PDS_AI.PT_B \
-# WHERE cast(B17 as date) < '2019-04-01' AND CAST(B17 AS DATE)>='2018-04-01' \
-# AND (CAST(B20 AS DATE) >= '2018-04-01' OR B20 IS NULL) \
-# AND (CAST(B16 AS DATE) >= '2018-04-01' OR B16 IS NULL) \
-# GROUP BY B10 \
-# ) D \
-# ON A.A3=D.B10 \
-# LEFT JOIN \
-# (SELECT B10 \
-# , COUNT(*) AS current_live_commitments \
-# FROM PDS_AI.PT_B \
-# WHERE cast(B2 AS DATE) < '2018-04-01' AND \
-# (B20 IS NULL OR CAST(B20 AS DATE)>='2019-04-01') AND \
-# (B16 IS NULL OR CAST(B16 AS DATE)>='2019-04-01') \
-# GROUP BY B10 \
-# ) E \
-# ON A.A3=E.B10""")
-# tabular_2018_2019_part2 = Dataset.Tabular.from_sql_query(query_2018_2019_part2, query_timeout=10)
-# levy_model_set_2018_2019_part2 = tabular_2018_2019_part2.to_pandas_dataframe()
-
-
+print(levy_model_set_2018_2019_part1)
+print(levy_model_set_2018_2019_part2)
 
 # # 2019/2020 cohort Part 1
 
@@ -648,3 +506,25 @@ print (levy_model_accounts2)
 # run = Run.get_context()
 # run.log('levy_model_train','levy_model_train')
 
+
+
+# bob='test log string'
+
+# import matplotlib.pyplot as plt
+# import numpy as np
+
+# np.random.seed(19680801)
+# data = np.random.randn(2, 100)
+
+# fig, axs = plt.subplots(2, 2, figsize=(5, 5))
+# axs[0, 0].hist(data[0])
+# axs[1, 0].scatter(data[0], data[1])
+# axs[0, 1].plot(data[0], data[1])
+# axs[1, 1].hist2d(data[0], data[1])
+
+# plt.show()
+
+# run = Run.get_context()
+# run.log('test_log1', levy_model_accounts)
+# run.log('test_log2',bob)
+# run.log_image('Log Plot Test', plot=plt)
