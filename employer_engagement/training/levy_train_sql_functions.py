@@ -17,7 +17,7 @@ datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 def levy_train_01_accounts(top_x: str) :
     query_levy_accounts = DataPath(datastore, "SELECT top {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=1 ORDER BY RAND()".format(top_x))
-    tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
+    tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=3600)
     levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
     
     return levy_model_accounts
@@ -75,7 +75,7 @@ def levy_train_02_levy_model_set_2018_2019_part1(sql_account_list: str) :
     GROUP BY B10 \
     ) C \
     ON A.A3=C.B10".format(sql_account_list))
-    tabular_2018_2019_part1 = Dataset.Tabular.from_sql_query(query_2018_2019_part1, query_timeout=10)
+    tabular_2018_2019_part1 = Dataset.Tabular.from_sql_query(query_2018_2019_part1, query_timeout=3600)
     levy_model_set_2018_2019_part1 = tabular_2018_2019_part1.to_pandas_dataframe()
     
     return levy_model_set_2018_2019_part1
@@ -111,7 +111,7 @@ def levy_train_03_levy_model_set_2018_2019_part2(sql_account_list: str) :
     GROUP BY B10 \
     ) E \
     ON A.A3=E.B10".format(sql_account_list))
-    tabular_2018_2019_part2 = Dataset.Tabular.from_sql_query(query_2018_2019_part2, query_timeout=10)
+    tabular_2018_2019_part2 = Dataset.Tabular.from_sql_query(query_2018_2019_part2, query_timeout=3600)
     levy_model_set_2018_2019_part2 = tabular_2018_2019_part2.to_pandas_dataframe()
 
     return levy_model_set_2018_2019_part2
@@ -168,7 +168,7 @@ def levy_train_04_levy_model_set_2019_2020_part1(sql_account_list: str) :
     GROUP BY B10 \
     ) C \
     ON A.A3=C.B10".format(sql_account_list))
-    tabular_2019_2020_part1 = Dataset.Tabular.from_sql_query(query_2019_2020_part1, query_timeout=10)
+    tabular_2019_2020_part1 = Dataset.Tabular.from_sql_query(query_2019_2020_part1, query_timeout=3600)
     levy_model_set_2019_2020_part1 = tabular_2019_2020_part1.to_pandas_dataframe()
     
     return levy_model_set_2019_2020_part1
@@ -204,7 +204,7 @@ def levy_train_05_levy_model_set_2019_2020_part2(sql_account_list: str) :
     GROUP BY B10 \
     ) E \
     ON A.A3=E.B10".format(sql_account_list))
-    tabular_2019_2020_part2 = Dataset.Tabular.from_sql_query(query_2019_2020_part2, query_timeout=10)
+    tabular_2019_2020_part2 = Dataset.Tabular.from_sql_query(query_2019_2020_part2, query_timeout=3600)
     levy_model_set_2019_2020_part2 = tabular_2019_2020_part2.to_pandas_dataframe()
 
     return levy_model_set_2019_2020_part2
@@ -261,7 +261,7 @@ def levy_train_06_levy_model_set_2022_part1(sql_account_list: str) :
     GROUP BY B10 \
     ) C \
     ON A.A3=C.B10".format(sql_account_list))
-    tabular_2022_part1 = Dataset.Tabular.from_sql_query(query_2022_part1, query_timeout=10)
+    tabular_2022_part1 = Dataset.Tabular.from_sql_query(query_2022_part1, query_timeout=3600)
     levy_model_set_2022_part1 = tabular_2022_part1.to_pandas_dataframe()
     
     return levy_model_set_2022_part1
@@ -297,7 +297,7 @@ def levy_train_07_levy_model_set_2022_part2(sql_account_list: str) :
     GROUP BY B10 \
     ) E \
     ON A.A3=E.B10".format(sql_account_list))
-    tabular_2022_part2 = Dataset.Tabular.from_sql_query(query_2022_part2, query_timeout=10)
+    tabular_2022_part2 = Dataset.Tabular.from_sql_query(query_2022_part2, query_timeout=3600)
     levy_model_set_2022_part2 = tabular_2022_part2.to_pandas_dataframe()
 
     return levy_model_set_2022_part2

@@ -74,7 +74,7 @@ def generic_01_tpr(sql_account_list: str) :
     ON A.A3=B.D15 \
     GROUP BY A3, A1 \
     ) c".format(sql_account_list))
-    tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=10)
+    tabular_tpr_aggregated = Dataset.Tabular.from_sql_query(query_tpr_aggregated, query_timeout=3600)
     tpr_aggregated = tabular_tpr_aggregated.to_pandas_dataframe()
     
     return tpr_aggregated
@@ -638,7 +638,7 @@ def generic_02_sic(sql_account_list: str) :
     ON a.d3=b.i1 \
     GROUP BY d15 \
     ) c) d) e".format(sql_account_list))
-    tabular_sic_aggregated = Dataset.Tabular.from_sql_query(query_sic_aggregated, query_timeout=10)
+    tabular_sic_aggregated = Dataset.Tabular.from_sql_query(query_sic_aggregated, query_timeout=3600)
     sic_aggregated = tabular_sic_aggregated.to_pandas_dataframe()
     
     return sic_aggregated
