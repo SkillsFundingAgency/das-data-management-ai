@@ -637,7 +637,7 @@ def generic_02_sic(sql_account_list: str) :
     INNER JOIN (SELECT i1 ,i4 FROM PDS_AI.PT_I) b \
     ON a.d3=b.i1 \
     GROUP BY d15 \
-    ) c) d) e".format(sql_account_list)
+    ) c) d) e".format(sql_account_list))
     tabular_sic_aggregated = Dataset.Tabular.from_sql_query(query_sic_aggregated, query_timeout=10)
     sic_aggregated = tabular_sic_aggregated.to_pandas_dataframe()
     
