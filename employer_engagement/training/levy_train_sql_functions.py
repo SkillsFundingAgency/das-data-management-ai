@@ -48,7 +48,7 @@ def levy_train_01_accounts2(sql_account_list: str) :
 
 
 
-def levy_train_02_levy_model_set_2018_2019_part1() :
+def levy_train_02_levy_model_set_2018_2019_part1(sql_account_list: str) :
     query_2018_2019_part1 = DataPath(datastore, "SELECT A3 \
     , '2019' as cohort \
     , total_commitments \
@@ -105,7 +105,7 @@ def levy_train_02_levy_model_set_2018_2019_part1() :
     
     return levy_model_set_2018_2019_part1
 
-def levy_train_03_levy_model_set_2018_2019_part2() :
+def levy_train_03_levy_model_set_2018_2019_part2(sql_account_list: str) :
     query_2018_2019_part2 = DataPath(datastore, "SELECT A3 \
     , commitments_ending_12m \
     , current_live_commitments \
