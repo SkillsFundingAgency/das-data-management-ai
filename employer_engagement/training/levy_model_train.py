@@ -82,7 +82,7 @@ print (levy_model_accounts)
 account_list = levy_model_accounts['A3'].tolist()
 print(account_list)
 
-levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(7)
+levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(account_list)
 
 print (levy_model_accounts2)
 

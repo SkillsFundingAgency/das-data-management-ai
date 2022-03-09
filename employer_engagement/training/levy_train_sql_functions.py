@@ -39,7 +39,7 @@ def levy_train_01_accounts(top_x: str) :
     return levy_model_accounts
 
 
-def levy_train_01_accounts2(account_list: str) :
+def levy_train_01_accounts2(account_list: list) :
     query_levy_accounts = DataPath(datastore, "SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A WHERE A1=1 AND A3 in ({})".format(account_list))
     tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
     levy_model_accounts2 = tabular_levy_accounts.to_pandas_dataframe()
