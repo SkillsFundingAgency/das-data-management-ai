@@ -53,20 +53,10 @@ datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 pd.options.mode.chained_assignment = None
 
 # Create model build data into dataframe
-
 # Create df with all accounts and early adopter flag
-
-# query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
-# tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
-# levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
-
-levy_model_accounts=levy_train_functions.levy_train_01_accounts()
+levy_model_accounts=levy_train_functions.levy_train_01_accounts(7)
 
 print (levy_model_accounts)
-
-levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(7)
-
-print (levy_model_accounts2)
 
 # bob='test log string'
 
@@ -89,10 +79,14 @@ print (levy_model_accounts2)
 # run.log('test_log2',bob)
 # run.log_image('Log Plot Test', plot=plt)
  
-
-
 account_list = levy_model_accounts['A3'].tolist()
 print(account_list)
+
+levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(7)
+
+print (levy_model_accounts2)
+
+
 
 # # Select all accounts data for three time periods in model build
 
