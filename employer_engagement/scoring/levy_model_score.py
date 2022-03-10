@@ -99,7 +99,7 @@ company_type=pd.get_dummies(levy_score_set['company_type'],prefix='comp_type')
 levy_score_set = levy_score_set.merge(company_type, left_index=True, right_index=True)
 
 # Create year account created variable
-levy_score_set['years_since_tpr_signup']=datetime.datetime.today()-levy_score_set['scheme_start_year']
+levy_score_set['years_since_tpr_signup']=datetime.datetime.today().year-levy_score_set['scheme_start_year']
 
 # Function for new company flag
 
