@@ -122,7 +122,7 @@ def levy_score_03_levy_commitments_part2(sql_account_list: str) :
     AND B10 in ({0}) \
     GROUP BY B10 \
     ) E \
-    ON A.A3=E.B10".format({sql_account_list})))
+    ON A.A3=E.B10".format({sql_account_list}))
     tabular_current_part2 = Dataset.Tabular.from_sql_query(query_current_part2, query_timeout=10)
     levy_commitments_part2 = tabular_current_part2.to_pandas_dataframe()
 
