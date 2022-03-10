@@ -61,84 +61,84 @@ levy_score_set["months_since_sign_up2"] =levy_score_set["months_since_sign_up"].
 
 # current cohort Part 1
 
-levy_commitments_p1=levy_score_functions.levy_score_02_levy_commitments_part1(sql_account_list)
-print ("levy_commitments_p1")
-print (levy_commitments_p1)
+# levy_commitments_p1=levy_score_functions.levy_score_02_levy_commitments_part1(sql_account_list)
+# print ("levy_commitments_p1")
+# print (levy_commitments_p1)
 
-# part 2
+# # part 2
 
-levy_commitments_p2=levy_score_functions.levy_score_03_levy_commitments_part2(sql_account_list)
-print ("levy_commitments_p2")
-print (levy_commitments_p2)
+# levy_commitments_p2=levy_score_functions.levy_score_03_levy_commitments_part2(sql_account_list)
+# print ("levy_commitments_p2")
+# print (levy_commitments_p2)
 
-# join the two parts together
-levy_commitments = pd.merge(levy_commitments_p1, \
-                  levy_commitments_p2, \
-                  left_on=['A3'], \
-                  right_on=['A3'], \
-                  how='left')
-
-# add commitment data onto account selection
-levy_score_set = pd.merge(levy_score_set, \
-                  levy_commitments, \
-                  left_on=['A3'], \
-                  right_on=['A3'], \
-                  how='left')
-
-# Fill commitments with 0 if missing
-levy_score_set = levy_score_set.fillna(0)
-
-# TPR Data
-levy_tpr_aggregated=generic_train_functions.generic_01_tpr(sql_account_list)
-
-# Join TPR data to model set
-levy_score_set = pd.merge(levy_score_set, \
-                  levy_tpr_aggregated, \
-                  left_on='A3', \
-                  right_on='A3', \
-                  how='left')
-
-# Create dummy variables for company type
-company_type=pd.get_dummies(levy_score_set['company_type'],prefix='comp_type')
-levy_score_set = levy_score_set.merge(company_type, left_index=True, right_index=True)
-
-# Create year account created variable
-levy_score_set['years_since_tpr_signup']=datetime.datetime.today()-levy_score_set['scheme_start_year']
-
-# Function for new company flag
-
-def fn_new_company(row):
-    if row['months_since_sign_up2']<=6 :
-        val=1
-    else:
-        val=0
-    return val
-
-levy_score_set['new_company']=levy_score_set.apply(fn_new_company,axis=1)
-
-# SIC Data
-# sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
-
-# Match SIC data onto accounts
-# levy_model_set = pd.merge(levy_model_set, \
-                  # sic_aggregated, \
-                  # left_on='A3',\
-                  # right_on='d15',\
+# # join the two parts together
+# levy_commitments = pd.merge(levy_commitments_p1, \
+                  # levy_commitments_p2, \
+                  # left_on=['A3'], \
+                  # right_on=['A3'], \
                   # how='left')
+
+# # add commitment data onto account selection
+# levy_score_set = pd.merge(levy_score_set, \
+                  # levy_commitments, \
+                  # left_on=['A3'], \
+                  # right_on=['A3'], \
+                  # how='left')
+
+# # Fill commitments with 0 if missing
+# levy_score_set = levy_score_set.fillna(0)
+
+# # TPR Data
+# levy_tpr_aggregated=generic_train_functions.generic_01_tpr(sql_account_list)
+
+# # Join TPR data to model set
+# levy_score_set = pd.merge(levy_score_set, \
+                  # levy_tpr_aggregated, \
+                  # left_on='A3', \
+                  # right_on='A3', \
+                  # how='left')
+
+# # Create dummy variables for company type
+# company_type=pd.get_dummies(levy_score_set['company_type'],prefix='comp_type')
+# levy_score_set = levy_score_set.merge(company_type, left_index=True, right_index=True)
+
+# # Create year account created variable
+# levy_score_set['years_since_tpr_signup']=datetime.datetime.today()-levy_score_set['scheme_start_year']
+
+# # Function for new company flag
+
+# def fn_new_company(row):
+    # if row['months_since_sign_up2']<=6 :
+        # val=1
+    # else:
+        # val=0
+    # return val
+
+# levy_score_set['new_company']=levy_score_set.apply(fn_new_company,axis=1)
+
+# # SIC Data
+# # sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
+
+# # Match SIC data onto accounts
+# # levy_model_set = pd.merge(levy_model_set, \
+                  # # sic_aggregated, \
+                  # # left_on='A3',\
+                  # # right_on='d15',\
+                  # # how='left')
                   
-# Create dummy variables for SIC code
-# sic_code=pd.get_dummies(levy_model_set['new_sic_code'],prefix='sic_code')
-# levy_model_set = levy_model_set.merge(sic_code, left_index=True, right_index=True)
+# # Create dummy variables for SIC code
+# # sic_code=pd.get_dummies(levy_model_set['new_sic_code'],prefix='sic_code')
+# # levy_model_set = levy_model_set.merge(sic_code, left_index=True, right_index=True)
 
-# Create dummy variables for SIC section
-# sic_section=pd.get_dummies(levy_model_set['sic_section'],prefix='sic_section')
-# levy_model_set = levy_model_set.merge(sic_section, left_index=True, right_index=True)
+# # Create dummy variables for SIC section
+# # sic_section=pd.get_dummies(levy_model_set['sic_section'],prefix='sic_section')
+# # levy_model_set = levy_model_set.merge(sic_section, left_index=True, right_index=True)
 
-# Create dummy variables for SIC division
-# sic_division=pd.get_dummies(levy_model_set['sic_division'],prefix='sic_division')
-# levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
+# # Create dummy variables for SIC division
+# # sic_division=pd.get_dummies(levy_model_set['sic_division'],prefix='sic_division')
+# # levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
 
-levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
+# levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 print("levy_model_set")
 print(levy_model_set)
 
