@@ -103,9 +103,9 @@ try:
 
     levy_score_set['new_company']=levy_score_set.apply(fn_new_company,axis=1)
     print (levy_score_set)
-    run.log('Success','01 Data Creation')
+    run.log('Success 01','Data Creation')
 except Exception:
-    run.log('EXCEPTION','01 Data Creation')
+    run.log('EXCEPTION 01','Data Creation')
 
 
 try:
@@ -135,9 +135,9 @@ try:
 
     # Only keep relevant variables and rename accordingly
     print(levy_model_set)
-    run.log('Success','02 SIC')
+    run.log('Success 02','SIC')
 except Exception:
-    run.log('EXCEPTION','02 SIC')
+    run.log('EXCEPTION 02','SIC')
 
 
 try:
@@ -173,7 +173,7 @@ try:
 
     levy_scored2.to_csv("./outputs/levy_model_scored.csv")
     print(levy_scored2)
-    run.log('Success','03 Model Scored')
+    run.log('Success','Model Scored')
 except Exception:
-    run.log('EXCEPTION','02 Model Scored')
+    run.log('EXCEPTION','Model Scored')
 
