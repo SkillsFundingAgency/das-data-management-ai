@@ -47,9 +47,6 @@ try:
     sql_account_list=str(account_list)[1:-1]
     print(sql_account_list)
 
-    # levy_model_accounts2=levy_train_functions.levy_train_01_accounts2(sql_account_list)
-    # print (levy_model_accounts2)
-
     # Select all accounts data for three time periods in model build
 
     levy_model_accounts_2020 = levy_model_accounts[(levy_model_accounts.A2 <'2020-04-01')]
@@ -158,7 +155,7 @@ try:
 
     levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
 
-    # TPR Data
+    # SIC Data
     sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
 
     # Match SIC data onto accounts

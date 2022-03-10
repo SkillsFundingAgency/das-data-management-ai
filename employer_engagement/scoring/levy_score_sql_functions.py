@@ -1,25 +1,29 @@
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget
-from ml_service.util.env_variables import Env
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.core import PipelineEndpoint
 import azureml.core
 import os
+from azureml.data.datapath import DataPath
 from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
 from azureml.core.run import Run
-from ml_service.util.manage_environment import get_environment
 
-def levy_score_01_accounts() :
-    query_levy_accounts = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
+# Set up config of workspace and datastore
+
+aml_workspace = Run.get_context().experiment.workspace
+datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+
+def levy_score_01_accounts(top_x: str) :
+    query_levy_accounts = DataPath(datastore, "SELECT TOP {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1".format({top_x}))
     tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=10)
     levy_score_set = tabular_levy_accounts.to_pandas_dataframe()
     
     return levy_score_set
 
-def levy_score_02_levy_commitments_part1() :
-    query_current_part1 = DataPath(datastore, """SELECT A3 \
+def levy_score_02_levy_commitments_part1(sql_account_list: str) :
+    query_current_part1 = DataPath(datastore, "SELECT A3 \
     , total_commitments \
     , CASE \
     WHEN levy_split=1 AND yearmon_created = '2021-12' THEN total_commitments * 11.78 \
@@ -52,12 +56,12 @@ def levy_score_02_levy_commitments_part1() :
     FROM \
     (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
     FROM PDS_AI.PT_A \
-    WHERE CAST(A2 AS DATE)<DATEADD(day,-365,CAST(GETDATE() AS Date)) AND A1=1 \
+    WHERE CAST(A2 AS DATE)<DATEADD(day,-365,CAST(GETDATE() AS Date)) AND A1=1 AND A3 in ({0}) \
     ) A \
     LEFT JOIN \
     (SELECT B10, count(*) AS total_commitments \
     FROM PDS_AI.PT_B \
-    WHERE cast(B2 as date) >= DATEADD(day,-365,CAST(GETDATE() AS Date)) \
+    WHERE cast(B2 as date) >= DATEADD(day,-365,CAST(GETDATE() AS Date)) AND B10 in ({0}) \
     GROUP BY B10 \
     ) B \
     ON A.A3=B.B10 \
@@ -79,22 +83,23 @@ def levy_score_02_levy_commitments_part1() :
     , CAST(SUM(CASE WHEN B6 = NULL THEN 1.000 ELSE 0 END) / COUNT(*) AS DECIMAL(10,3)) AS occupation_null \
     FROM PDS_AI.PT_B \
     WHERE cast(B2 as date) >= DATEADD(day,-730,CAST(GETDATE() AS Date)) AND cast(B2 as date) < DATEADD(day,-365,CAST(GETDATE() AS Date)) \
+    AND B10 in ({0}) \
     GROUP BY B10 \
     ) C \
-    ON A.A3=C.B10""")
+    ON A.A3=C.B10".format({sql_account_list}))
     tabular_current_part1 = Dataset.Tabular.from_sql_query(query_current_part1, query_timeout=10)
     levy_commitments_part1 = tabular_current_part1.to_pandas_dataframe()
     
     return levy_commitments_part1
 
-def levy_score_03_levy_commitments_part2() :
-    query_current_part2 = DataPath(datastore, """SELECT A3 \
+def levy_score_03_levy_commitments_part2(sql_account_list: str) :
+    query_current_part2 = DataPath(datastore, "SELECT A3 \
     , commitments_ending_12m \
     , current_live_commitments \
     FROM \
     (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
     FROM PDS_AI.PT_A \
-    WHERE CAST(A2 AS DATE)<DATEADD(day,-365,CAST(GETDATE() AS Date)) AND A1=1 \
+    WHERE CAST(A2 AS DATE)<DATEADD(day,-365,CAST(GETDATE() AS Date)) AND A1=1 AND A3 in ({0})\
     ) A \
     LEFT JOIN \
     (SELECT B10 \
@@ -103,6 +108,7 @@ def levy_score_03_levy_commitments_part2() :
     WHERE cast(B17 as date) < CAST(GETDATE() AS Date) AND CAST(B17 AS DATE)>=DATEADD(day,-365,CAST(GETDATE() AS Date)) \
     AND (CAST(B20 AS DATE) >= DATEADD(day,-365,CAST(GETDATE() AS Date)) OR B20 IS NULL) \
     AND (CAST(B16 AS DATE) >= DATEADD(day,-365,CAST(GETDATE() AS Date)) OR B16 IS NULL) \
+    AND B10 in ({0}) \
     GROUP BY B10 \
     ) D \
     ON A.A3=D.B10 \
@@ -113,9 +119,10 @@ def levy_score_03_levy_commitments_part2() :
     WHERE cast(B2 AS DATE) < DATEADD(day,-365,CAST(GETDATE() AS Date)) AND \
     (B20 IS NULL OR CAST(B20 AS DATE)>=CAST(GETDATE() AS Date)) AND \
     (B16 IS NULL OR CAST(B16 AS DATE)>=CAST(GETDATE() AS Date)) \
+    AND B10 in ({0}) \
     GROUP BY B10 \
     ) E \
-    ON A.A3=E.B10""")
+    ON A.A3=E.B10".format({sql_account_list})))
     tabular_current_part2 = Dataset.Tabular.from_sql_query(query_current_part2, query_timeout=10)
     levy_commitments_part2 = tabular_current_part2.to_pandas_dataframe()
 
