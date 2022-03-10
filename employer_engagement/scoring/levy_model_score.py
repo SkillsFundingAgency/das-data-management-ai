@@ -47,10 +47,6 @@ sql_account_list=str(account_list)[1:-1]
 print("sql_account_list")
 print(sql_account_list)
 
-# query_levy_score_set = DataPath(datastore, """SELECT A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<'2017-07-01' THEN 1 ELSE 0 END AS early_adopter FROM PDS_AI.PT_A where A1=1""")
-# tabular_levy_score_set = Dataset.Tabular.from_sql_query(query_levy_score_set, query_timeout=10)
-# levy_score_set = tabular_levy_score_set.to_pandas_dataframe()
-
 #get current date to use as today's date later
 getCurrentDateTime = datetime.datetime.now()
 
@@ -61,9 +57,9 @@ levy_score_set["months_since_sign_up2"] =levy_score_set["months_since_sign_up"].
 
 # current cohort Part 1
 
-# levy_commitments_p1=levy_score_functions.levy_score_02_levy_commitments_part1(sql_account_list)
-# print ("levy_commitments_p1")
-# print (levy_commitments_p1)
+levy_commitments_p1=levy_score_functions.levy_score_02_levy_commitments_part1(sql_account_list)
+print ("levy_commitments_p1")
+print (levy_commitments_p1)
 
 # # part 2
 
@@ -139,8 +135,8 @@ levy_score_set["months_since_sign_up2"] =levy_score_set["months_since_sign_up"].
 # # levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
 
 # levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
-print("levy_model_set")
-print(levy_model_set)
+print("levy_score_set")
+print(levy_score_set)
 
 # Only keep relevant variables and rename accordingly
 
