@@ -173,7 +173,7 @@ try:
 
     levy_scored2.to_csv("./outputs/levy_model_scored.csv")
     print(levy_scored2)
-    run.log('Success','Model Scored')
+    run.log('Success 03','Model Scored')
 except Exception:
-    run.log('EXCEPTION','Model Scored')
+    run.log('EXCEPTION 03','Model Scored')
 
