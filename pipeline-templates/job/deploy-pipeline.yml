@@ -40,6 +40,7 @@ jobs:
         azureSubscription: ${{ parameters.ServiceConnection }}
         scriptType: filePath
         scriptPath: azure/Set-AzRoleAssignment.ps1
+        ScriptArguments: '-resourceGroupName $(resourceGroupName) -StorageAccountName $(StorageAccountName)'
         errorActionPreference: stop
         azurePowerShellVersion: latestVersion
         pwsh: true

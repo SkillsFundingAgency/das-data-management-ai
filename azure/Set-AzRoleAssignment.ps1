@@ -1,4 +1,10 @@
 [CmdletBinding()]
+Param(
+    [Parameter(Mandatory = $true)]
+    [String]$resourceGroupName,
+    [Parameter(Mandatory = $true)]
+    [String]$StorageAccountName
+)
 ### TODO: Get the variables passed in from the template outputs
 $SubscriptionId = (Get-AzContext).Subscription.Id 
 #$resourceGroupName = "das-test-datamgmtai-rg"
