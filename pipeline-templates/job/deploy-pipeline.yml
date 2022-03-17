@@ -34,12 +34,14 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.StorageAccountName'] ]
   steps:
     - checkout: self
-    - task: PowerShell@2
-      displayName: Set Permissions
+    - task: AzurePowerShell@5
+      displayName: 'Azure PowerShell: Set Permissions'
       inputs:
+        azureSubscription: ${{ parameters.ServiceConnection }}
         targetType: filePath
         filePath: azure/Set-AzRoleAssignment.ps1
         errorActionPreference: stop
+        azurePowerShellVersion: latestVersion
         pwsh: true
 - job: DeployPipelines
   dependsOn: DeployInfra
