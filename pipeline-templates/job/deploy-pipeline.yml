@@ -38,8 +38,8 @@ jobs:
       displayName: 'Azure PowerShell: Set Permissions'
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
-        targetType: filePath
-        filePath: azure/Set-AzRoleAssignment.ps1
+        scriptType: filePath
+        scriptPath: azure/Set-AzRoleAssignment.ps1
         errorActionPreference: stop
         azurePowerShellVersion: latestVersion
         pwsh: true
