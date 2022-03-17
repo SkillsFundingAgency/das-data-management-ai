@@ -35,10 +35,10 @@ jobs:
   steps:
     - checkout: self
     - task: PowerShell@2
-      displayName: Set Products and Groups Configuration
+      displayName: Set Permissions
       inputs:
         targetType: filePath
-        filePath: das-data-management-ai/azure/Set-AzRoleAssignment.ps1
+        filePath: azure/Set-AzRoleAssignment.ps1
         errorActionPreference: stop
         pwsh: true
 - job: DeployPipelines
