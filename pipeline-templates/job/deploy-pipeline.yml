@@ -25,6 +25,22 @@ jobs:
             TemplatePath: das-data-management-ai/azure/template.json
             ParametersPath: das-data-management-ai/azure/template.parameters.json
             IsMultiRepoCheckout: true
+- job: SetPermissions
+  dependsOn: DeployInfra
+  variables:
+  - name: ResourceGroupName
+    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
+  - name: StorageAccountName
+    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.StorageAccountName'] ]
+  steps:
+    - checkout: self
+    - task: PowerShell@2
+      displayName: Set Products and Groups Configuration
+      inputs:
+        targetType: filePath
+        filePath: das-data-management-ai/azure/Set-AzRoleAssignment.ps1
+        errorActionPreference: stop
+        pwsh: true
 - job: DeployPipelines
   dependsOn: DeployInfra
   pool:

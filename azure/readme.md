@@ -1,0 +1,39 @@
+# _DAS Data Management AI_
+
+<img src="https://avatars.githubusercontent.com/u/9841374?s=200&v=4" align="right" alt="UK Government logo">
+
+_Update these badges with the correct information for this project. These give the status of the project at a glance and also sign-post developers to the appropriate resources they will need to get up and running_
+
+[![Build Status](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_apis/build/status/das-data-management-ai?repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=2651&repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build?definitionId=2651&_a=summary)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
+
+
+## 🚀 Installation
+
+```
+The Azure infrastructure for this project requires some additional manual steps to complete the setup. The steps to complete a full deployment are as follows:
+
+1. Deploy the Infrastructure using [![Azure DevOps]](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=2651&repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build?definitionId=2651&_a=summary)
+2. Grant the ML and ML CPU Cluster read access to the database
+    ```CREATE USER [das-[env]-datamgmtai-ml/computes/cpucluster] FROM EXTERNAL PROVIDER```
+    ```ALTER ROLE db_datareader ADD member [das-[env]-datamgmtai-ml/computes/cpucluster]```
+    ```CREATE USER [das-[env]-datamgmtai-ml] FROM EXTERNAL PROVIDER```
+    ```ALTER ROLE db_datareader ADD member [das-[env]-datamgmtai-ml]```
+3. IAM
+    - The Storage Account IAM is deployed by the Set0AzRoleAssignment.ps1 script
+4. Manually add the SQL DataStore with the following details (to be added to the template in time)
+    - Datastore name : datamgmtdb
+    - Datastore type : Azure  SQL Database
+    - Database : das-[env]-datamgmt-staging-db
+    - Dave credentialswith datastore for data access : Yes
+    - Authentication type : Service Principal
+    - Client Details : Client ID and Secret for [das-[env]-datamgmtai-ml]
+```
+
+## 🐛 Known Issues
+
+There is discussion ongoing about the CI design for deploying infrastructure and running models. Currently the automatic run is disabled because of data issues but the Platform Team advise this is not a suitable solution because it masks issues behind 'fake' successfull deployments. 
+
+The WoW of the data team whereby branches are used to trigger runs and deployed up the environment stack causes problems working between teams and ensuring test data is available. 
+
+```
