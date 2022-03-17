@@ -16,7 +16,9 @@ $mlid = (Get-AzADServicePrincipal -DisplayName das-test-datamgmtai-ml).id
 $mlclusterid = (Get-AzADServicePrincipal -DisplayName das-test-datamgmtai-ml/computes/cpucluster).id
 
 # Check if role assignment exists and create if needed
-$RoleAssignments = Get-AzRoleAssignment -Scope /subscriptions/$SubscriptionId/resourcegroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName | Where-Object { $_.RoleDefinitionName -eq "Storage Blob Data Contributor" -and $_.ObjectId -eq $mlid} 
+$RoleAssignments = Get-AzRoleAssignment -Scope /subscriptions/$SubscriptionId/resourcegroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName | Where-Object {$_.RoleDefinitionName -eq "Storage Blob Data Contributor" -and $_.ObjectId -eq $mlid} 
+
+Write-Host $RoleAssignments
 
 if ($RoleAssignments.Length -eq 0) {
     New-AzRoleAssignment -ObjectId $mlid`
@@ -25,7 +27,9 @@ if ($RoleAssignments.Length -eq 0) {
 }
 
 # Do the same for the cluster principal
-$RoleAssignments = Get-AzRoleAssignment -Scope /subscriptions/$SubscriptionId/resourcegroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName | Where-Object { $_.RoleDefinitionName -eq "Storage Blob Data Contributor" -and $_.ObjectId -eq $mlclusterid} 
+$RoleAssignments = Get-AzRoleAssignment -Scope /subscriptions/$SubscriptionId/resourcegroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName | Where-Object {$_.RoleDefinitionName -eq "Storage Blob Data Contributor" -and $_.ObjectId -eq $mlclusterid} 
+
+Write-Host $RoleAssignments
 
 if ($RoleAssignments.Length -eq 0) {
     New-AzRoleAssignment -ObjectId $mlclusterid`
