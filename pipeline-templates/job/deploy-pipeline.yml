@@ -32,6 +32,8 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
   - name: StorageAccountName
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.StorageAccountName'] ]
+  - name: EnvironmentName
+    value: $[eq(variables['EnvironmentName']
   steps:
     - checkout: self
     - task: AzurePowerShell@5
