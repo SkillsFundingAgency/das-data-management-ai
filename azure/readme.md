@@ -2,13 +2,11 @@
 
 <img src="https://avatars.githubusercontent.com/u/9841374?s=200&v=4" align="right" alt="UK Government logo">
 
-_Update these badges with the correct information for this project. These give the status of the project at a glance and also sign-post developers to the appropriate resources they will need to get up and running_
-
 [![Build Status](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_apis/build/status/das-data-management-ai?repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=2651&repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build?definitionId=2651&_a=summary)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
 
 
-## 🚀 Installation
+## 🚀 Infrastucture Deployment 
 
 ```
 The Azure infrastructure for this project requires some additional manual steps to complete the setup. The steps to complete a full deployment are as follows:
@@ -20,8 +18,9 @@ The Azure infrastructure for this project requires some additional manual steps 
     ```CREATE USER [das-[env]-datamgmtai-ml] FROM EXTERNAL PROVIDER```
     ```ALTER ROLE db_datareader ADD member [das-[env]-datamgmtai-ml]```
 3. IAM
-    - The Storage Account IAM is deployed by the Set0AzRoleAssignment.ps1 script
-4. Manually add the SQL DataStore with the following details (to be added to the template in time)
+    - The Storage Account IAM is actions by the running the Set-AzRoleAssignment.ps1 script in the Azure folder. See script for example.
+    - This should be replaced with a more automated solution when a design has been accepted for automating permission changes.
+4. Manually add the SQL DataStore to the ML Portal with the following details. This should be added to the template in time
     - Datastore name : datamgmtdb
     - Datastore type : Azure  SQL Database
     - Database : das-[env]-datamgmt-staging-db

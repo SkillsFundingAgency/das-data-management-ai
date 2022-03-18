@@ -25,27 +25,30 @@ jobs:
             TemplatePath: das-data-management-ai/azure/template.json
             ParametersPath: das-data-management-ai/azure/template.parameters.json
             IsMultiRepoCheckout: true
-- job: SetPermissions
-  dependsOn: DeployInfra
-  variables:
-  - group: AT DevTest Shared Resources
-  - name: ResourceGroupName
-    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
-  - name: StorageAccountName
-    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.StorageAccountName'] ]
 
-  steps:
-    - checkout: self
-    - task: AzurePowerShell@5
-      displayName: 'Azure PowerShell: Set Permissions'
-      inputs:
-        azureSubscription: ${{ parameters.ServiceConnection }}
-        scriptType: filePath
-        scriptPath: azure/Set-AzRoleAssignment.ps1
-        ScriptArguments: '-resourceGroupName $(resourceGroupName) -StorageAccountName $(StorageAccountName) -EnvironmentName $(EnvironmentName)'
-        errorActionPreference: stop
-        azurePowerShellVersion: latestVersion
-        pwsh: true
+# ###TODO: This is commented out as the AZDO SP doesnt have permission to change IAM          
+# - job: SetPermissions
+#   dependsOn: DeployInfra
+#   variables:
+#   - group: AT DevTest Shared Resources
+#   - name: ResourceGroupName
+#     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
+#   - name: StorageAccountName
+#     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.StorageAccountName'] ]
+
+#   steps:
+#     - checkout: self
+#     - task: AzurePowerShell@5
+#       displayName: 'Azure PowerShell: Set Permissions'
+#       inputs:
+#         azureSubscription: ${{ parameters.ServiceConnection }}
+#         scriptType: filePath
+#         scriptPath: azure/Set-AzRoleAssignment.ps1
+#         ScriptArguments: '-resourceGroupName $(resourceGroupName) -StorageAccountName $(StorageAccountName) -EnvironmentName $(EnvironmentName)'
+#         errorActionPreference: stop
+#         azurePowerShellVersion: latestVersion
+#         pwsh: true
+
 - job: DeployPipelines
   dependsOn: DeployInfra
   pool:

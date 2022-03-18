@@ -1,3 +1,8 @@
+###TODO: This has been removed from the pipeline because the SP doesnt have user access admin role. This script needs to be run manually.
+
+### Example 
+### ./azure/Set-AzRoleAssignment.ps1 -resourceGroupName "das-[env]-datamgmtai-rg" -StorageAccountName "das[env]datamgmtaistr" -EnvironmentName "[env]"
+
 [CmdletBinding()]
 Param(
     [Parameter(Mandatory = $true)]
@@ -7,17 +12,11 @@ Param(
     [Parameter(Mandatory = $true)]
     [String]$EnvironmentName
 )
-### TODO: Get the variables passed in from the template outputs
+
 $SubscriptionId = (Get-AzContext).Subscription.Id 
-#$resourceGroupName = "das-at-datamgmtai-rg"
-Write-Output $resourceGroupName
-#$StorageAccountName = "dasatdatamgmtaistr"
-Write-Output $StorageAccountName
-#$EnvironmentName = "at"
-Write-Output $EnvironmentName
 
 ### TODO: Do this better so its not duplicated script for each role assignment
-# Get the MI IDs
+# Get the MI IDs. ML needs two SPs to have IAM granted
 $mlid = (Get-AzADServicePrincipal -DisplayName das-$EnvironmentName-datamgmtai-ml).id
 $mlclusterid = (Get-AzADServicePrincipal -DisplayName das-$EnvironmentName-datamgmtai-ml/computes/cpucluster).id
 
