@@ -3,7 +3,9 @@ Param(
     [Parameter(Mandatory = $true)]
     [String]$resourceGroupName,
     [Parameter(Mandatory = $true)]
-    [String]$StorageAccountName
+    [String]$StorageAccountName,
+    [Parameter(Mandatory = $true)]
+    [String]$EnvironmentName
 )
 ### TODO: Get the variables passed in from the template outputs
 $SubscriptionId = (Get-AzContext).Subscription.Id 
