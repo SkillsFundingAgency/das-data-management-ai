@@ -385,6 +385,10 @@
         "ComputeName": {
             "type": "string",
             "value": "[variables('computeName')]"
+        },
+        "StorageAccountName": {
+            "type": "string",
+            "value": "[variables('dataStorageAccountName')]"
         }
     }
 }
