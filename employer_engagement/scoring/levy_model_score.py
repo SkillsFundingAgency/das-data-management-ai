@@ -171,6 +171,8 @@ try:
                             
     levy_scored2.rename(columns = {'A3':'account_id'}, inplace = True)
 
+    print(levy_scored2)
+
     levy_scored2.to_csv("./outputs/levy_model_scored.csv")
     print(levy_scored2)
     run.log('Success 03','Model Scored')
