@@ -140,7 +140,7 @@ except Exception:
     run.log('EXCEPTION 02','SIC')
 
 
-try:
+#try:
     # load registered model 
     global loaded_model
 
@@ -176,6 +176,6 @@ try:
     levy_scored2.to_csv("./outputs/levy_model_scored.csv")
     print(levy_scored2)
     run.log('Success 03','Model Scored')
-except Exception:
-    run.log('EXCEPTION 03','Model Scored')
+#except Exception:
+    #run.log('EXCEPTION 03','Model Scored')
 
