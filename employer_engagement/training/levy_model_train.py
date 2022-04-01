@@ -297,7 +297,7 @@ except Exception:
     run.log('EXCEPTION 16','Model stats Exception')
     # Logging Stats
 
-try:
+#try:
     # Save the trained model in the outputs folder
     os.makedirs('outputs', exist_ok=True)
     model_file = os.path.join('outputs', 'levy_model.pkl')
@@ -307,9 +307,9 @@ try:
     Model.register(workspace=aml_workspace, \
                    model_path = model_file, \
                    model_name = 'levy_model')
-    run.log('Success 17','Model save Success')
-except Exception:
-    run.log('EXCEPTION 17','Model save Exception')
+    #run.log('Success 17','Model save Success')
+#except Exception:
+    #run.log('EXCEPTION 17','Model save Exception')
 
 try:
     run.get_all_logs(destination='outputs')
