@@ -32,7 +32,7 @@ run.log('levy_model_train','levy_model_train')
 #prevent SettingWithCopyWarning message from appearing
 pd.options.mode.chained_assignment = None
 
-try:
+#try:
     # Create model build data into dataframe
     # Create df with all accounts and early adopter flag
     levy_model_accounts=levy_train_functions.levy_train_01_accounts(7)
@@ -314,5 +314,5 @@ try:
 #try:
     run.get_all_logs(destination='outputs')
     run.log('Success 18','Output Logs')
-except Exception:
+#except Exception:
     run.log('EXCEPTION 18','Output Logs')
