@@ -262,15 +262,15 @@ try:
 except Exception:
     run.log('EXCEPTION 14','Model train test Exception')
 
-try:
+#try:
     #Set parameters of xgboost regressor
     xg_reg = xgb.XGBRegressor(objective ='reg:squarederror', colsample_bytree = 0.3, learning_rate = 0.05,
     max_depth = 5, alpha = 10, n_estimators = 700, verbosity = 2, eval_metric='rmse')
-    run.log('Success 15','Model build Success')
-except Exception:
-    run.log('EXCEPTION 15','Model build Exception')
+    #run.log('Success 15','Model build Success')
+#except Exception:
+    #run.log('EXCEPTION 15','Model build Exception')
 
-try:
+#try:
     #Train our model using the training dataset
     xg_reg.fit(X_train,y_train)
 
@@ -288,13 +288,13 @@ try:
     shap_values = explainer.shap_values(X_train)
     plt.clf()
     shap.summary_plot(shap_values, X_train, feature_names=X.drop(['account_id'], axis=1).columns, plot_type="bar", show=True)
-    run.log('Success 16','Model stats Success')
+    #run.log('Success 16','Model stats Success')
     run.log('R2',r2)
     run.log('Reduced R2',reduced_r2_output)
     run.log('RMSE',rmse)
     run.log_image('Shap Plot', plot=plt)
-except Exception:
-    run.log('EXCEPTION 16','Model stats Exception')
+#except Exception:
+    #run.log('EXCEPTION 16','Model stats Exception')
     # Logging Stats
 
 #try:
