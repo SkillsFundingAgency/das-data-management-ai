@@ -194,69 +194,74 @@ levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
 #except Exception:
 #run.log('EXCEPTION 10','TPR manipulation Exception')
 
-levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
-
-#Calculate the log(commitments)
-levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
-
-levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
-
 try:
-# SIC Data
-sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
-run.log('Success 11','SIC Success')
-#except Exception:
-#run.log('EXCEPTION 11','SIC Exception')
+    # SIC Data
+    sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
+    run.log('Success 11','SIC Success')
+    #except Exception:
+    #run.log('EXCEPTION 11','SIC Exception')
 
-#try:
-# Match SIC data onto accounts
-levy_model_set = pd.merge(levy_model_set, \
-                  sic_aggregated, \
-                  left_on='A3',\
-                  right_on='d15',\
-                  how='left')
+    #try:
+    # Match SIC data onto accounts
+    levy_model_set = pd.merge(levy_model_set, \
+                      sic_aggregated, \
+                      left_on='A3',\
+                      right_on='d15',\
+                      how='left')
                       
-# Create dummy variables for SIC code
-sic_code=pd.get_dummies(levy_model_set['new_sic_code'],prefix='sic_code')
-levy_model_set = levy_model_set.merge(sic_code, left_index=True, right_index=True)
+    # Create dummy variables for SIC code
+    sic_code=pd.get_dummies(levy_model_set['new_sic_code'],prefix='sic_code')
+    levy_model_set = levy_model_set.merge(sic_code, left_index=True, right_index=True)
 
-# Create dummy variables for SIC section
-sic_section=pd.get_dummies(levy_model_set['sic_section'],prefix='sic_section')
-levy_model_set = levy_model_set.merge(sic_section, left_index=True, right_index=True)
+    # Create dummy variables for SIC section
+    sic_section=pd.get_dummies(levy_model_set['sic_section'],prefix='sic_section')
+    levy_model_set = levy_model_set.merge(sic_section, left_index=True, right_index=True)
 
-# Create dummy variables for SIC division
-sic_division=pd.get_dummies(levy_model_set['sic_division'],prefix='sic_division')
-levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
+    # Create dummy variables for SIC division
+    sic_division=pd.get_dummies(levy_model_set['sic_division'],prefix='sic_division')
+    levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
 
-#levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
+    levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
-#Calculate the log(commitments)
-#levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
+    #Calculate the log(commitments)
+    levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
 
-#levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
+    levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
-levy_model_set3=levy_model_set2
-run.log('Success 12','SIC manipulation Success')
-#except Exception:
-#run.log('EXCEPTION 12','SIC manipulation Exception')
+    levy_model_set3=levy_model_set2
+    run.log('Success 12','SIC manipulation Success')
+    #except Exception:
+    #run.log('EXCEPTION 12','SIC manipulation Exception')
 
-#try:
-levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+    #try:
+    levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
 
-#Drop any unnecessary rows
-levy_model_set3 = levy_model_set3.drop(['new_sic_code', 'company_status', 'tpr_match', 'company_type', \
-'employees', 'cohort', 'sic_division', 'sic_section', 'total_commitments','d15','A2','months_since_sign_up', \
-'scheme_start_year'], axis=1)
+    #Drop any unnecessary rows
+    levy_model_set3 = levy_model_set3.drop(['new_sic_code', 'company_status', 'tpr_match', 'company_type', \
+    'employees', 'cohort', 'sic_division', 'sic_section', 'total_commitments','d15','A2','months_since_sign_up', \
+    'scheme_start_year'], axis=1)
 
-#Drop rows with only a single unique value
-levy_model_set3 = levy_model_set3.drop([col for col in levy_model_set3 if len(levy_model_set3[col].unique()) == 1], axis=1)
+    #Drop rows with only a single unique value
+    levy_model_set3 = levy_model_set3.drop([col for col in levy_model_set3 if len(levy_model_set3[col].unique()) == 1], axis=1)
 
-#Drop rows with any null values
-levy_model_set4 = levy_model_set3.dropna() 
-#run.log('Success 13','Model data prep Success')
+    #Drop rows with any null values
+    levy_model_set4 = levy_model_set3.dropna() 
+    #run.log('Success 13','Model data prep Success')
 except Exception:
-levy_model_set4 = levy_model_set2
-run.log('EXCEPTION 13','Model data prep Exception')
+
+    levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
+
+    #Calculate the log(commitments)
+    levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
+
+    levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) 
+
+    levy_model_set3=levy_model_set2
+
+    levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+
+    levy_model_set4 = levy_model_set3
+    run.log('EXCEPTION 13','Model data prep Exception')
 
     
 #try:
