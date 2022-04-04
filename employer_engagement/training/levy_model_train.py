@@ -190,6 +190,7 @@ def fn_new_company(row):
     return val
 
 levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
+
 #run.log('Success 10','TPR manipulation Success')
 #except Exception:
 #run.log('EXCEPTION 10','TPR manipulation Exception')
@@ -256,7 +257,9 @@ except Exception:
 
     levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) 
 
-    levy_model_set4 = levy_model_set2.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+    #levy_model_set4 = levy_model_set2.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+
+    levy_model_set4=levy_model_set2
 
     run.log('EXCEPTION 13','Model data prep Exception')
 
