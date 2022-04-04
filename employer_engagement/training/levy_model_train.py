@@ -257,7 +257,8 @@ except Exception:
 
     levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) 
 
-    levy_model_set2.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+    #levy_model_set2.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+    levy_model_set2 = levy_model_set2.rename({'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, axis=1)  
 
     run.log('EXCEPTION 13','Model data prep Exception')
 
