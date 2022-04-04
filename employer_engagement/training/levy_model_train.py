@@ -261,7 +261,16 @@ except Exception:
 
     levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
     
-    levy_model_set4 = levy_model_set3
+    #Drop any unnecessary rows
+    levy_model_set3 = levy_model_set3.drop(['company_status', 'tpr_match', 'company_type', \
+    'employees', 'cohort', 'total_commitments','d15','A2','months_since_sign_up', \
+    'scheme_start_year'], axis=1)
+
+    #Drop rows with only a single unique value
+    levy_model_set3 = levy_model_set3.drop([col for col in levy_model_set3 if len(levy_model_set3[col].unique()) == 1], axis=1)
+
+    #Drop rows with any null values
+    levy_model_set4 = levy_model_set3.dropna() 
 
     print(levy_model_set4)
     run.log('EXCEPTION 13','Model data prep Exception')
