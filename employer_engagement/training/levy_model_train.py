@@ -175,7 +175,7 @@ levy_model_set = levy_model_set.merge(company_type, left_index=True, right_index
 print(levy_model_set)
 
 # Create year account created variable
-levy_model_set['cohort'] = levy_model_set['account_created'].dt.year
+#levy_model_set['cohort'] = levy_model_set['account_created'].dt.year
         
 # Alter tpr_scheme_start_year to years_since_tpr_signup
 levy_model_set['years_since_tpr_signup']=levy_model_set['cohort'].astype(int)-levy_model_set['scheme_start_year']
