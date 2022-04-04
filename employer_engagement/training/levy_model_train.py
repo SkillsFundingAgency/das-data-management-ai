@@ -276,6 +276,8 @@ X = levy_model_set4.drop(['log_adjusted_commitments'], axis=1)
 X_train_acc, X_test_acc, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 X_train = X_train_acc.drop(['account_id'], axis=1)
 X_test = X_test_acc.drop(['account_id'], axis=1)
+print(X_train)
+print(y_train)
 
 #run.log('Success 14','Model train test Success')
 #except Exception:
