@@ -24,13 +24,13 @@ import levy_train_sql_functions as levy_train_functions
 import generic_sql_functions as generic_train_functions
  
 # Set up config of workspace and datastore
-aml_workspace = Run.get_context().experiment.workspace
-datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-run = Run.get_context()
-run.log('levy_model_train','levy_model_train')
+    aml_workspace = Run.get_context().experiment.workspace
+    datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+    run = Run.get_context()
+    run.log('levy_model_train','levy_model_train')
 
 #prevent SettingWithCopyWarning message from appearing
-pd.options.mode.chained_assignment = None
+    pd.options.mode.chained_assignment = None
 
 #try:
     # Create model build data into dataframe
