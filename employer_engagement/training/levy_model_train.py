@@ -262,6 +262,8 @@ except Exception:
     levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
     
     levy_model_set4 = levy_model_set3
+
+    print(levy_model_set_4)
     run.log('EXCEPTION 13','Model data prep Exception')
 
     
