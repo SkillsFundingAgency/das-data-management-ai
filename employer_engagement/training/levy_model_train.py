@@ -263,7 +263,7 @@ except Exception:
     
     #Drop any unnecessary rows
     levy_model_set3 = levy_model_set3.drop(['company_status', 'tpr_match', 'company_type', \
-    'employees', 'cohort', 'total_commitments','d15','A2','months_since_sign_up', \
+    'employees', 'cohort', 'total_commitments','A2','months_since_sign_up', \
     'scheme_start_year'], axis=1)
 
     #Drop rows with only a single unique value
