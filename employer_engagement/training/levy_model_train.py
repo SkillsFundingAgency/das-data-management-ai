@@ -194,7 +194,14 @@ levy_model_set['new_company']=levy_model_set.apply(fn_new_company,axis=1)
 #except Exception:
 #run.log('EXCEPTION 10','TPR manipulation Exception')
 
-#try:
+levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
+
+#Calculate the log(commitments)
+levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
+
+levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
+
+try:
 # SIC Data
 sic_aggregated=generic_train_functions.generic_02_sic(sql_account_list)
 run.log('Success 11','SIC Success')
@@ -221,12 +228,12 @@ levy_model_set = levy_model_set.merge(sic_section, left_index=True, right_index=
 sic_division=pd.get_dummies(levy_model_set['sic_division'],prefix='sic_division')
 levy_model_set = levy_model_set.merge(sic_division, left_index=True, right_index=True)
 
-levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
+#levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
 #Calculate the log(commitments)
-levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
+#levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
 
-levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
+#levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
 levy_model_set3=levy_model_set2
 run.log('Success 12','SIC manipulation Success')
@@ -247,8 +254,9 @@ levy_model_set3 = levy_model_set3.drop([col for col in levy_model_set3 if len(le
 #Drop rows with any null values
 levy_model_set4 = levy_model_set3.dropna() 
 #run.log('Success 13','Model data prep Success')
-#except Exception:
-#run.log('EXCEPTION 13','Model data prep Exception')
+except Exception:
+levy_model_set4 = levy_model_set2
+run.log('EXCEPTION 13','Model data prep Exception')
 
     
 #try:
