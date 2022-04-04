@@ -148,6 +148,7 @@ levy_model_set = pd.merge(levy_model_set, \
 
 # Fill commitments with 0 if missing
 levy_model_set = levy_model_set.fillna(0)
+print(levy_model_set)
 #run.log('Success 08','Account manipulation Success')
 #except Exception:
 #run.log('EXCEPTION 08','Account manipulation Exception')
@@ -170,6 +171,8 @@ levy_model_set = pd.merge(levy_model_set, \
 # Create dummy variables for company type
 company_type=pd.get_dummies(levy_model_set['company_type'],prefix='comp_type')
 levy_model_set = levy_model_set.merge(company_type, left_index=True, right_index=True)
+
+print(levy_model_set)
 
 # Create year account created variable
 levy_model_set['cohort'] = levy_model_set['account_created'].dt.year
