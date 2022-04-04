@@ -255,18 +255,20 @@ except Exception:
     #Calculate the log(commitments)
     levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
 
-    levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) 
+    levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1)] 
 
-    #levy_model_set2.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
-    levy_model_set2 = levy_model_set2.rename({'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, axis=1)  
+    levy_model_set3 = levy_model_set2
 
+    levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
+    
+    levy_model_set4 = levy_model_3
     run.log('EXCEPTION 13','Model data prep Exception')
 
     
 #try:
 #Split dataset into independent and dependent variables
-y = levy_model_set2'log_adjusted_commitments']
-X = levy_model_set2.drop(['log_adjusted_commitments'], axis=1)
+y = levy_model_set4['log_adjusted_commitments']
+X = levy_model_set4.drop(['log_adjusted_commitments'], axis=1)
 
 #Split our dataset into train and test sets
 X_train_acc, X_test_acc, y_train, y_test = train_test_split(X, y, test_size = 0.25)
