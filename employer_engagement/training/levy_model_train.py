@@ -228,7 +228,7 @@ try:
 
     levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
-    levy_model_set3=levy_model_set2
+    levy_model_set3 = levy_model_set2
     run.log('Success 12','SIC manipulation Success')
     #except Exception:
     #run.log('EXCEPTION 12','SIC manipulation Exception')
@@ -256,7 +256,7 @@ except Exception:
 
     levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) 
 
-    levy_model_set3=levy_model_set2
+    levy_model_set3 = levy_model_set2
 
     levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
 
