@@ -263,7 +263,7 @@ except Exception:
     
     levy_model_set4 = levy_model_set3
 
-    print(levy_model_set_4)
+    print(levy_model_set4)
     run.log('EXCEPTION 13','Model data prep Exception')
 
     
