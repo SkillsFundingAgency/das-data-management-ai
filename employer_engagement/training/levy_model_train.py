@@ -306,20 +306,20 @@ xg_reg = xgb.XGBRegressor(objective ='reg:squarederror')
 xg_reg.fit(X_train,y_train)
 
 #Predict the target variable using the test dataset on our model
-preds = xg_reg.predict(X_test)
+#preds = xg_reg.predict(X_test)
 
 #R^2, Rreduced R^2 and RMSE
-reduced_r2 = 1-(1-r2_score(y_test, preds))*((len(X_test)-1)/(len(X_test)-X_test.shape[1]-1))
-r2='R^2 = {:.5f}'.format(r2_score(y_test, preds))
-reduced_r2_output='Reduced_R^2 = {:.5f}'.format(reduced_r2)
-rmse='RMSE = {:.5f}'.format(mean_squared_error(y_test, preds, squared=False))
+#reduced_r2 = 1-(1-r2_score(y_test, preds))*((len(X_test)-1)/(len(X_test)-X_test.shape[1]-1))
+#r2='R^2 = {:.5f}'.format(r2_score(y_test, preds))
+#reduced_r2_output='Reduced_R^2 = {:.5f}'.format(reduced_r2)
+#rmse='RMSE = {:.5f}'.format(mean_squared_error(y_test, preds, squared=False))
 
 
 #Shap Values
 explainer = shap.TreeExplainer(xg_reg)
-shap_values = explainer.shap_values(X_train)
-plt.clf()
-shap.summary_plot(shap_values, X_train, feature_names=X.drop(['account_id'], axis=1).columns, plot_type="bar", show=True)
+#shap_values = explainer.shap_values(X_train)
+#plt.clf()
+#shap.summary_plot(shap_values, X_train, feature_names=X.drop(['account_id'], axis=1).columns, plot_type="bar", show=True)
 #run.log('Success 16','Model stats Success')
 run.log('R2',r2)
 run.log('Reduced R2',reduced_r2_output)
