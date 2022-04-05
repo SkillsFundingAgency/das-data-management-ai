@@ -310,8 +310,9 @@ preds = xg_reg.predict(X_test)
 #R^2, Rreduced R^2 and RMSE
 reduced_r2 = 1-(1-r2_score(y_test, preds))*((len(X_test)-1)/(len(X_test)-X_test.shape[1]-1))
 r2='R^2 = {:.5f}'.format(r2_score(y_test, preds))
-reduced_r2_output='Reduced_R^2 = {:.5f}'.format(Reduced_R2)
+reduced_r2_output='Reduced_R^2 = {:.5f}'.format(reduced_r2)
 rmse='RMSE = {:.5f}'.format(mean_squared_error(y_test, preds, squared=False))
+
 
 #Shap Values
 explainer = shap.TreeExplainer(xg_reg)
@@ -331,7 +332,7 @@ run.log_image('Shap Plot', plot=plt)
 # Save the trained model in the outputs folder
 os.makedirs('outputs', exist_ok=True)
 model_file = os.path.join('outputs', 'levy_model.pkl')
-joblib.dump(value=xgb_model, filename=model_file)
+joblib.dump(value=xg_reg, filename=model_file)
 
 # Register the model to pick up in scoring
 Model.register(workspace=aml_workspace, \
