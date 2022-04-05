@@ -294,8 +294,9 @@ print(y_train)
 
 #try:
 #Set parameters of xgboost regressor
-xg_reg = xgb.XGBRegressor(objective ='reg:squarederror', colsample_bytree = 0.3, learning_rate = 0.05,
-max_depth = 5, alpha = 10, n_estimators = 700, verbosity = 2, eval_metric='rmse')
+xg_reg = xgb.XGBRegressor(objective ='reg:squarederror')
+#, colsample_bytree = 0.3, learning_rate = 0.05,
+#max_depth = 5, alpha = 10, n_estimators = 700, verbosity = 2, eval_metric='rmse')
 #run.log('Success 15','Model build Success')
 #except Exception:
 #run.log('EXCEPTION 15','Model build Exception')
