@@ -165,7 +165,9 @@ except Exception:
 
     levy_scored=levy_score_set
 
-    levy_scored['levy_model_prediction']=np.exp2(scored)-1
+    #levy_scored['levy_model_prediction']=np.exp2(scored)-1
+
+    levy_scored=pd.DataFrame(scored, columns=['levy_model_prediction'])
 
     levy_scored2=levy_scored[['A3','levy_model_prediction']]
                             
