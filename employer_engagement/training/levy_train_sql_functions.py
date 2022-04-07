@@ -38,6 +38,19 @@ def levy_train_01_accounts(top_x: str) :
     where a2 between '2018-01-01' and '2019-01-01' and a1=0 \
     order by rand()) c \
     union \
+    select A1, A2, A3, early_adopter from \
+    (select top {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter \
+    from PDS_AI.PT_A \
+    where a2 between '2019-01-01' and '2020-01-01' and a1=1 \
+    order by rand()) c \
+    union \
+    select A1, A2, A3, early_adopter \
+    from \
+    (select top {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter \
+    from PDS_AI.PT_A \
+    where a2 between '2019-01-01' and '2020-01-01' and a1=0 \
+    order by rand()) c \
+    union \
     select A1, A2, A3, early_adopter \
     from \
     (select top {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter \
@@ -77,8 +90,8 @@ def levy_train_01_accounts(top_x: str) :
     from \
     (select top {} A1, A2, A3, CASE WHEN CAST(A2 AS DATE)<cast('2017-07-01' as date) THEN 1 ELSE 0 END AS early_adopter \
     from PDS_AI.PT_A \
-    where a2 between '2021-01-01' and '2023-01-01' and a1=0 \
-    order by rand()) c".format(top_x))
+    where a2 between '2022-01-01' and '2023-01-01' and a1=0 \
+    order by rand()) c".format(top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x))
     tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=3600)
     levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
     
