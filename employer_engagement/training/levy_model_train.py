@@ -35,7 +35,7 @@ pd.options.mode.chained_assignment = None
 #try:
 # Create model build data into dataframe
 # Create df with all accounts and early adopter flag
-levy_model_accounts=levy_train_functions.levy_train_01_accounts(7)
+levy_model_accounts=levy_train_functions.levy_train_01_accounts(2)
 run.log('Success 01','Accounts Success')
 #except Exception:
 run.log('EXCEPTION 01','Accounts Exception')
