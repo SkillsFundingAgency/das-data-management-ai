@@ -32,7 +32,7 @@ run.log('levy_model_train','levy_model_train')
 #prevent SettingWithCopyWarning message from appearing
 pd.options.mode.chained_assignment = None
 
-#try:
+try:
 # Create model build data into dataframe
 # Create df with all accounts and early adopter flag
 levy_model_accounts=levy_train_functions.levy_train_01_accounts(2)
@@ -46,7 +46,7 @@ account_list = levy_model_accounts['A3'].tolist()
 
 #Remove brackets from list
 sql_account_list=str(account_list)[1:-1]
-print(sql_account_list)
+#print(sql_account_list)
 
 # Select all accounts data for three time periods in model build
 
@@ -148,7 +148,7 @@ levy_model_set = pd.merge(levy_model_set, \
 
 # Fill commitments with 0 if missing
 levy_model_set = levy_model_set.fillna(0)
-print(levy_model_set)
+#print(levy_model_set)
 #run.log('Success 08','Account manipulation Success')
 #except Exception:
 #run.log('EXCEPTION 08','Account manipulation Exception')
@@ -172,7 +172,7 @@ levy_model_set = pd.merge(levy_model_set, \
 company_type=pd.get_dummies(levy_model_set['company_type'],prefix='comp_type')
 levy_model_set = levy_model_set.merge(company_type, left_index=True, right_index=True)
 
-print(levy_model_set)
+#print(levy_model_set)
 
 # Create year account created variable
 #levy_model_set['cohort'] = levy_model_set['account_created'].dt.year
@@ -225,7 +225,7 @@ try:
     levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
     #Calculate the log(commitments)
-    levy_model_set['log_adjusted_commitments'] = np.log2(levy_model_set['total_commitments'] + 1)
+    levy_model_set['log_adjusted_commitments'] = np.log(levy_model_set['total_commitments'] + 1)
 
     levy_model_set2 = levy_model_set[(levy_model_set.employees <=20000) & (levy_model_set.tpr_match ==1) & (levy_model_set.company_status ==3)]
 
@@ -250,7 +250,7 @@ try:
     #run.log('Success 13','Model data prep Success')
 except Exception:
 
-    print(levy_model_set)
+    #print(levy_model_set)
 
     levy_model_set['log_employees'] = np.log2(levy_model_set['employees']+1)
 
@@ -261,7 +261,7 @@ except Exception:
 
     levy_model_set3 = levy_model_set2
 
-    print(levy_model_set3)
+    #print(levy_model_set3)
 
     levy_model_set3.rename(columns = {'A1':'levy_non_levy', 'A3':'account_id', 'months_since_sign_up2':'as_months_since_sign_up'}, inplace = True)
     
@@ -276,8 +276,8 @@ except Exception:
     #Drop rows with any null values
     levy_model_set4 = levy_model_set3.dropna() 
 
-    print(levy_model_set4)
-    run.log('EXCEPTION 13','Model data prep Exception')
+    #print(levy_model_set4)
+    run.log('EXCEPTION 13','CH Data Exception')
 
     
 #try:
@@ -350,5 +350,5 @@ Model.register(workspace=aml_workspace, \
 #try:
 run.get_all_logs(destination='outputs')
 run.log('Success 18','Output Logs')
-#except Exception:
-run.log('EXCEPTION 18','Output Logs')
+except Exception:
+run.log('EXCEPTION 18','ModelCreationFailed')
