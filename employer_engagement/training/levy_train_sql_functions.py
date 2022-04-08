@@ -16,7 +16,7 @@ aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 def levy_train_01_accounts(top_x: str) :
-    query_levy_accounts = DataPath(datastore, "select top {} * from asdata_pl.tpr_orgdetails".format(top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x,top_x))
+    query_levy_accounts = DataPath(datastore, "select top {} * from asdata_pl.tpr_orgdetails".format(top_x))
     tabular_levy_accounts = Dataset.Tabular.from_sql_query(query_levy_accounts, query_timeout=3600)
     levy_model_accounts = tabular_levy_accounts.to_pandas_dataframe()
     
