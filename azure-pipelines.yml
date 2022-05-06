@@ -71,3 +71,15 @@ stages:
     parameters:
       Environment: PP
       ServiceConnection: SFA-DIG-PreProd-ARM
+
+- stage: BuildAndTrainPROD
+  displayName: Build and Train Prod
+  condition: and(succeeded(), eq(variables.Deploy, 'true'))
+  variables:
+  - group: Prod Management Resources
+  - group: Prod Shared Resources
+  jobs:
+  - template: pipeline-templates/job/deploy-pipeline.yml
+    parameters:
+      Environment: PROD
+      ServiceConnection: SFA-DIG-Prod-ARM
