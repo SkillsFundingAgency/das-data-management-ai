@@ -14,11 +14,9 @@ The Azure infrastructure for this project requires some additional manual steps 
 1. Deploy the Infrastructure using [![Azure DevOps]](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=2651&repoName=SkillsFundingAgency%2Fdas-data-management-ai&branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build?definitionId=2651&_a=summary)
 2. Grant the ML and ML CPU Cluster read/write access to the Data Management database
     ```CREATE USER [cluster-resource-name] FROM EXTERNAL PROVIDER```
-    ```ALTER ROLE db_datareader ADD member [cluster-resource-name]```
-    ```ALTER ROLE db_datawriter ADD member [cluster-resource-name]```
+    ```ALTER ROLE [ml-role] ADD member [cluster-resource-name]```
     ```CREATE USER [workspace-resource-name] FROM EXTERNAL PROVIDER```
-    ```ALTER ROLE db_datareader ADD member [workspace-resource-name]```
-    ```ALTER ROLE db_datawriter ADD member [workspace-resource-name]```
+    ```ALTER ROLE [ml-role] ADD member [workspace-resource-name]```
 3. IAM
     - The Storage Account IAM is actions by the running the Set-MLResourcePermissions.ps1 script in the Azure folder. See script for example.
     - This should be replaced with a more automated solution when a design has been accepted for automating permission changes.
