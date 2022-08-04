@@ -32,6 +32,10 @@
         },
         "subnetObject": {
             "type": "object"
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow('yyMMddHHmmss')]"
         }
     },
     "variables": {
@@ -58,7 +62,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-subnet",
+            "name": "[concat('ml-subnet-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -90,7 +94,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-subnet-firewall-rule",
+            "name": "[concat('ml-subnet-firewall-rule-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -104,14 +108,14 @@
                         "value": "[parameters('sharedSQLServerName')]"
                     },
                     "subnetResourceIdList": {
-                        "value": "[createArray(reference('ml-subnet').outputs.SubnetResourceId.value)]"
+                        "value": "[createArray(reference(concat('ml-subnet-', parameters('utcValue'))).outputs.SubnetResourceId.value)]"
                     }
                 }
             }
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-container-registry",
+            "name": "[concat('ml-container-registry-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -138,7 +142,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-default-storage",
+            "name": "[concat('ml-default-storage-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -162,7 +166,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-data-storage",
+            "name": "[concat('ml-data-storage-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -180,7 +184,7 @@
                     },
                     "subnetResourceIdList": {
                         "value": [
-                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                            "[reference(concat('ml-subnet-', parameters('utcValue'))).outputs.SubnetResourceId.value]"
                         ]
                     }
                 }
@@ -191,7 +195,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-data-container",
+            "name": "[concat('ml-data-container-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -214,12 +218,12 @@
             },
             "dependsOn": [
                 "[variables('resourceGroupName')]",
-                "ml-data-storage"
+                "[concat('ml-data-storage-', parameters('utcValue'))]"
             ]
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-keyvault",
+            "name": "[concat('ml-keyvault-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -237,7 +241,7 @@
                     },
                     "subnetResourceIdList": {
                         "value": [
-                            "[reference('ml-subnet').outputs.SubnetResourceId.value]"
+                            "[reference(concat('ml-subnet-', parameters('utcValue'))).outputs.SubnetResourceId.value]"
                         ]
                     }
                 }
@@ -248,7 +252,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-app-insights",
+            "name": "[concat('ml-app-insights-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -269,7 +273,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-workspace",
+            "name": "[concat('ml-workspace-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -283,16 +287,16 @@
                         "value": "[variables('workspaceName')]"
                     },
                     "storageAccountResourceId": {
-                        "value": "[reference('ml-default-storage').outputs.storageResourceId.value]"
+                        "value": "[reference(concat('ml-default-storage-', parameters('utcValue'))).outputs.storageResourceId.value]"
                     },
                     "keyVaultResourceId": {
-                        "value": "[reference('ml-keyvault').outputs.KeyVaultResourceId.value]"
+                        "value": "[reference(concat('ml-keyvault-', parameters('utcValue'))).outputs.KeyVaultResourceId.value]"
                     },
                     "appInsightsResourceId": {
-                        "value": "[reference('ml-app-insights').outputs.AppInsightsResourceId.value]"
+                        "value": "[reference(concat('ml-app-insights-', parameters('utcValue'))).outputs.AppInsightsResourceId.value]"
                     },
                     "containerRegistryResourceId": {
-                        "value": "[reference('ml-container-registry').outputs.acrResourceId.value]"
+                        "value": "[reference(concat('ml-container-registry-', parameters('utcValue'))).outputs.acrResourceId.value]"
                     },
                     "confidentialData": {
                         "value": "[parameters('confidentialData')]"
@@ -305,7 +309,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-compute",
+            "name": "[concat('ml-compute-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -337,12 +341,12 @@
             },
             "dependsOn": [
                 "[variables('resourceGroupName')]",
-                "ml-workspace"
+                "[concat('ml-workspace-', parameters('utcValue'))]"
             ]
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "ml-datastore",
+            "name": "[concat('ml-datastore-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -368,8 +372,8 @@
             },
             "dependsOn": [
                 "[variables('resourceGroupName')]",
-                "ml-workspace",
-                "ml-data-container"
+                "[concat('ml-workspace-', parameters('utcValue'))]",
+                "[concat('ml-data-container-', parameters('utcValue'))]"
             ]
         }
     ],
