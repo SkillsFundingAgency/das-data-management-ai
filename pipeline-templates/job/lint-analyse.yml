@@ -1,0 +1,28 @@
+jobs:
+- job: LintAndAnalyze
+  displayName: Lint & Analyze
+  pool:
+    name: DAS - Continuous Integration
+  steps:
+  - task: SonarCloudPrepare@1
+    displayName: Prepare SonarCloud analysis configuration
+    condition: and(succeeded(), or(in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/main'), eq(variables['Build.Reason'], 'PullRequest')))
+    inputs:
+      SonarCloud: ESFA - SonarCloud
+      organization: $(SonarCloudOrganisationKey)
+      scannerMode: CLI
+      configMode: manual
+      cliProjectName: "$(Build.DefinitionName)"
+      cliProjectKey: ${{ replace(variables['Build.Repository.Name'], '/', '_') }}
+
+  ##TO DO: add linting steps
+
+  - task: SonarCloudAnalyze@1
+    displayName: Run SonarCloud analysis
+    condition: and(succeeded(), or(in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/main'), eq(variables['Build.Reason'], 'PullRequest')))
+
+  - task: SonarCloudPublish@1
+    displayName: Publish SonarCloud analysis results on build summary
+    condition: and(succeeded(), or(in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/main'), eq(variables['Build.Reason'], 'PullRequest')))
+    inputs:
+      pollingTimeoutSec: '300'
