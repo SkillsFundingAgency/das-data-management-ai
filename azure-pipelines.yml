@@ -34,7 +34,12 @@ resources:
 
 
 stages:
-## Add linting and unit tests
+- stage: LintAndAnalyse
+  displayName: Lint & Code Analysis
+  variables:
+  - group: BUILD Management Resources
+  jobs:
+  - template: pipeline-templates/job/lint-analyse.yml
 
 - stage: BuildAndTrainAT
   displayName: Build and Train AT
