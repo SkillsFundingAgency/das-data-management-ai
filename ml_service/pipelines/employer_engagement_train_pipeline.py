@@ -4,6 +4,7 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experimen
 from azureml.core.run import Run
 from azureml.core.runconfig import RunConfiguration
 from azureml.pipeline.steps import PythonScriptStep
+from azureml.pipeline.core import PipelineParameter
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
@@ -44,6 +45,10 @@ pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
 
+# Adding a PipelineParameter to a step
+pipeline_param = PipelineParameter(name="pipeline_arg", default_value="6")
+   
+
 #Create pipelines for levy models
-get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment,pipeline_param) 
 get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment)

@@ -9,6 +9,7 @@ import shap
 import math
 import xgboost as xgb
 import matplotlib.pyplot as plt
+import argparse
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
@@ -33,7 +34,13 @@ run.log('levy_model_train','levy_model_train')
 pd.options.mode.chained_assignment = None
 
 try:
-    # Create model build data into dataframe
+
+    #test arguments
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument("--param1", type=str, dest="pipeline_param", default=6, help="test arguments")
+    args = parser.parse_args()
+    pipeline_param = args.pipeline_param
+    
     # Create df with all accounts and early adopter flag
     levy_model_accounts=levy_train_functions.levy_train_01_accounts(2)
     run.log('Success 01','Accounts Success')
