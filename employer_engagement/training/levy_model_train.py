@@ -40,9 +40,10 @@ try:
     parser.add_argument("--param1", type=str, dest="pipeline_param", default=6, help="test arguments")
     args = parser.parse_args()
     pipeline_param = args.pipeline_param
+    run.log('test01',pipeline_param)
     
     # Create df with all accounts and early adopter flag
-    levy_model_accounts=levy_train_functions.levy_train_01_accounts(2)
+    levy_model_accounts=levy_train_functions.levy_train_01_accounts(pipeline_param)
     run.log('Success 01','Accounts Success')
     #except Exception:
     run.log('EXCEPTION 01','Accounts Exception')

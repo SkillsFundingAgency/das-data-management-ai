@@ -50,5 +50,5 @@ pipeline_param = PipelineParameter(name="pipeline_arg", default_value="6")
    
 
 #Create pipelines for levy models
-get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment, pipeline_param) 
-get_levy_score(aml_workspace, aml_compute, pipeline_run_config, experiment, pipeline_param)
+get_levy_train(aml_workspace, aml_compute, pipeline_run_config, pipeline_param) 
+get_levy_score(aml_workspace, aml_compute, pipeline_run_config, pipeline_param)

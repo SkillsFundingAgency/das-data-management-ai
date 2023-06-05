@@ -36,13 +36,14 @@ try:
     parser.add_argument("--param1", type=str, dest="pipeline_param", default=6, help="test arguments")
     args = parser.parse_args()
     pipeline_param = args.pipeline_param
+    run.log('test01',pipeline_param)
 
     #prevent SettingWithCopyWarning message from appearing
     pd.options.mode.chained_assignment = None
 
     # Create df with all accounts and early adopter flag
 
-    levy_score_set=levy_score_functions.levy_score_01_accounts(7)
+    levy_score_set=levy_score_functions.levy_score_01_accounts(pipeline_param)
 
     # select account_ids into list 
     account_list = levy_score_set['A3'].tolist()
