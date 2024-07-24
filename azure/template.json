@@ -36,6 +36,10 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow('yyMMddHHmmss')]"
+        },
+        "minimumTlsVersion": {
+            "type": "string",
+            "defaultValue": "TLS1_2"
         }
     },
     "variables": {
@@ -157,6 +161,9 @@
                     },
                     "storageKind": {
                         "value": "StorageV2"
+                    },
+                    "minimumTlsVersion": {
+                        "value": "[parameters('minimumTlsVersion')]"
                     }
                 }
             },
