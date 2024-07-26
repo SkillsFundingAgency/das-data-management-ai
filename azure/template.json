@@ -193,6 +193,9 @@
                         "value": [
                             "[reference(concat('ml-subnet-', parameters('utcValue'))).outputs.SubnetResourceId.value]"
                         ]
+                    },
+                    "minimumTlsVersion": {
+                        "value": "[parameters('minimumTlsVersion')]"
                     }
                 }
             },
