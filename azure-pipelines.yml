@@ -30,7 +30,7 @@ resources:
     endpoint: SkillsFundingAgency
   containers:
   - container: mlops
-    image: mcr.microsoft.com/mlops/python:latest
+    image: mcr.microsoft.com/mlops/python:3.6
 
 
 stages:
