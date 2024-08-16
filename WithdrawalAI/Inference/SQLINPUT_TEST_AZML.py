@@ -74,19 +74,25 @@ from azureml.core.run import Run
 
 aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-
+run=Run.get_context()
+run.log("HELLO THERE, STARTING JOB")
 
 #print(run)
 
 
 def QueryDB(dummyvar=1000):
-    query=DataPath(datastore,"SELECT TOP({}) * FROM ASData_PL.Comt_Apprenticeship".format(1000)) # just to show how it works with the data
-    tabular_obj=Dataset.Tabular.from_sql_query(query,query_timeout=3600)
-    df_pandas=tabular_obj.to_pandas_dataframe()
+    df_pandas=pd.DataFrame()
+    try:
+     query=DataPath(datastore,"SELECT TOP({}) * FROM ASData_PL.Comt_Apprenticeship".format(1000)) # just to show how it works with the data
+     tabular_obj=Dataset.Tabular.from_sql_query(query,query_timeout=3600)
+     df_pandas=tabular_obj.to_pandas_dataframe()
+    except Exception as e:
+     run.log("Exception: {}".format(e))
     return df_pandas.copy(deep=True)
 
 df_in=QueryDB()
-
+run.log("Database queried successfully")
+run.log("Number of rows: {}".format(len(df_in)))
 
 
 df_BDT_ALLOC=df_in.sample(frac=0.5,replace=False,random_state=42)
@@ -108,7 +114,7 @@ print(df_out['EmailClassification'].value_counts())
 
 df_out['ApprenticeshipId']=df_out['Id']
 df_out=df_out[['ApprenticeshipId','EmailClassification','Predicted_Withdrawal']]
-
+run.log("Generated an output dataframe")
 df_out.to_csv("./{}.csv".format(ts_formatted))
 
 exit(0)
