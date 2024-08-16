@@ -41,7 +41,7 @@ aml_compute = aml_workspace.compute_targets["cpucluster"]
 experiment_folder = 'WithdrawalAI'
  
 # Create a Python environment for the experiment (from a .yml file)
-environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_env.yml")
+environment = Environment.from_conda_specification("environment", experiment_folder + "/conda_env_MVS.yml")
 # Register the environment 
 environment.register(workspace=aml_workspace)
 registered_env = Environment.get(aml_workspace, 'environment')
