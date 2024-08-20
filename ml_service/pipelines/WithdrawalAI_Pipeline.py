@@ -53,7 +53,7 @@ def get_WithdrawalAIModel(aml_workspace: Workspace, aml_compute: str, pipeline_r
     train_source_dir="./WithdrawalAI/Inference/" # path is a dud
     WithdrawalAIModel_step = PythonScriptStep(
         name='WithdrawalAIModel',
-        script_name="SQLINPUT_TEST_AZML.py",
+        script_name="testML.py",
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
         source_directory=train_source_dir)
