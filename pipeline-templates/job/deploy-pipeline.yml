@@ -75,5 +75,5 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        python -m ml_service.pipelines.employer_engagement_train_pipeline
-        #python -m ml_service.pipelines.WithdrawalAI_Pipeline # WithdrawalAI module
+        #python -m ml_service.pipelines.employer_engagement_train_pipeline
+        python -m ml_service.pipelines.WithdrawalAI_Pipeline # WithdrawalAI module
