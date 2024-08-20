@@ -9,7 +9,6 @@ import shap
 import math
 import xgboost as xgb
 import matplotlib.pyplot as plt
-import argparse
 from azureml.core.run import Run
 from azureml.core import Dataset, Datastore, Model
 from azureml.data.datapath import DataPath
@@ -30,20 +29,12 @@ datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 run = Run.get_context()
 run.log('levy_model_score','levy_model_score')
 try:
-    
-    #test arguments
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument("--param1", type=str, dest="pipeline_param", default=6, help="test arguments")
-    args = parser.parse_args()
-    pipeline_param = args.pipeline_param
-    run.log('test01',pipeline_param)
-
     #prevent SettingWithCopyWarning message from appearing
     pd.options.mode.chained_assignment = None
 
     # Create df with all accounts and early adopter flag
 
-    levy_score_set=levy_score_functions.levy_score_01_accounts(pipeline_param)
+    levy_score_set=levy_score_functions.levy_score_01_accounts(7)
 
     # select account_ids into list 
     account_list = levy_score_set['A3'].tolist()
