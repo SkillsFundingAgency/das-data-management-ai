@@ -76,4 +76,5 @@ jobs:
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
         #python -m ml_service.pipelines.employer_engagement_train_pipeline
-        python -m ml_service.pipelines.WithdrawalAI_Pipeline # WithdrawalAI module
+        #python -m ml_service.pipelines.WithdrawalAI_Pipeline # WithdrawalAI module
+        python -m ml_service.pipelines.Hello_World_Pipeline
