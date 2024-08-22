@@ -55,6 +55,30 @@ Model.register(workspace=aml_workspace,
                description='Withdrawal AI model'
                )
 
+print("**************************************")
+print("START: Check if a model is registered correctly prior to job start")
+models=Model.list(workspace=aml_workspace)
+print("Number of models registered: {}".format(len(models)))
+if(len(models)>0):
+    modctr=0
+    for mod in models:
+        print("Model: {}".format(modctr))
+        try:
+            print(f"name :{mod.name}")
+        except:
+            pass
+        try:
+            print(f'model ID: {mod.id}')
+        except:
+            pass
+        try:
+            print(f'Path: {mod.serialize()}')
+        except:
+            pass
+        print(mod)
+        print("\n")
+        modctr+=1
+print("*************************")
 
 
 def get_WithdrawalAIModel(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
@@ -75,6 +99,44 @@ def get_WithdrawalAIModel(aml_workspace: Workspace, aml_compute: str, pipeline_r
     WithdrawalAIModel_pipeline = Pipeline(workspace=aml_workspace, steps=WithdrawalAIModel_step_sequence)
     WithdrawalAIModel_pipeline.validate()
 
+
+
+
+
+
+
+    print("**************************************")
+    print("Runtime: Check if a model is registered correctly prior to job start")
+    models=Model.list(workspace=aml_workspace)
+    print("Number of models registered: {}".format(len(models)))
+    if(len(models)>0):
+        modctr=0
+        for mod in models:
+            print("Model: {}".format(modctr))
+            try:
+                print(f"name :{mod.name}")
+            except:
+                pass
+            try:
+                print(f'model ID: {mod.id}')
+            except:
+                pass
+            try:
+                print(f'Path: {mod.serialize()}')
+            except:
+                pass
+            print(mod)
+            print("\n")
+            modctr+=1
+    ###the validate() method returns a list, so lets see what it spits out! Might be useful
+    validation_obj=WithdrawalAIModel_pipeline.validate()
+    print("validation object")
+    print(validation_obj)
+    print("*************************")
+
+
+
+    ###the offending buggy line - this is where the code will crash
     WithdrawalAIModel_pipeline_run = experiment.submit(WithdrawalAIModel_step_sequence,regenerate_outputs=True)
 
     # RunDetails(pipeline_run).show()
