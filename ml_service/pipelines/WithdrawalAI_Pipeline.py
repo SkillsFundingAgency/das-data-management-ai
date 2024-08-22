@@ -7,7 +7,7 @@ from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, Publishe
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.core import Workspace
 from azureml.core.compute import ComputeTarget
-from azureml.core import Model
+from azureml.core.model import Model
 
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
@@ -50,7 +50,9 @@ pipeline_run_config.environment = registered_env
 #Register model - even though its inference we need to tell AzureML that there's an AI model involved otherwise things start crashing
 Model.register(workspace=aml_workspace,
                model_path=experiment_folder +"/Inference/dummy_model.pkl",
-               model_name="dummy_model"
+               model_name="dummy_model",
+               tags={'pretrained':'inception'},
+               description='Withdrawal AI model'
                )
 
 
