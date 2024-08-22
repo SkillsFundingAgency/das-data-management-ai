@@ -57,7 +57,7 @@ pipeline_run_config.target = aml_compute
 pipeline_run_config.environment = registered_env
 
 #Register model - even though its inference we need to tell AzureML that there's an AI model involved otherwise things start crashing
-Model.register(workspace=aml_workspace,
+model=Model.register(workspace=aml_workspace,
                model_path=experiment_folder +"/Inference/dummy_model.pkl",
                model_name="dummy_model",
                tags={'pretrained':'inception'},
@@ -67,6 +67,8 @@ Model.register(workspace=aml_workspace,
 print("**************************************")
 print("START: Check if a model is registered correctly prior to job start")
 models=Model.list(workspace=aml_workspace)
+
+
 print("Number of models registered: {}".format(len(models)))
 if(len(models)>0):
     modctr=0
@@ -129,8 +131,8 @@ def get_WithdrawalAIModel(aml_workspace: Workspace, aml_compute: str, pipeline_r
 
 
     # Create sequence of steps for model train
-    WithdrawalAIModel_step_sequence = StepSequence(steps = [WithdrawalAIModel_step])
-
+    #WithdrawalAIModel_step_sequence = StepSequence(steps = [WithdrawalAIModel_step])
+    WithdrawalAIModel_step_sequence= StepSequence(steps=[])
     # Create pipeline
     WithdrawalAIModel_pipeline = Pipeline(workspace=aml_workspace, steps=WithdrawalAIModel_step_sequence)
     WithdrawalAIModel_pipeline.validate()
