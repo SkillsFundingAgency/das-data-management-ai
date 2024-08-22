@@ -40,6 +40,15 @@ environment = Environment.from_conda_specification("environment", experiment_fol
 # Register the environment 
 environment.register(workspace=aml_workspace)
 registered_env = Environment.get(aml_workspace, 'environment')
+
+
+#Register model - even though its inference we need to tell AzureML that there's an AI model involved otherwise things start crashing
+Model.register(workspace=aml_workspace,
+               model_path=experiment_folder +"/Inference/dummy_model.pkl",
+               model_name="dummy_model",
+               tags={'pretrained':'inception'},
+               description='Withdrawal AI model'
+               )
 # Create a new runconfig object for the pipeline
 pipeline_run_config = RunConfiguration()
 # Use the compute you created above. 
@@ -54,6 +63,33 @@ Model.register(workspace=aml_workspace,
                tags={'pretrained':'inception'},
                description='Withdrawal AI model'
                )
+
+print("**************************************")
+print("START: Check if a model is registered correctly prior to job start")
+models=Model.list(workspace=aml_workspace)
+print("Number of models registered: {}".format(len(models)))
+if(len(models)>0):
+    modctr=0
+    for mod in models:
+        print("Model: {}".format(modctr))
+        try:
+            print(f"name :{mod.name}")
+        except:
+            pass
+        try:
+            print(f'model ID: {mod.id}')
+        except:
+            pass
+        try:
+            print(f'Path: {mod.serialize()}')
+        except:
+            pass
+        print(mod)
+        print("\n")
+        modctr+=1
+print("*************************")
+
+
 
 print("**************************************")
 print("START: Check if a model is registered correctly prior to job start")
