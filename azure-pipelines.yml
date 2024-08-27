@@ -30,7 +30,7 @@ resources:
     endpoint: SkillsFundingAgency
   containers:
   - container: mlops
-    image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04:latest
+    image: mcr.microsoft.com/azurelinux/base/python:3.12
 
 
 stages:
