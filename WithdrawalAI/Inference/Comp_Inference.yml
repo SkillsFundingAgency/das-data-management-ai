@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+name: testdeployment
+display_name: test_deployment
+code: ./
+command: python TestMacro.py 
+environment:
+  conda_file: ./conda_env_MVS.yml
+  image:  mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04

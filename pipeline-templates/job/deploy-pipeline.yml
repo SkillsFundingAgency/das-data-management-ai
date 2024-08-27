@@ -75,4 +75,7 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        python -m ml_service.pipelines.WithdrawalAI_Pipeline
+        #python -m ml_service.pipelines.WithdrawalAI_Pipeline
+        #install AzureML SDK version 2 if not already installed - should be a passthrough
+        pip install azure.ai.ml
+        python -m ml_service.pipelines.Deploy_WithdrawalAI_Pipeline
