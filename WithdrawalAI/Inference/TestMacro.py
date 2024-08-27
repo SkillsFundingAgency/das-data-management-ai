@@ -42,6 +42,13 @@ def main():
             if("prod" in model.name.lower()):
                 print("iteration:{}".format(modctr))
                 print(model.name,model.version)
+                if(modctr==0):
+                    outpath=model.download(target_dir="./RegisteredModels/",exist_ok=True)
+                    print("DOWNLOAD OK")
+                    with open(outpath,'rb') as rf:
+                        dl_model=pickle.load(rf)
+                        print(dl_model)
+                    print("DOWNLOADED MODEL AND VERIFIED IT EXISTS")
                 modctr+=1
         print("END MODEL READ")
     except Exception as e:
