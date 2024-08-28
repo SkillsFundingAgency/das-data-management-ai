@@ -30,7 +30,7 @@ resources:
     endpoint: SkillsFundingAgency
   containers:
   - container: mlops
-    image: mcr.microsoft.com/azurelinux/base/python:3.12
+    image: mcr.microsoft.com/azureml/curate/python-sdk-v2:21
 
 
 stages:
