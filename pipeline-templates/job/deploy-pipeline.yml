@@ -63,7 +63,7 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
   steps:
   - checkout: self
-  - task: AzureCLI@2
+  - task: AzureCLI
     displayName: "Deploy ML pipelines"
     inputs:
       azureSubscription: ${{ parameters.ServiceConnection }}
