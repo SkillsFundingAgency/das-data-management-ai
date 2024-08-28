@@ -7,8 +7,8 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
-from ml_service.pipelines.attach_levy_train import get_levy_train
-from ml_service.pipelines.attach_levy_score import get_levy_score
+from ml_service.pipelines.test_train import test_train
+
 
 # Set up all environment details
 e = Env()
@@ -45,5 +45,5 @@ pipeline_run_config.target = aml_compute
 pipeline_run_config.environment = registered_env
 
 #Create pipelines for levy models
-get_levy_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+test_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 
