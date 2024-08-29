@@ -30,6 +30,7 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     test_train_pipeline = Pipeline(workspace=aml_workspace, steps=test_train_sequence)
     test_train_pipeline.validate()
 
+
     # Publish pipeline to AzureML
     test_train_published_pipeline = test_train_pipeline.publish('test-train-pipeline')
 
@@ -45,4 +46,7 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
                                                        description="Endpoint to test Train pipeline",
                                                        )
     
+    print("pipeline_endpoint name={}".format(str(pipeline_endpoint.name)))
+    print("pipeline endpoint ID: {}".format(str(pipeline_endpoint.id)))
+    print("pipeline URL: {}".format(str(pipeline_endpoint.endpoint)))
     return
