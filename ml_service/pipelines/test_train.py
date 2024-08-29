@@ -45,8 +45,11 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
                                                        pipeline=test_train_published_pipeline,
                                                        description="Endpoint to test Train pipeline",
                                                        )
-    
-    print("pipeline_endpoint name={}".format(str(pipeline_endpoint.name)))
-    print("pipeline endpoint ID: {}".format(str(pipeline_endpoint.id)))
-    print("pipeline URL: {}".format(str(pipeline_endpoint.endpoint)))
+    try:
+        print("pipeline_endpoint name={}".format(str(pipeline_endpoint.name)))
+        print("pipeline endpoint ID: {}".format(str(pipeline_endpoint.id)))
+        print("pipeline URL: {}".format(str(pipeline_endpoint.endpoint)))
+    except Exception as e:
+        print("Exception: {}".format(e))
+        pass
     return
