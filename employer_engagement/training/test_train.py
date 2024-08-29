@@ -22,7 +22,7 @@ from sklearn.metrics import r2_score
 
 import levy_train_sql_functions as levy_train_functions
 import generic_sql_functions as generic_train_functions
- 
+import pickle 
 # Set up config of workspace and datastore
 aml_workspace = Run.get_context().experiment.workspace
 #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
@@ -31,6 +31,39 @@ run = Run.get_context()
 
 #prevent SettingWithCopyWarning message from appearing
 #pd.options.mode.chained_assignment = None
+
+### Get XGBoost version -pkl load might be a bit funky if XGB is different to the model saved
+try:
+    run.log("INFO: XGB VERSION {}".format(xgb.__version__))
+except:
+    pass
+
+try:
+    models=Model.list(aml_workspace)
+    run.log("INFO: Number of models registered: {}".format(len(models)))
+    run.log("INFO : List of models: {}".format(str([x.name for x in models])))
+    run.log("INFO:  MODEL PATHS: {}".format([x.get_model_path() for x in models]))
+except Exception as e:
+    run.log("MODEL REGISTRY ERROR: {}".format(e))
+    
+
+
+modelpath="./dummy_model.pkl"
+if(os.path.exists(modelpath)):
+    try:
+        with open(modelpath,'rb') as rf:
+            model=pickle.load(rf)
+            #check that we have the model at runtime.
+            run.log("Model diagnostic: {}".format(str(model)))
+    except Exception as E:
+        run.log("ERROR: MODEL LOAD: {}".format(E))
+        pass 
+
+
+
+
+
+
 
 try:
     # Create model build data into dataframe
