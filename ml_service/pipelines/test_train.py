@@ -11,6 +11,7 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experimen
 from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
 
+
 def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
    
     train_source_dir="./employer_engagement/training"
@@ -55,4 +56,15 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     except Exception as e:
         print("Exception: {}".format(e))
         pass
+    try:
+        import asyncio
+        asyncio.wait_for(experiment.submit(pipeline_endpoint),timeout=300) # add a timeguard to it
+        print("PIPELINE RUN WORKS")
+    except asyncio.TimeoutError:
+        print("PIPELINE TIMES OUT")
+        pass
+    except Exception as e:
+        print("OTHER EXCEPTION: {}".format(e))
+         
+         
     return
