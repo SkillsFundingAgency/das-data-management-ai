@@ -11,6 +11,7 @@ from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experimen
 from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
 
+
 def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
    
     train_source_dir="./employer_engagement/training"
@@ -55,4 +56,12 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     except Exception as e:
         print("Exception: {}".format(e))
         pass
+    try:
+        import asyncio
+        submit_run=experiment.submit(pipeline_endpoint) 
+        print("PIPELINE RUN WORKS")
+    except Exception as e:
+        print("SUBMIT EXCEPTION: {}".format(e))
+         
+         
     return
