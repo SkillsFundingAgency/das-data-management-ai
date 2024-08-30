@@ -60,6 +60,8 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
         import asyncio
         submit_run=experiment.submit(pipeline_endpoint) 
         print("PIPELINE RUN WORKS")
+        portal_url=submit_run.get_portal_url()
+        print("PORTAL URL: {}".format(portal_url))
     except Exception as e:
         print("SUBMIT EXCEPTION: {}".format(e))
          
