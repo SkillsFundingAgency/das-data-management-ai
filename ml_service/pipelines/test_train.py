@@ -58,13 +58,10 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
         pass
     try:
         import asyncio
-        asyncio.wait_for(experiment.submit(pipeline_endpoint),timeout=300) # add a timeguard to it
+        submit_run=experiment.submit(pipeline_endpoint) 
         print("PIPELINE RUN WORKS")
-    except asyncio.TimeoutError:
-        print("PIPELINE TIMES OUT")
-        pass
     except Exception as e:
-        print("OTHER EXCEPTION: {}".format(e))
+        print("SUBMIT EXCEPTION: {}".format(e))
          
          
     return
