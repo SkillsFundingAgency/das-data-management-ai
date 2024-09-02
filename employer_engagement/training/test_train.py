@@ -46,6 +46,7 @@ try:
     #Get latest model
     model=models[-1]
     model.download(".",exist_ok=False)
+    run.log("INFO 5", "MODEL DOWNLOADED SUCCESSFULLY")
 except Exception as e:
     run.log("EXCEPTION 1","MODEL REGISTRY ERROR: {}".format(e))
     
