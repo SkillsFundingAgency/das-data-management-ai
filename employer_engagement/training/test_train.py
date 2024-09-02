@@ -45,7 +45,7 @@ try:
     run.log("INFO 4","INFO:  MODEL PATHS: {}".format([Model.get_model_path(x.name) for x in models]))
     #Get latest model
     model=models[-1]
-    model.download(".",exist_ok=False)
+    model.download(target_dir=".",exist_ok=False)
     run.log("INFO 5", "MODEL DOWNLOADED SUCCESSFULLY")
 except Exception as e:
     run.log("EXCEPTION 1","MODEL REGISTRY ERROR: {}".format(e))
