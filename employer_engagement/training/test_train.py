@@ -42,7 +42,10 @@ try:
     models=Model.list(aml_workspace)
     run.log("INFO 2","INFO: Number of models registered: {}".format(len(models)))
     run.log("INFO 3","INFO : List of models: {}".format(str([x.name for x in models])))
-    run.log("INFO 4","INFO:  MODEL PATHS: {}".format([x.get_model_path() for x in models]))
+    run.log("INFO 4","INFO:  MODEL PATHS: {}".format([Model.get_model_path(x.name) for x in models]))
+    #Get latest model
+    model=models[-1]
+    model.download(".",exist_ok=False)
 except Exception as e:
     run.log("EXCEPTION 1","MODEL REGISTRY ERROR: {}".format(e))
     
@@ -60,6 +63,10 @@ if(os.path.exists(modelpath)):
         pass 
 
 
+
+#ensure deletion of model file at end of job:
+if(os.path.exists(modelpath)):
+    os.remove(modelpath)
 
 print("*****************************")
 print("END OF JOB")
