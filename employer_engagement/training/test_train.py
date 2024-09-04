@@ -108,7 +108,7 @@ print("METRICS:")
 print(run.get_metrics())
 print("***************************")
 print("PRESENTING LOG:")
-print(run.get_all_logs())
+#print(run.get_all_logs())
 
 
 try:
