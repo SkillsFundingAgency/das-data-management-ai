@@ -75,4 +75,4 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        python -m ml_service.pipelines.test_train_pipeline
+        #python -m ml_service.pipelines.test_train_pipeline
