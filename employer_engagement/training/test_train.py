@@ -91,9 +91,11 @@ try:
     MM=currtime.month
     YYYY=currtime.year
     fname_base=f'WithdrawalRateAIOutput_{mm}_{hh}_{DD}_{MM}_{YYYY}'
-
-    df_proc.to_csv(fname_base+".csv")
-    df_proc.to_parquet(fname_base+".parquet")
+    if(not os.path.exists("./outputs/")):
+        os.mkdir("outputs/")
+    
+    df_proc.to_csv("./outputs/"+fname_base+".csv")
+    df_proc.to_parquet("./outputs/"+fname_base+".parquet")
     run.log("INFO 8", "DATA SAVED TO DISK")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
