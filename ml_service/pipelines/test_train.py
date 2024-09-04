@@ -33,7 +33,7 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
 
 
     # Publish pipeline to AzureML
-    test_train_published_pipeline = test_train_pipeline.publish('test-train-pipeline')
+    test_train_published_pipeline = test_train_pipeline.publish('test-train-pipeline1')
 
     # create Pipeline Endpoint if not already exists , if exists add pipeline to the endpoint
     
