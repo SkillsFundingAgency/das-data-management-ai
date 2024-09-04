@@ -33,19 +33,19 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
 
 
     # Publish pipeline to AzureML
-    test_train_published_pipeline = test_train_pipeline.publish('test-train-pipeline1')
+    test_train_published_pipeline = test_train_pipeline.publish('test-train-pipeline')
 
     # create Pipeline Endpoint if not already exists , if exists add pipeline to the endpoint
     
     try:
-          pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_score_model_endpoint")
+          pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="test_train_endpoint")
           pipeline_endpoint.add_default(test_train_published_pipeline)
           print("Endpoint previously defined and exists")
     except Exception as E:
           print("Endpoint GET exception: {}".format(E))
           print("New endpoint being created")
           pipeline_endpoint = PipelineEndpoint.publish(workspace=aml_workspace,
-                                                       name="levy_score_model_endpoint", 
+                                                       name="test_train_endpoint", 
                                                        pipeline=test_train_published_pipeline,
                                                        description="Endpoint to test Train pipeline",
                                                        )
