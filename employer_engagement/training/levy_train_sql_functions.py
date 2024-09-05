@@ -342,38 +342,36 @@ def levy_train_06_levy_model_set_2022_part1(sql_account_list: str) :
     return levy_model_set_2022_part1
 
 def levy_train_07_levy_model_set_2022_part2(sql_account_list: str) :
-    query_2022_part2 = DataPath(datastore, """
-                                SELECT A3 
-    , commitments_ending_12m 
-    , current_live_commitments 
-    FROM  
-    (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 
-    FROM PDS_AI.PT_A 
-    WHERE A2<'2021-01-01' AND A1=1 
-    --AND A3 in ({0}) 
-    ) A  
-    LEFT JOIN  
-    (SELECT B10 
-    , COUNT(*) AS commitments_ending_12m 
-    FROM PDS_AI.PT_B 
-    WHERE cast(B17 as date) < '2022-01-01' AND CAST(B17 AS DATE)>='2021-01-01'  
-    AND (CAST(B20 AS DATE) >= '2021-01-01' OR B20 IS NULL)  
-    AND (CAST(B16 AS DATE) >= '2021-01-01' OR B16 IS NULL)  
-    -- AND B10 in ({0}) 
-    GROUP BY B10 
-    ) D  
-    ON A.A3=D.B10 
-    LEFT JOIN  
-    (SELECT B10 
-    , COUNT(*) AS current_live_commitments 
-    FROM PDS_AI.PT_B 
-    WHERE cast(B2 AS DATE) < '2021-01-01' AND  
-    (B20 IS NULL OR CAST(B20 AS DATE)>='2021-01-01') AND 
-    (B16 IS NULL OR CAST(B16 AS DATE)>='2021-01-01') 
-    -- AND B10 in ({0}) 
-    GROUP BY B10 
-    ) E 
-    ON A.A3=E.B10""".format(sql_account_list))
+    query_2022_part2 = DataPath(datastore, "SELECT A3 \
+    , commitments_ending_12m \
+    , current_live_commitments \
+    FROM  \
+    (SELECT A3, CONCAT(YEAR(A2),'-',month(A2)) as yearmon_created, A1 as levy_split, A2, A7 \
+    FROM PDS_AI.PT_A \
+    WHERE A2<'2021-01-01' AND A1=1 AND A3 in ({0}) \
+    ) A  \
+    LEFT JOIN  \
+    (SELECT B10 \
+    , COUNT(*) AS commitments_ending_12m \
+    FROM PDS_AI.PT_B \
+    WHERE cast(B17 as date) < '2022-01-01' AND CAST(B17 AS DATE)>='2021-01-01'  \
+    AND (CAST(B20 AS DATE) >= '2021-01-01' OR B20 IS NULL)  \
+    AND (CAST(B16 AS DATE) >= '2021-01-01' OR B16 IS NULL)  \
+    AND B10 in ({0}) \
+    GROUP BY B10 \
+    ) D  \
+    ON A.A3=D.B10 \
+    LEFT JOIN  \
+    (SELECT B10 \
+    , COUNT(*) AS current_live_commitments \
+    FROM PDS_AI.PT_B \
+    WHERE cast(B2 AS DATE) < '2021-01-01' AND  \
+    (B20 IS NULL OR CAST(B20 AS DATE)>='2021-01-01') AND \
+    (B16 IS NULL OR CAST(B16 AS DATE)>='2021-01-01') \
+    AND B10 in ({0}) \
+    GROUP BY B10 \
+    ) E \
+    ON A.A3=E.B10".format(sql_account_list))
     tabular_2022_part2 = Dataset.Tabular.from_sql_query(query_2022_part2, query_timeout=3600)
     levy_model_set_2022_part2 = tabular_2022_part2.to_pandas_dataframe()
 
