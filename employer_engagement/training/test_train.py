@@ -72,13 +72,13 @@ except Exception as E:
     run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
     pass
 
-try:
-    df_out=test_train_functions.test_train_sql_exec(str(100))
-    run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
-    run.log("INFO 7","Number of rows: {}".format(len(df_out)))
-except Exception as E:
-    run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
-    pass
+# try:
+#     df_out=test_train_functions.test_train_sql_exec(str(100))
+#     run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 
 #write a dummy dataframe to CSV
@@ -108,13 +108,13 @@ except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
 
-try:
-    df_out=levy_train_functions.levy_train_01_accounts(7)
-    run.log("INFO 9A", "Test sql query exec'ed correctly")
-    run.log("INFO 9B", "NRows: {}".format(len(df_out)))
-    run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
-except Exception as E:
-    run.log("EXCEPTION 5",f'Exception: {E}')
+# try:
+#     df_out=levy_train_functions.levy_train_01_accounts(7)
+#     run.log("INFO 9A", "Test sql query exec'ed correctly")
+#     run.log("INFO 9B", "NRows: {}".format(len(df_out)))
+#     run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
+# except Exception as E:
+#     run.log("EXCEPTION 5",f'Exception: {E}')
 #ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
