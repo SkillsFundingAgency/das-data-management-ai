@@ -102,9 +102,10 @@ except Exception as P:
 
 
 try:
-    df_out=levy_train_functions.levy_train_07_levy_model_set_2022_part2([])
+    df_out=levy_train_functions.levy_train_01_accounts(7)
     run.log("INFO 9A", "Test sql query exec'ed correctly")
-    run.log("INFO 9B", len(df_out))
+    run.log("INFO 9B", "NRows: {}".format(len(df_out)))
+    run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
 except Exception as E:
     run.log("EXCEPTION 5",f'Exception: {E}')
 #ensure deletion of model file at end of job:
