@@ -38,14 +38,14 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     # create Pipeline Endpoint if not already exists , if exists add pipeline to the endpoint
     
     try:
-          pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="levy_score_model_endpoint")
+          pipeline_endpoint = PipelineEndpoint.get(workspace=aml_workspace, name="test_train_endpoint")
           pipeline_endpoint.add_default(test_train_published_pipeline)
           print("Endpoint previously defined and exists")
     except Exception as E:
           print("Endpoint GET exception: {}".format(E))
           print("New endpoint being created")
           pipeline_endpoint = PipelineEndpoint.publish(workspace=aml_workspace,
-                                                       name="levy_score_model_endpoint", 
+                                                       name="test_train_endpoint", 
                                                        pipeline=test_train_published_pipeline,
                                                        description="Endpoint to test Train pipeline",
                                                        )
@@ -56,16 +56,6 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     except Exception as e:
         print("Exception: {}".format(e))
         pass
-    
-    # ONLY USE IF ADF PIPELINE DOES NOT WORK - Direct submit a job to the endpoint if ADF does not run.
-    #try:
-    #    import asyncio
-    #    submit_run=experiment.submit(pipeline_endpoint) 
-    #    print("PIPELINE RUN WORKS")
-    #    portal_url=submit_run.get_portal_url()
-    #    print("PORTAL URL: {}".format(portal_url))
-    #except Exception as e:
-    #    print("SUBMIT EXCEPTION: {}".format(e))
-         
+     
          
     return
