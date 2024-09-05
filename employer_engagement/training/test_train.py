@@ -64,13 +64,13 @@ if(os.path.exists(modelpath)):
     except Exception as E:
         run.log('EXCEPTION 2',"ERROR: MODEL LOAD: {}".format(E))
         pass 
-try:
-    df_out=test_train_functions.test_train_sql_exec_PDS_view(str(100))
-    run.log("INFO 6A","Columns: {}".format(str(list(df_out.columns))))
-    run.log("INFO 7A","Number of rows: {}".format(len(df_out)))
-except Exception as E:
-    run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
-    pass
+# try:
+#     df_out=test_train_functions.test_train_sql_exec_PDS_view(str(100))
+#     run.log("INFO 6A","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7A","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 try:
     df_out=test_train_functions.test_train_sql_exec(str(100))
