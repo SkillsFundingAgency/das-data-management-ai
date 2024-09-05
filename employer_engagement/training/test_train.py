@@ -99,7 +99,14 @@ try:
     run.log("INFO 8", "DATA SAVED TO DISK")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
-    
+
+
+try:
+    df_out=levy_train_functions.levy_train_07_levy_model_set_2022_part2([])
+    run.log("INFO 9A", "Test sql query exec'ed correctly")
+    run.log("INFO 9B", len(df_out))
+except Exception as E:
+    run.log("EXCEPTION 5",f'Exception: {E}')
 #ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
