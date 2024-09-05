@@ -66,13 +66,13 @@ if(os.path.exists(modelpath)):
         pass 
 
 
-try:
-    df_out=test_train_functions.test_train_sql_exec(str(100))
-    run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
-    run.log("INFO 7","Number of rows: {}".format(len(df_out)))
-except Exception as E:
-    run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
-    pass
+# try:
+#     df_out=test_train_functions.test_train_sql_exec(str(100))
+#     run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 #write a dummy dataframe to CSV
 try:
