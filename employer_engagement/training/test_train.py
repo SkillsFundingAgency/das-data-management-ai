@@ -108,6 +108,15 @@ try:
     run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
 except Exception as E:
     run.log("EXCEPTION 5",f'Exception: {E}')
+
+try:
+    df_out_2=test_train_functions.test_train_sql_exec(100)
+    run.log('INFO 10: Basic SQL load')
+    
+except:
+    pass
+
+
 #ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
