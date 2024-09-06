@@ -16,7 +16,7 @@ aml_workspace = Run.get_context().experiment.workspace
 datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 
 def test_train_sql_exec(top_x: str) :
-    query_test_train = DataPath(datastore, "SELECT TOP({}) * FROM [Pds_AI].[PT_Test]".format(top_x))
+    query_test_train = DataPath(datastore, "SELECT TOP({}) * FROM ASData_PL.Comt_Apprenticeship".format(top_x))
     tabular_test_train = Dataset.Tabular.from_sql_query(query_test_train, query_timeout=3600)
     test_train_df = tabular_test_train.to_pandas_dataframe()
     
