@@ -125,7 +125,7 @@ try:
     run.log("INFO 16",'Downloaded files')
     import glob
     ld=glob.glob("./ML_Models/ONSData/*.csv")
-    run.log("INFO 17",'CSV FILES: {}'.format())
+    run.log("INFO 17",'CSV FILES: {}'.format(str(ld)))
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
 
