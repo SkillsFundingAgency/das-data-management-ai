@@ -200,6 +200,7 @@ def Process_AE_INPUT(df_in=pd.DataFrame(),aeonlyflag=False,nRows=-1,logger=None)
     except Exception as E:
         logger.log("ERROR","AE Exception: {}".format(E))
         pass
+
     df_test=df_test.copy(deep=True)#.reset_index()
     # get df of variables that we don't do anything with on the imputation - this is PII info
     df_PII=df_test[PII_VARIABLES].copy(deep=True)

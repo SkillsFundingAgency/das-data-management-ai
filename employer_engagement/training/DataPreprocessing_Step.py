@@ -276,14 +276,18 @@ if __name__=="__main__":
     import argparse
     parser=argparse.ArgumentParser("DocumentProcessor")
     parser.add_argument("--i", dest='input',required=True,help="Input CSV file")
+    parser.add_argument("--o",dest='stgoutput',required=True,help='OUTPUT CSV (without imputation)')
+    parser.add_argument("--f",dest='outf',required=False,default='',help='Final Autoencoder output')
     args=parser.parse_args()
 
     df_in=pd.read_csv(args.input,index_col=0)
     df_preproc=Preprocess_Data(df_in)
-
+    cpy_proc=df_preproc.copy()
+    cpy_proc.to_csv(args.stgoutput)
     print("REAL OUTPUT:{}".format(df_preproc.head(3)))
 
     df_AE=AE_CPIH_STEP(df_preproc)
 
-
+    if(args.outf!=""):
+        df_AE.to_csv(args.outf)
     print()
