@@ -109,14 +109,14 @@ except Exception as P:
 
 
 
-try:
-     df_out=levy_train_functions.levy_train_01_accounts(7)
-     run.log("INFO 9A", "Test sql query exec'ed correctly")
-     run.log("INFO 9B", "NRows: {}".format(len(df_out)))
-     run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
-except Exception as E:
-     run.log("EXCEPTION 5",f'Exception: {E}')
-#ensure deletion of model file at end of job:
+# try:
+#      df_out=levy_train_functions.levy_train_01_accounts(7)
+#      run.log("INFO 9A", "Test sql query exec'ed correctly")
+#      run.log("INFO 9B", "NRows: {}".format(len(df_out)))
+#      run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
+# except Exception as E:
+#      run.log("EXCEPTION 5",f'Exception: {E}')
+# #ensure deletion of model file at end of job:
 try:
     run.log("INFO 10","BLOB DOWNLOAD LOAD")
     blob=Datastore.get(aml_workspace,'trainingdata')
