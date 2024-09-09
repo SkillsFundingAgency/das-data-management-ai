@@ -121,7 +121,7 @@ try:
     run.log("INFO 10","BLOB DOWNLOAD LOAD")
     blob=Datastore.get(aml_workspace,'trainingdata')
     run.log('INFO 11','Got blob from training data name')
-    blob.download('./ML_Models/ONSData',overwrite=True,show_progress=True)
+    blob.download('./ML_Models/ONSData/',overwrite=True,show_progress=True)
     run.log("INFO 16",'Downloaded files')
     import glob
     ld=glob.glob("./ML_Models/ONSData/*.csv")
