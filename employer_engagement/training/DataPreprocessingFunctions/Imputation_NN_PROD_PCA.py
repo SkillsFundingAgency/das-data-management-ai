@@ -1,10 +1,11 @@
 #!/usr/bin/env/python
 
 import pandas as pd
-import sklearn
+#import sklearn
 import os
+import tensorflow
 import MIDASpy as midas
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import MinMaxScaler
 from keras.callbacks import EarlyStopping
 
 from matplotlib import pyplot as plt
@@ -12,6 +13,7 @@ import numpy as np
 np.random.RandomState(42)
 pd.set_option('display.max_rows', 200)
 pd.set_option('display.max_columns',500)
+import sys
 
 def GetNullColumns(indf):
     #print(indf.isna().any())
@@ -91,14 +93,14 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
 
   
     import json
-    jf=open(dirname+"../CSV/ScalerSetup.json",'r')
+    jf=open(dirname+"../ML_Models/Models/ScalerSetup.json",'r')
     mindict=json.load(jf)
     jf.close()
     
     scaled_df,mindict=Transform(indf,mindict=mindict)
 
     
-    scaler=MinMaxScaler()
+    #scaler=MinMaxScaler()
     print("PRE SCALED DF SHAPE: {}".format(indf.to_numpy().shape))
     
     #data_scaled=scaler.fit_transform(indf)
@@ -107,7 +109,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
     print("POST SCALED DF SHAPE: {}".format(scaled_df.to_numpy().shape))
     print(scaled_df.head(3))
 
-    imputer=midas.Midas(layer_structure=[256,256],vae_layer=False,seed=42,input_drop=0.50,savepath=dirname+"../models/MIDAS_AE/MIDAS_CHECKPOINTS_PROD/")
+    imputer=midas.Midas(layer_structure=[256,256],vae_layer=False,seed=42,input_drop=0.50,savepath=dirname+"../ML_Models/Models/MIDAS_CHECKPOINTS_PROD_PCA/")
     imputer.build_model(scaled_df,softmax_columns=[])
     if(not cache):
         
@@ -138,7 +140,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
         df_unscaled=pd.DataFrame(df_unscaled,columns=indf.columns)
         analysisdfs.append(df_unscaled)
         print("imputation: {}".format(itr))
-        df_unscaled.to_csv(dirname+"../CSV/Processed_CSVs/ProfiledCSVs/AE_IMPUTATION_{}_{}_ASDATA_PROF.csv".format(itr,nsamples))
+        #df_unscaled.to_csv(dirname+"../CSV/Processed_CSVs/ProfiledCSVs/AE_IMPUTATION_{}_{}_ASDATA_PROF.csv".format(itr,nsamples))
         print("Saved imputation to CSV")
         itr+=1
 
