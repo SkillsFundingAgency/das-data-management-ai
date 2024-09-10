@@ -121,12 +121,15 @@ try:
     run.log("INFO 10","BLOB DOWNLOAD LOAD")
     blob=Datastore.get(aml_workspace,'trainingdata')
     run.log('INFO 11','Got blob from training data name')
-    run.log('INFO 12',f'Blob {blob}')
-    run.log("INFO 13",f'List_Blobs{str(blob.list_blobs())}')
-    run.log('INFO 14',f'{str(blob.list_containers("",True))}')
-    
+    os.mkdir("./ML_Models/Download_Manifest/")
+    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
+    run.log("INFO 16",'Downloaded files')
+    import glob
+    ld=glob.glob("./ML_Models/Download_Manifest/*")
+    run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
+
 
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
