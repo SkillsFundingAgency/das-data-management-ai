@@ -23,6 +23,9 @@ subscription_id=e.subscription_id,
 resource_group=e.resource_group,
 )
 
+from azureml.core.authentication import MsiAuthentication
+aml_workspace._auth=MsiAuthentication()
+
 # Create experiment if it doesn't exist
 experiment = Experiment(aml_workspace, "employer-engagement")
 
