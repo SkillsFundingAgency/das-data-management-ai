@@ -41,6 +41,7 @@ except:
     pass
 
 try:
+    time.sleep(600)
     models=Model.list(aml_workspace)
     run.log("INFO 2","INFO: Number of models registered: {}".format(len(models)))
     run.log("INFO 3","INFO : List of models: {}".format(str([x.name for x in models])))
