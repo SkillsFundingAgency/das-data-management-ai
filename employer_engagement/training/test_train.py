@@ -64,7 +64,13 @@ if(os.path.exists(modelpath)):
     except Exception as E:
         run.log('EXCEPTION 2',"ERROR: MODEL LOAD: {}".format(E))
         pass 
-
+# try:
+#     df_out=test_train_functions.test_train_sql_exec_PDS_view(str(100))
+#     run.log("INFO 6A","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7A","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 try:
     df_out=test_train_functions.test_train_sql_exec(str(100))
@@ -73,6 +79,7 @@ try:
 except Exception as E:
     run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
     pass
+
 
 #write a dummy dataframe to CSV
 try:
@@ -101,11 +108,25 @@ except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
 
+
+# try:
+#      df_out=levy_train_functions.levy_train_01_accounts(7)
+#      run.log("INFO 9A", "Test sql query exec'ed correctly")
+#      run.log("INFO 9B", "NRows: {}".format(len(df_out)))
+#      run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
+# except Exception as E:
+#      run.log("EXCEPTION 5",f'Exception: {E}')
+# #ensure deletion of model file at end of job:
 try:
-    df_out=levy_train_functions.levy_train_01_accounts(7)
-    run.log("INFO 9A", "Test sql query exec'ed correctly")
-    run.log("INFO 9B", "NRows: {}".format(len(df_out)))
-    run.log("INFO 9C","Columns: {}".format(str(list(df_out.columns))))    
+    run.log("INFO 10","BLOB DOWNLOAD LOAD")
+    blob=Datastore.get(aml_workspace,'trainingdata')
+    run.log('INFO 11','Got blob from training data name')
+    os.mkdir("./ML_Models/Download_Manifest/")
+    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
+    run.log("INFO 16",'Downloaded files')
+    import glob
+    ld=glob.glob("./ML_Models/Download_Manifest/*")
+    run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
 except Exception as E:
     run.log("EXCEPTION 5",f'Exception: {E}')
 
