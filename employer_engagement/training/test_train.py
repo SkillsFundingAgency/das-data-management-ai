@@ -121,13 +121,15 @@ try:
     run.log("INFO 10","BLOB DOWNLOAD LOAD")
     blob=Datastore.get(aml_workspace,'trainingdata')
     run.log('INFO 11','Got blob from training data name')
-    blob.download('./ML_Models/ONSData/',overwrite=True,show_progress=True)
+    os.mkdir("./ML_Models/Download_Manifest/")
+    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
     run.log("INFO 16",'Downloaded files')
     import glob
-    ld=glob.glob("./ML_Models/ONSData/*.csv")
-    run.log("INFO 17",'CSV FILES: {}'.format(str(ld)))
+    ld=glob.glob("./ML_Models/Download_Manifest/*")
+    run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
+
 
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
