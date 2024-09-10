@@ -93,7 +93,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
 
   
     import json
-    jf=open(dirname+"../ML_Models/Models/ScalerSetup.json",'r')
+    jf=open(dirname+"../ML_Models/Models/ScalerSetup_Randomized.json",'r')
     mindict=json.load(jf)
     jf.close()
     
@@ -113,8 +113,8 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
                         vae_layer=False,
                         seed=42,
                         input_drop=0.50,
-                        #savepath=dirname+"../ML_Models/Models/DUMMY_AE/" # dummy data Autoencoder
-                        savepath=dirname+r"..\ML_Models\Models\MIDAS_CHECKPOINTS_PROD_PCA\\" # real data autoencoder
+                        savepath=dirname+"../ML_Models/Models/DUMMY_AE/" # dummy data Autoencoder
+                        #savepath=dirname+r"..\ML_Models\Models\MIDAS_CHECKPOINTS_PROD_PCA\\" # real data autoencoder
                         )
     imputer.build_model(scaled_df,softmax_columns=[])
     if(not cache):
