@@ -23,9 +23,11 @@ subscription_id=e.subscription_id,
 resource_group=e.resource_group,
 )
 print("DEVOPS: Starting AUTH BLOCK")
-from azureml.core.authentication import MsiAuthentication
-aml_workspace._auth=MsiAuthentication()
-print("DEVOPS: AzureML MI credentials assigned")
+#from azureml.core.authentication import MsiAuthentication
+#aml_workspace._auth=MsiAuthentication()
+print(aml_workspace._auth)
+print(aml_workspace._auth_object)
+print("DEVOPS: AzureML MI credentials retrieved")
 # Create experiment if it doesn't exist
 experiment = Experiment(aml_workspace, "employer-engagement")
 
