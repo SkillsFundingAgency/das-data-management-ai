@@ -29,8 +29,10 @@ print(aml_workspace._auth)
 print(aml_workspace._auth_object)
 print("DEVOPS: AzureML MI credentials retrieved")
 
-from azure.identity import DefaultAzureCredential
-az_cred_blob=DefaultAzureCredential()
+from azure.identity import ManagedIdentityCredential
+print("DEVOPS: Now trying to get the blob")
+az_cred_blob=ManagedIdentityCredential()
+print("DEVOPS: Now set a credential, we hope")
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 
@@ -38,8 +40,9 @@ url="https://{}.blob.core.windows.net".format(os.environ.get('DATA_STORAGE_ACCOU
 containername=os.environ.get("DATA_STORAGE_CONTAINER_NAME")
 blobservice=BlobServiceClient(url,credential=az_cred_blob)
 container_client=ContainerClient(account_url=url,credential=az_cred_blob,container_name=containername)
-
+print("DevOps: Got blob clients")
 list_blobs=container_client.list_blobs()
+print("DevOps: Got list of blobs: {} items".format(len(list_blobs)))
 for blob in list_blobs:
     print(blob.name)
     current_file_dir=os.path.dirname(os.path.abspath(__file__))
