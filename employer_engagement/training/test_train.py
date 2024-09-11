@@ -120,7 +120,7 @@ except Exception as P:
 try:
     run.log("INFO 10","BLOB DOWNLOAD  CHECK")
     run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
-    blob=Datastore.get(aml_workspace,'trainingdata')
+    blob=Datastore.get(aml_workspace,'workspaceartifactstore')
     #run.log('INFO 11','Got blob from training data name')
     #os.mkdir("./ML_Models/Download_Manifest/")
     blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
