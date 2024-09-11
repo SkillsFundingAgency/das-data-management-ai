@@ -33,9 +33,8 @@ from azure.identity import DefaultAzureCredential
 az_cred_blob=DefaultAzureCredential()
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
-containername=""
-storagename=""
-url=""
+containername="trainingdata"
+url="https://dasatdatamgmtaidatastr.blob.core.windows.net"
 blobservice=BlobServiceClient(url,credential=az_cred_blob)
 container_client=ContainerClient(account_url=url,credential=az_cred_blob,container_name=containername)
 
@@ -52,11 +51,15 @@ for blob in list_blobs:
             os.makedirs(parentpath)
         except:
             pass
-    print(fullpath)
-    blob_client=blobservice.get_blob_client(container=blob.container,blob=blob.name)
-    strm=blob_client.download_blob()
-    with open(fullpath,'wb+') as wf:
-        wf.write(strm.readall())
+    try:
+        blob_client=blobservice.get_blob_client(container=blob.container,blob=blob.name)
+        strm=blob_client.download_blob()
+        with open(fullpath,'wb+') as wf:
+            wf.write(strm.readall())
+
+        print("written to file")
+    except Exception as e:
+        print(f"Exception: {e}")
 
     
 
