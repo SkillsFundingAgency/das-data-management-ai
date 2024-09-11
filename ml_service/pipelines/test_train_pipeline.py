@@ -33,8 +33,9 @@ from azure.identity import DefaultAzureCredential
 az_cred_blob=DefaultAzureCredential()
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
-containername="trainingdata"
-url="https://dasatdatamgmtaidatastr.blob.core.windows.net"
+
+url="https://{}.blob.core.windows.net".format(os.environ.get('DATA_STORAGE_ACCOUNT_NAME'))
+containername=os.environ.get("DATA_STORAGE_CONTAINER_NAME")
 blobservice=BlobServiceClient(url,credential=az_cred_blob)
 container_client=ContainerClient(account_url=url,credential=az_cred_blob,container_name=containername)
 
