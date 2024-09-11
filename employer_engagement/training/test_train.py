@@ -119,11 +119,12 @@ except Exception as P:
 # #ensure deletion of model file at end of job:
 try:
     run.log("INFO 10","BLOB DOWNLOAD  CHECK")
-    #blob=Datastore.get(aml_workspace,'trainingdata')
+    run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
+    blob=Datastore.get(aml_workspace,'trainingdata')
     #run.log('INFO 11','Got blob from training data name')
     #os.mkdir("./ML_Models/Download_Manifest/")
-    #blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
-    #run.log("INFO 16",'Downloaded files')
+    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
+    run.log("INFO 16",'Downloaded files')
     import glob
     ld=glob.glob("./ML_Models/Download_Manifest/*")
     run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
