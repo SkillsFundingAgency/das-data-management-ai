@@ -33,37 +33,55 @@ from azure.identity import ManagedIdentityCredential
 print("DEVOPS: Now trying to get the blob")
 az_cred_blob=ManagedIdentityCredential()
 print("DEVOPS: Now set a credential, we hope")
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+
+#try:
+#    import azure.storage.blob
+#    print("DevOps: Storage blob libs installed")
+#except Exception as e:
+#    print("DevOps: storage blob libs not installed")
+#    print("Exception: {}".format(e))
+#try:
+#    from azure.storage.blob import BlobServiceClient
+#except Exception as e:
+#    print("DevOps: storage blob service client not installed")
+#    print("Exception: {}".format(e))#
+
+#try:
+#    from azure.storage.blob import ContainerClient
+#    print("DevOps: container client installed")
+#except:
+#    print("DevOps: container client not installed")
+#    pass
 
 
-url="https://{}.blob.core.windows.net".format(os.environ.get('DATA_STORAGE_ACCOUNT_NAME'))
-containername=os.environ.get("DATA_STORAGE_CONTAINER_NAME")
-blobservice=BlobServiceClient(url,credential=az_cred_blob)
-container_client=ContainerClient(account_url=url,credential=az_cred_blob,container_name=containername)
-print("DevOps: Got blob clients")
-list_blobs=container_client.list_blobs()
-print("DevOps: Got list of blobs: {} items".format(len(list_blobs)))
-for blob in list_blobs:
-    print(blob.name)
-    current_file_dir=os.path.dirname(os.path.abspath(__file__))
-    basepath="../../employer_engagement/training/ML_Models/Download_Manifest/"
-    fullpath=basepath+"/"+blob.name
-    if("/" in blob.name): # virtual directory - need to make it on local cloud disk location
-        fname=blob.name.split("/")[-1]
-        parentpath=basepath+blob.name.replace(fname,"")
-        try:
-            os.makedirs(parentpath)
-        except:
-            pass
-    try:
-        blob_client=blobservice.get_blob_client(container=blob.container,blob=blob.name)
-        strm=blob_client.download_blob()
-        with open(fullpath,'wb+') as wf:
-            wf.write(strm.readall())
+#url="https://{}.blob.core.windows.net".format(os.environ.get('DATA_STORAGE_ACCOUNT_NAME'))
+#containername=os.environ.get("DATA_STORAGE_CONTAINER_NAME")
+#blobservice=BlobServiceClient(url,credential=az_cred_blob)
+#container_client=ContainerClient(account_url=url,credential=az_cred_blob,container_name=containername)
+#print("DevOps: Got blob clients")
+#list_blobs=container_client.list_blobs()
+#print("DevOps: Got list of blobs: {} items".format(len(list_blobs)))
+#for blob in list_blobs:
+#    print(blob.name)
+#    current_file_dir=os.path.dirname(os.path.abspath(__file__))
+#    basepath=current_file_dir+"../../employer_engagement/training/ML_Models/Download_Manifest/"
+#    fullpath=basepath+"/"+blob.name
+#    if("/" in blob.name): # virtual directory - need to make it on local cloud disk location
+#        fname=blob.name.split("/")[-1]
+#        parentpath=basepath+blob.name.replace(fname,"")
+#        try:
+#            os.makedirs(parentpath)
+#        except:
+#            pass
+#    try:
+#        blob_client=blobservice.get_blob_client(container=blob.container,blob=blob.name)
+#        strm=blob_client.download_blob()
+#        with open(fullpath,'wb+') as wf:
+#            wf.write(strm.readall())
 
-        print("written to file")
-    except Exception as e:
-        print(f"Exception: {e}")
+#        print("written to file")
+#    except Exception as e:
+#        print(f"Exception: {e}")
 
     
 
