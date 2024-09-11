@@ -72,13 +72,13 @@ if(os.path.exists(modelpath)):
 #     run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
 #     pass
 
-try:
-    df_out=test_train_functions.test_train_sql_exec(str(100))
-    run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
-    run.log("INFO 7","Number of rows: {}".format(len(df_out)))
-except Exception as E:
-    run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
-    pass
+# try:
+#     df_out=test_train_functions.test_train_sql_exec(str(100))
+#     run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 
 #write a dummy dataframe to CSV
@@ -120,7 +120,7 @@ except Exception as P:
 try:
     run.log("INFO 10","BLOB DOWNLOAD  CHECK")
     run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
-    blob=Datastore.get(aml_workspace,'workspaceartifactstore')
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
     #run.log('INFO 11','Got blob from training data name')
     #os.mkdir("./ML_Models/Download_Manifest/")
     blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
