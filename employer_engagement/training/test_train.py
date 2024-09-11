@@ -104,6 +104,13 @@ try:
     df_proc.to_csv("./outputs/"+fname_base+".csv")
     df_proc.to_parquet("./outputs/"+fname_base+".parquet")
     run.log("INFO 8", "DATA SAVED TO DISK")
+    blob=Datastore.get(aml_workspace,'workspaceartifactstore')
+
+    #write file directly to datastore
+    outputdir="./outputs/"
+    target=(blob,outputdir)
+    ds=Dataset.File.upload_directory(outputdir,target,overwrite=True)
+    run.log("INFO 9: output directory uploaded")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
