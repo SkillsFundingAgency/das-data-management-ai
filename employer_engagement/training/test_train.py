@@ -123,7 +123,13 @@ try:
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
     #run.log('INFO 11','Got blob from training data name')
     #os.mkdir("./ML_Models/Download_Manifest/")
-    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
+    
+    mount_context = dataset.mount()
+    mount_context.start()
+
+    # Access the mounted files
+    mounted_path = mount_context.mount_point
+    print(f"Files are mounted at: {mounted_path}")
     run.log("INFO 16",'Downloaded files')
     import glob
     ld=glob.glob("./ML_Models/Download_Manifest/*")
