@@ -166,7 +166,7 @@ try:
     
     dataset.download(target_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/",overwrite=True)
     ld=glob.glob("./ML_Models/Download_Manifest/Dummy_Autoencoder/*")
-    run.log('INFO 19','List of Files: {}')
+    run.log('INFO 19',f'List of Files: {str(ld)}')
 
 except Exception as E:
     run.log('EXCEPTION 9',f'{E}')
@@ -179,7 +179,7 @@ try:
     
     dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True)
     ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
-    run.log('INFO 21', 'List of Files: {}')
+    run.log('INFO 21', f'List of Files: {str(ld)}')
 except Exception as E:
     run.log('EXCEPTION 10',f'{E}')
 
