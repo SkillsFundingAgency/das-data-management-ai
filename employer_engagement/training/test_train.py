@@ -124,17 +124,14 @@ try:
     
     dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
     file_paths = dataset.to_path()
-
-    # Print all file names
     for path in file_paths:
         run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
     dataset = Dataset.File.from_files((blob, 'ONSData/'))
-    file_paths = dataset.to_path()
 
-    # Print all file names
+    file_paths = dataset.to_path()   
     for path in file_paths:
-        print(path)
-    run.log("INFO 16",'Downloaded files')
+        run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
+   
     
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
