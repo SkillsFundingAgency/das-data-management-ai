@@ -122,16 +122,20 @@ try:
     run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
     
-    dataset = Dataset.File.from_files((blob, 'azureml/'))
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    file_paths = dataset.to_path()
+
+    # Print all file names
+    for path in file_paths:
+        run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
     file_paths = dataset.to_path()
 
     # Print all file names
     for path in file_paths:
         print(path)
     run.log("INFO 16",'Downloaded files')
-    import glob
-    ld=glob.glob("./ML_Models/Download_Manifest/*")
-    run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
+    
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
 
