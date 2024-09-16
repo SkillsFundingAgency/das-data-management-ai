@@ -125,11 +125,13 @@ try:
     dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
     file_paths = dataset.to_path()
     for path in file_paths:
+        print(path)
         run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
-    dataset = Dataset.File.from_files((blob, 'ONSData/'))
 
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
     file_paths = dataset.to_path()   
     for path in file_paths:
+        print(path)
         run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
    
     
