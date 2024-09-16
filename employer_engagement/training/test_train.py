@@ -124,7 +124,7 @@ try:
     #run.log('INFO 11','Got blob from training data name')
     #os.mkdir("./ML_Models/Download_Manifest/")
     
-    mount_context = dataset.mount()
+    mount_context = blob.mount()
     mount_context.start()
 
     # Access the mounted files
