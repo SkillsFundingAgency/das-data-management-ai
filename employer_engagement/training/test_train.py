@@ -121,15 +121,13 @@ try:
     run.log("INFO 10","BLOB DOWNLOAD  CHECK")
     run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
-    #run.log('INFO 11','Got blob from training data name')
-    #os.mkdir("./ML_Models/Download_Manifest/")
     
-    mount_context = blob.mount()
-    mount_context.start()
+    dataset = Dataset.File.from_files((blob, 'azureml/'))
+    file_paths = dataset.to_path()
 
-    # Access the mounted files
-    mounted_path = mount_context.mount_point
-    print(f"Files are mounted at: {mounted_path}")
+    # Print all file names
+    for path in file_paths:
+        print(path)
     run.log("INFO 16",'Downloaded files')
     import glob
     ld=glob.glob("./ML_Models/Download_Manifest/*")
