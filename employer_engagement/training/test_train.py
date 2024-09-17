@@ -111,7 +111,7 @@ try:
     outputdir="./outputs/"
     target=(blob,outputdir)
     ds=Dataset.File.upload_directory(outputdir,target,overwrite=True)
-    run.log("INFO 9: output directory uploaded")
+    run.log("INFO 9","output directory uploaded")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
@@ -181,7 +181,7 @@ try:
     for path in file_paths:
         print(path)
         run.log("INFO 19 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
-        individual_dataset=Dataset.File.from_files((blob,path))
+        individual_dataset=Dataset.File.from_files((blob,"Dummy_AE/"+path))
         individual_dataset.download(target_path=download_path,overwrite=True)
         run.log("INFO 19 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
@@ -194,7 +194,7 @@ except Exception as E:
 try:
     run.log('INFO 20','Now attempting download of the ONS data')
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
-    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
     
     dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True)
     ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
@@ -206,14 +206,14 @@ except Exception as E:
 run.log("INFO 21 A0","Now trying the download of the ONS files via a loop of files")
 try:
     blob=Datastore.get(aml_workspace,'workspaceblobstore')    
-    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
     file_paths = dataset.to_path()
     download_path="./ML_Models/Download_Manifest/ONSData/"
     ctr=1
     for path in file_paths:
         print(path)
         run.log("INFO 21 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
-        individual_dataset=Dataset.File.from_files((blob,path))
+        individual_dataset=Dataset.File.from_files((blob,'ONSData/'+path))
         individual_dataset.download(target_path=download_path,overwrite=True)
         run.log("INFO 21 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
