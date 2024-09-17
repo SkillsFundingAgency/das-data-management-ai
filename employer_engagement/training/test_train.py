@@ -182,7 +182,7 @@ try:
         print(path)
         run.log("INFO 19 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         individual_dataset=Dataset.File.from_files((blob,"Dummy_AE/"+path))
-        individual_dataset.download(target_path=download_path,overwrite=True)
+        individual_dataset.download(target_path=download_path,overwrite=True,ignore_not_found=True)
         run.log("INFO 19 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
     ld=glob.glob(download_path+"*")
@@ -196,7 +196,7 @@ try:
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
     dataset = Dataset.File.from_files((blob, 'ONSData/'))
     
-    dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True)
+    dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True,ignore_not_found=True)
     ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
     run.log('INFO 21', f'List of Files: {str(ld)}')
 except Exception as E:
