@@ -131,7 +131,6 @@ try:
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
     
     dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
-    blob.download(target_path='./Test', prefix='Dummy_AE/', overwrite=True)
     file_paths = dataset.to_path()
     ctr=0
     for path in file_paths:
