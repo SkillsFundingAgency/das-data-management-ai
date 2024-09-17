@@ -1,5 +1,6 @@
 import pickle
 import os
+import glob
 import pandas as pd
 import numpy as np
 import pyarrow.parquet as pq
@@ -104,6 +105,13 @@ try:
     df_proc.to_csv("./outputs/"+fname_base+".csv")
     df_proc.to_parquet("./outputs/"+fname_base+".parquet")
     run.log("INFO 8", "DATA SAVED TO DISK")
+    blob=Datastore.get(aml_workspace,'workspaceartifactstore')
+
+    #write file directly to datastore
+    outputdir="./outputs/"
+    target=(blob,outputdir)
+    ds=Dataset.File.upload_directory(outputdir,target,overwrite=True)
+    run.log("INFO 9: output directory uploaded")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
@@ -125,19 +133,56 @@ try:
     dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
     blob.download(target_path='./Test', prefix='Dummy_AE/', overwrite=True)
     file_paths = dataset.to_path()
+    ctr=0
     for path in file_paths:
         print(path)
-        run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
-
+        run.log("INFO 17 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
     dataset = Dataset.File.from_files((blob, 'ONSData/'))
     file_paths = dataset.to_path()   
+    ctr=0
     for path in file_paths:
         print(path)
-        run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(path)))
-   
-    
+        run.log("INFO 17 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
 except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
+
+try:
+    os.makedirs(os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/"))
+except Exception as e:
+    run.log("EXCEPTION 7",f'{e}')
+    pass
+
+try:
+    os.makedirs(os.makedirs("./ML_Models/Download_Manifest/ONSData/"))
+except Exception as e:
+    run.log("EXCEPTION 8",f'{e}')
+    pass
+    
+try:
+    run.log('INFO 18','Now attempting real download of the autoencoder')
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    
+    dataset.download(target_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/",overwrite=True)
+    ld=glob.glob("./ML_Models/Download_Manifest/Dummy_Autoencoder/*")
+    run.log('INFO 19',f'List of Files: {str(ld)}')
+
+except Exception as E:
+    run.log('EXCEPTION 9',f'{E}')
+
+
+try:
+    run.log('INFO 20','Now attempting download of the ONS data')
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    
+    dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True)
+    ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
+    run.log('INFO 21', f'List of Files: {str(ld)}')
+except Exception as E:
+    run.log('EXCEPTION 10',f'{E}')
 
 
 if(os.path.exists(modelpath)):
