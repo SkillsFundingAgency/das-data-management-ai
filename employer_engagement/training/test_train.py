@@ -171,6 +171,25 @@ try:
 except Exception as E:
     run.log('EXCEPTION 9',f'{E}')
 
+run.log("INFO 19 A0","Now trying the download of the autoencoder files via a loop of files")
+try:
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')    
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    file_paths = dataset.to_path()
+    download_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/"
+    ctr=1
+    for path in file_paths:
+        print(path)
+        run.log("INFO 19 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        individual_dataset=Dataset.File.from_files((blob,path))
+        individual_dataset.download(target_path=download_path,overwrite=True)
+        run.log("INFO 19 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
+    ld=glob.glob(download_path+"*")
+    run.log('INFO 19 C','List of files: {}'.format(ld))
+except Exception as E:
+    run.log('EXCEPTION 9A',f'{E}')
+
 
 try:
     run.log('INFO 20','Now attempting download of the ONS data')
@@ -182,6 +201,26 @@ try:
     run.log('INFO 21', f'List of Files: {str(ld)}')
 except Exception as E:
     run.log('EXCEPTION 10',f'{E}')
+
+
+run.log("INFO 21 A0","Now trying the download of the ONS files via a loop of files")
+try:
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')    
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    file_paths = dataset.to_path()
+    download_path="./ML_Models/Download_Manifest/ONSData/"
+    ctr=1
+    for path in file_paths:
+        print(path)
+        run.log("INFO 21 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        individual_dataset=Dataset.File.from_files((blob,path))
+        individual_dataset.download(target_path=download_path,overwrite=True)
+        run.log("INFO 21 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
+    ld=glob.glob(download_path+"*")
+    run.log('INFO 21 C','List of files: {}'.format(ld))
+except Exception as E:
+    run.log('EXCEPTION 10A',f'{E}')
 
 
 if(os.path.exists(modelpath)):
