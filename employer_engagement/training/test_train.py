@@ -180,10 +180,10 @@ try:
     ctr=1
     for path in file_paths:
         print(path)
-        run.log("INFO 19 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        run.log("INFO 19 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         individual_dataset=Dataset.File.from_files((blob,"Dummy_AE/"+path))
         individual_dataset.download(target_path=download_path,overwrite=True)
-        run.log("INFO 19 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        run.log("INFO 19 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
     ld=glob.glob(download_path+"*")
     run.log('INFO 19 C','List of files: {}'.format(ld))
@@ -212,10 +212,10 @@ try:
     ctr=1
     for path in file_paths:
         print(path)
-        run.log("INFO 21 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        run.log("INFO 21 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         individual_dataset=Dataset.File.from_files((blob,'ONSData/'+path))
         individual_dataset.download(target_path=download_path,overwrite=True)
-        run.log("INFO 21 B{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        run.log("INFO 21 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
     ld=glob.glob(download_path+"*")
     run.log('INFO 21 C','List of files: {}'.format(ld))
