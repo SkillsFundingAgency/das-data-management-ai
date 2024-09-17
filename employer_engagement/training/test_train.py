@@ -148,13 +148,13 @@ except Exception as E:
     run.log("EXCEPTION 6", "{}".format(E))
 
 try:
-    os.makedirs(os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/"))
+    os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/")
 except Exception as e:
     run.log("EXCEPTION 7",f'{e}')
     pass
 
 try:
-    os.makedirs(os.makedirs("./ML_Models/Download_Manifest/ONSData/"))
+    os.makedirs("./ML_Models/Download_Manifest/ONSData/")
 except Exception as e:
     run.log("EXCEPTION 8",f'{e}')
     pass
