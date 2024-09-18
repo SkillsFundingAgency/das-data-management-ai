@@ -51,7 +51,7 @@ class ErrorHandler:
 
     
 
-def Preprocess_Data(df_in=pd.DataFrame()) : 
+def Preprocess_Data(df_in=pd.DataFrame(),run=None) : 
     """
     STAGE 1 for the preprocessing: Taking the dataframe from Az SQL, doing the first set of JOINs to ONS data so we have all the data in one super table.
     """
@@ -60,16 +60,19 @@ def Preprocess_Data(df_in=pd.DataFrame()) :
 
     isAzure=False
     logger=None
-    run=None
-    try:
-        aml_workspace = Run.get_context().experiment.workspace
-        #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-        run = Run.get_context()
+    if(run==None):
+        try:
+            aml_workspace = Run.get_context().experiment.workspace
+            #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+            run = Run.get_context()
+            isAzure=True
+        except Exception as e:
+            print("No AML workspace detected - now using logger logs")  
+            print("AML ERROR: {}".format(e))
+            pass
+    else:
         isAzure=True
-    except Exception as e:
-        print("No AML workspace detected - now using logger logs")  
-        print("AML ERROR: {}".format(e))
-        pass      
+              
     logger=ErrorHandler(isAzure,logstep="Preprocessing",run=run)
 
     logger.log('INFO',"Hello there")
