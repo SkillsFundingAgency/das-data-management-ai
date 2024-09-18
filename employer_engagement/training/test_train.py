@@ -278,7 +278,7 @@ except Exception as E:
 
 try:
     import DataPreprocessing_Step
-    df_out=DataPreprocessing_Step.Preprocess_Data(df_in)
+    df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
 except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
 
