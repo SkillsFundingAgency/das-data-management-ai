@@ -1,5 +1,6 @@
 import pickle
 import os
+import glob
 import pandas as pd
 import numpy as np
 import pyarrow.parquet as pq
@@ -72,13 +73,13 @@ if(os.path.exists(modelpath)):
 #     run.log("EXCEPTION 3A:","DATASTORE LOAD: {}".format(E))
 #     pass
 
-try:
-    df_out=test_train_functions.test_train_sql_exec(str(100))
-    run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
-    run.log("INFO 7","Number of rows: {}".format(len(df_out)))
-except Exception as E:
-    run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
-    pass
+# try:
+#     df_out=test_train_functions.test_train_sql_exec(str(100))
+#     run.log("INFO 6","Columns: {}".format(str(list(df_out.columns))))
+#     run.log("INFO 7","Number of rows: {}".format(len(df_out)))
+# except Exception as E:
+#     run.log("EXCEPTION 3:","DATASTORE LOAD: {}".format(E))
+#     pass
 
 
 #write a dummy dataframe to CSV
@@ -104,6 +105,13 @@ try:
     df_proc.to_csv("./outputs/"+fname_base+".csv")
     df_proc.to_parquet("./outputs/"+fname_base+".parquet")
     run.log("INFO 8", "DATA SAVED TO DISK")
+    blob=Datastore.get(aml_workspace,'workspaceartifactstore')
+
+    #write file directly to datastore
+    outputdir="./outputs/"
+    target=(blob,outputdir)
+    ds=Dataset.File.upload_directory(outputdir,target,overwrite=True)
+    run.log("INFO 9","output directory uploaded")
 except Exception as P:
     run.log("EXCEPTION 4", "Exception: {}".format(P))
 
@@ -118,15 +126,24 @@ except Exception as P:
 #      run.log("EXCEPTION 5",f'Exception: {E}')
 # #ensure deletion of model file at end of job:
 try:
-    run.log("INFO 10","BLOB DOWNLOAD LOAD")
-    blob=Datastore.get(aml_workspace,'trainingdata')
-    run.log('INFO 11','Got blob from training data name')
-    os.mkdir("./ML_Models/Download_Manifest/")
-    blob.download("./ML_Models/Download_Manifest/",overwrite=True,show_progress=True)
-    run.log("INFO 16",'Downloaded files')
-    import glob
-    ld=glob.glob("./ML_Models/Download_Manifest/*")
-    run.log("INFO 17",'FILES DOWNLOADED: {}'.format(str(ld)))
+    run.log("INFO 10","BLOB DOWNLOAD  CHECK")
+    run.log("INFO 11", "BLOB AUTH: {}".format(aml_workspace._auth))
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
+    
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    file_paths = dataset.to_path()
+    ctr=0
+    for path in file_paths:
+        print(path)
+        run.log("INFO 17 A{}",format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
+    file_paths = dataset.to_path()   
+    ctr=0
+    for path in file_paths:
+        print(path)
+        run.log("INFO 17 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
 except Exception as E:
     run.log("EXCEPTION 5",f'Exception: {E}')
 
@@ -136,6 +153,92 @@ try:
     
 except:
     pass
+
+try:
+    os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/")
+except Exception as e:
+    run.log("EXCEPTION 7",f'{e}')
+    pass
+
+try:
+    os.makedirs("./ML_Models/Download_Manifest/ONSData/")
+except Exception as e:
+    run.log("EXCEPTION 8",f'{e}')
+    pass
+    
+try:
+    run.log('INFO 18','Now attempting real download of the autoencoder')
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    run.log('INFO 18A',str(blob))
+    
+    dataset.download(target_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/",overwrite=True)
+    ld=glob.glob("./ML_Models/Download_Manifest/Dummy_Autoencoder/*")
+    run.log('INFO 19',f'List of Files: {str(ld)}')
+    run.log('INFO 19 A-1',f'BLOBNAME {str(blob.name)}')
+    run.log('INFO 19 A-2',f'BLOBKEY {str(blob.account_name)}')
+    run.log('INFO 19 A-3',f'BLOBKEY {str(blob.container_name)}')
+    run.log('INFO 19 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
+            
+except Exception as E:
+    run.log('EXCEPTION 9',f'{E}')
+
+run.log("INFO 19 A0","Now trying the download of the autoencoder files via a loop of files")
+try:
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')    
+    dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    file_paths = dataset.to_path()
+    download_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/"
+    ctr=1
+    for path in file_paths:
+        print(path)
+        run.log("INFO 19 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        individual_dataset=Dataset.File.from_files((blob,"Dummy_AE"+path))
+        individual_dataset.download(target_path=download_path,overwrite=True,ignore_not_found=True)
+        run.log("INFO 19 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
+    ld=glob.glob(download_path+"*")
+    run.log('INFO 19 C','List of files: {}'.format(ld))
+except Exception as E:
+    run.log('EXCEPTION 9A',f'{E}')
+
+
+try:
+    run.log('INFO 20','Now attempting download of the ONS data')
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
+    
+    dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True,ignore_not_found=True)
+    ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
+    run.log('INFO 21', f'List of Files: {str(ld)}')
+
+
+    run.log('INFO 21 A-1',f'BLOBNAME {str(blob.name)}')
+    run.log('INFO 21 A-2',f'BLOBKEY {str(blob.account_name)}')
+    run.log('INFO 21 A-3',f'BLOBKEY {str(blob.container_name)}')
+    run.log('INFO 21 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
+except Exception as E:
+    run.log('EXCEPTION 10',f'{E}')
+
+
+run.log("INFO 21 A0","Now trying the download of the ONS files via a loop of files")
+try:
+    blob=Datastore.get(aml_workspace,'workspaceblobstore')    
+    dataset = Dataset.File.from_files((blob, 'ONSData/'))
+    file_paths = dataset.to_path()
+    download_path="./ML_Models/Download_Manifest/ONSData/"
+    ctr=1
+    for path in file_paths:
+        print(path)
+        run.log("INFO 21 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        individual_dataset=Dataset.File.from_files((blob,'ONSData'+path))
+        individual_dataset.download(target_path=download_path,overwrite=True)
+        run.log("INFO 21 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
+        ctr+=1
+    ld=glob.glob(download_path+"*")
+    run.log('INFO 21 C','List of files: {}'.format(ld))
+except Exception as E:
+    run.log('EXCEPTION 10A',f'{E}')
 
 
 #ensure deletion of model file at end of job:
