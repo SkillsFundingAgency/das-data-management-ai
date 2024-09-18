@@ -163,11 +163,16 @@ try:
     run.log('INFO 18','Now attempting real download of the autoencoder')
     blob=Datastore.get(aml_workspace,'workspaceblobstore')
     dataset = Dataset.File.from_files((blob, 'Dummy_AE/'))
+    run.log('INFO 18A',str(blob))
     
     dataset.download(target_path="./ML_Models/Download_Manifest/Dummy_Autoencoder/",overwrite=True)
     ld=glob.glob("./ML_Models/Download_Manifest/Dummy_Autoencoder/*")
     run.log('INFO 19',f'List of Files: {str(ld)}')
-
+    run.log('INFO 19 A-1',f'BLOBNAME {str(blob.name)}')
+    run.log('INFO 19 A-2',f'BLOBKEY {str(blob.account_name)}')
+    run.log('INFO 19 A-3',f'BLOBKEY {str(blob.container_name)}')
+    run.log('INFO 19 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
+            
 except Exception as E:
     run.log('EXCEPTION 9',f'{E}')
 
@@ -181,7 +186,7 @@ try:
     for path in file_paths:
         print(path)
         run.log("INFO 19 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
-        individual_dataset=Dataset.File.from_files((blob,"Dummy_AE/"+path))
+        individual_dataset=Dataset.File.from_files((blob,"Dummy_AE"+path))
         individual_dataset.download(target_path=download_path,overwrite=True,ignore_not_found=True)
         run.log("INFO 19 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
@@ -199,6 +204,12 @@ try:
     dataset.download(target_path="./ML_Models/Download_Manifest/ONSData/",overwrite=True,ignore_not_found=True)
     ld=glob.glob("./ML_Models/Download_Manifest/ONSData/*")
     run.log('INFO 21', f'List of Files: {str(ld)}')
+
+
+    run.log('INFO 21 A-1',f'BLOBNAME {str(blob.name)}')
+    run.log('INFO 21 A-2',f'BLOBKEY {str(blob.account_name)}')
+    run.log('INFO 21 A-3',f'BLOBKEY {str(blob.container_name)}')
+    run.log('INFO 21 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
 except Exception as E:
     run.log('EXCEPTION 10',f'{E}')
 
@@ -213,7 +224,7 @@ try:
     for path in file_paths:
         print(path)
         run.log("INFO 21 A{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
-        individual_dataset=Dataset.File.from_files((blob,'ONSData/'+path))
+        individual_dataset=Dataset.File.from_files((blob,'ONSData'+path))
         individual_dataset.download(target_path=download_path,overwrite=True)
         run.log("INFO 21 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
