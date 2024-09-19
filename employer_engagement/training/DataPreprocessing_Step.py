@@ -133,7 +133,7 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
 
     df_as_bq_social_nonull['unixtimediff_start']=(df_as_bq_social_nonull['StartDate_corr'].dt.to_period('M').astype('int64') - df_as_bq_social_nonull['CovidRef'].dt.to_period('M').astype('int64'))
 
-    logger.log('RUN')
+    #logger.log('RUN')
     from pandas.tseries.offsets import MonthBegin
     def MonthShift(timedf,field_to_shift='StartDate_corr'):
         # function to shift the date to the nearest 1st of the month, so I can join to the Economic data.
@@ -184,7 +184,7 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
     df_FullEconVariables,econ_cols_before=DoBigEconomicsMerge(df_as_bq_social_nonull,df_econ)
     logger.log("INFO","Now completed merge with economic data")
     
-    logger.log("DEBUG",df_FullEconVariables.head(30))
+    #logger.log("DEBUG",df_FullEconVariables.head(30))
 
 
     # %%
@@ -240,11 +240,11 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
 
     # %%
     df_out=df_fullvars.copy(deep=True)
-    for p in list(df_out.columns):
-        logger.log('INFO',p)
+    #for p in list(df_out.columns):
+    #    logger.log('INFO',p)
 
     logger.log("INFO",'End of Data Preproc')
-    
+    print("FINISHED PREPROC")
     return df_out
 
 def AE_CPIH_STEP(df_in,run=None):
@@ -271,12 +271,14 @@ def AE_CPIH_STEP(df_in,run=None):
     logger=ErrorHandler(isAzure,'Autoencoder_Step',run)
     logger.log('INFO','\n')
     logger.log('INFO','Hello from inside step')
-
+    
     try:
         from DataPreprocessingFunctions import Process_AE 
     except Exception as E:
         logger.log('ERROR',"Autoencoder libraries don't work, this is probably an install problem with Python")
-        logger.log("FAILURE 01",'SKIPPING AUTOENCODER')
+        logger.log('ERROR','Exception: {}'.format(E))
+        logger.log("FAILURE",'SKIPPING AUTOENCODER')
+        print("AUTOENCODER IMPORT FAILURE: {}".format(E))
         return df_out
     try:
         df_CPIH_AE=Process_AE.Process_AE_INPUT(df_in,False,-1,logger)
@@ -284,8 +286,9 @@ def AE_CPIH_STEP(df_in,run=None):
     except Exception as e:
         logger.log('ERROR',"Autoencoder runtime doesn't work")
         logger.log(f"Exception: {e}")
-        logger.log("FAILURE 02",'SKIPPING AUTOENCODER')
-        pass
+        logger.log("ERROR",'SKIPPING AUTOENCODER')
+        return df_out
+    logger.log("INFO","Completed_Autoencoder step")
     return df_out
 
 if __name__=="__main__":
@@ -307,3 +310,5 @@ if __name__=="__main__":
     if(args.outf!=""):
         df_AE.to_csv(args.outf)
     print()
+
+# %%
