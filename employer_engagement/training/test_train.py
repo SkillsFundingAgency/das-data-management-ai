@@ -282,6 +282,7 @@ try:
     df_autoencoded=DataPreprocessing_Step.AE_CPIH_STEP(df_out,run)
 except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
+    print("PREPROCESSING ERROR: {}".format(E))
 
 
 
