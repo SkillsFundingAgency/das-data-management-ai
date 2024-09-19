@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-import tensorflow
-from DataPreprocessingFunctions import Process_AE 
+
 try:
     from azureml.data.datapath import DataPath
     from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
@@ -51,7 +50,7 @@ class ErrorHandler:
 
     
 
-def Preprocess_Data(df_in=pd.DataFrame()) : 
+def Preprocess_Data(df_in=pd.DataFrame(),run=None) : 
     """
     STAGE 1 for the preprocessing: Taking the dataframe from Az SQL, doing the first set of JOINs to ONS data so we have all the data in one super table.
     """
@@ -60,16 +59,18 @@ def Preprocess_Data(df_in=pd.DataFrame()) :
 
     isAzure=False
     logger=None
-    run=None
-    try:
-        aml_workspace = Run.get_context().experiment.workspace
-        #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-        run = Run.get_context()
+    if(run==None):
+        try:
+            aml_workspace = Run.get_context().experiment.workspace
+            #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+            run = Run.get_context()
+            isAzure=True
+        except Exception as e:
+            print("No AML workspace detected - now using logger logs")  
+            print("AML ERROR: {}".format(e))
+            pass      
+    else:
         isAzure=True
-    except Exception as e:
-        print("No AML workspace detected - now using logger logs")  
-        print("AML ERROR: {}".format(e))
-        pass      
     logger=ErrorHandler(isAzure,logstep="Preprocessing",run=run)
 
     logger.log('INFO',"Hello there")
@@ -246,23 +247,26 @@ def Preprocess_Data(df_in=pd.DataFrame()) :
     
     return df_out
 
-def AE_CPIH_STEP(df_in):
-
+def AE_CPIH_STEP(df_in,run=None):
+    import tensorflow
+    from DataPreprocessingFunctions import Process_AE 
     df_out=df_in.copy()
 
 
     isAzure=False
     logger=None
-    run=None
-    try:
-        aml_workspace = Run.get_context().experiment.workspace
-        #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-        run = Run.get_context()
+    if(run==None):
+        try:
+            aml_workspace = Run.get_context().experiment.workspace
+            #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+            run = Run.get_context()
+            isAzure=True
+        except Exception as e:
+            print("No AML workspace detected - now using logger logs")  
+            print("AML ERROR: {}".format(e))
+            pass     
+    else:# in case we handed a run object to it from the parent
         isAzure=True
-    except Exception as e:
-        print("No AML workspace detected - now using logger logs")  
-        print("AML ERROR: {}".format(e))
-        pass     
     logger=ErrorHandler(isAzure,'Autoencoder_Step',run)
     logger.log('INFO','\n')
     logger.log('INFO','Hello from inside step')
