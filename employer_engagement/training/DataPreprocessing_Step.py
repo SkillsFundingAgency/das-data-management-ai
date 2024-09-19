@@ -287,6 +287,7 @@ def AE_CPIH_STEP(df_in,run=None):
         logger.log('ERROR',"Autoencoder runtime doesn't work")
         logger.log(f"Exception: {e}")
         logger.log("ERROR",'SKIPPING AUTOENCODER')
+        print("AE Runtime Error:{}".format(E))
         return df_out
     logger.log("INFO","Completed_Autoencoder step")
     return df_out
