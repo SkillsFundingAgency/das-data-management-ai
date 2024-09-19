@@ -279,8 +279,10 @@ except Exception as E:
 try:
     import DataPreprocessing_Step
     df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
+    df_autoencoded=DataPreprocessing_Step.AE_CPIH_STEP(df_out,run)
 except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
+
 
 
 #ensure deletion of model file at end of job:
@@ -290,7 +292,10 @@ if(os.path.exists(modelpath)):
 print("*****************************")
 print("END OF JOB")
 print("METRICS:")
-print(run.get_metrics())
+#print(run.get_metrics())
+metrics=run.get_metrics()
+for key in metrics.keys():
+    print(key,metrics[key])
 print("***************************")
 print("PRESENTING LOG:")
 #print(run.get_all_logs())
