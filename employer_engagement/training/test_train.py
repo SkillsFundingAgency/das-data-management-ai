@@ -145,7 +145,14 @@ try:
         run.log("INFO 17 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
 except Exception as E:
-    run.log("EXCEPTION 6", "{}".format(E))
+    run.log("EXCEPTION 5",f'Exception: {E}')
+
+try:
+    df_out_2=test_train_functions.test_train_sql_exec(100)
+    run.log('INFO 10: Basic SQL load')
+    
+except:
+    pass
 
 try:
     os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/")
@@ -234,6 +241,49 @@ except Exception as E:
     run.log('EXCEPTION 10A',f'{E}')
 
 
+# MOVE FILES INTO APPROPRIATE DIRECTORIES
+try:
+    os.makedirs("./ML_Models/Models/Dummy_AE/")
+except:
+    pass
+try:
+    os.makedirs("./ML_Models/ONSData")
+except:
+    pass
+
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
+    run.log('JOB COPY PROCESS 0','ONS data copied')    
+except:
+    pass    
+
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
+except:
+    pass
+# temp download of fake dataset (CSV)
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
+except:
+    pass
+
+run.log('JOB START INFO 0',"JOB START")
+
+df_in=pd.DataFrame()
+try:
+    df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
+except Exception as E:
+    # major exception
+    run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+
+try:
+    import DataPreprocessing_Step
+    df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
+except Exception as E:
+    run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
+
+
+#ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
 
