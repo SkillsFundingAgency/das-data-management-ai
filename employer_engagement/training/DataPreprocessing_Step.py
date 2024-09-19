@@ -273,7 +273,6 @@ def AE_CPIH_STEP(df_in,run=None):
     logger.log('INFO','Hello from inside step')
 
     try:
-        import tensorflow
         from DataPreprocessingFunctions import Process_AE 
     except Exception as E:
         logger.log('ERROR',"Autoencoder libraries don't work, this is probably an install problem with Python")
