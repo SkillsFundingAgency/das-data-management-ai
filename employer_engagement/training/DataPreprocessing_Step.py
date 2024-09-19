@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-import tensorflow
-from DataPreprocessingFunctions import Process_AE 
+
 try:
     from azureml.data.datapath import DataPath
     from azureml.core import Workspace, Datastore, Dataset, ComputeTarget, Experiment, ScriptRunConfig, Environment, Model
@@ -69,10 +68,9 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
         except Exception as e:
             print("No AML workspace detected - now using logger logs")  
             print("AML ERROR: {}".format(e))
-            pass
+            pass      
     else:
         isAzure=True
-              
     logger=ErrorHandler(isAzure,logstep="Preprocessing",run=run)
 
     logger.log('INFO',"Hello there")
@@ -249,30 +247,46 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
     
     return df_out
 
-def AE_CPIH_STEP(df_in):
-
+def AE_CPIH_STEP(df_in,run=None):
+    ## STAGE 2 OF THE CODE:
+    #IMPUTE MISSING VARIABLES
+  
     df_out=df_in.copy()
 
 
     isAzure=False
     logger=None
-    run=None
-    try:
-        aml_workspace = Run.get_context().experiment.workspace
-        #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
-        run = Run.get_context()
+    if(run==None):
+        try:
+            aml_workspace = Run.get_context().experiment.workspace
+            #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
+            run = Run.get_context()
+            isAzure=True
+        except Exception as e:
+            print("No AML workspace detected - now using logger logs")  
+            print("AML ERROR: {}".format(e))
+            pass     
+    else:# in case we handed a run object to it from the parent
         isAzure=True
-    except Exception as e:
-        print("No AML workspace detected - now using logger logs")  
-        print("AML ERROR: {}".format(e))
-        pass     
     logger=ErrorHandler(isAzure,'Autoencoder_Step',run)
     logger.log('INFO','\n')
     logger.log('INFO','Hello from inside step')
 
-    
-    df_CPIH_AE=Process_AE.Process_AE_INPUT(df_in,False,-1,logger)
-    df_out=df_CPIH_AE.copy()
+    try:
+        import tensorflow
+        from DataPreprocessingFunctions import Process_AE 
+    except Exception as E:
+        logger.log('ERROR',"Autoencoder libraries don't work, this is probably an install problem with Python")
+        logger.log("FAILURE 01",'SKIPPING AUTOENCODER')
+        return df_out
+    try:
+        df_CPIH_AE=Process_AE.Process_AE_INPUT(df_in,False,-1,logger)
+        df_out=df_CPIH_AE.copy()
+    except Exception as e:
+        logger.log('ERROR',"Autoencoder runtime doesn't work")
+        logger.log(f"Exception: {e}")
+        logger.log("FAILURE 02",'SKIPPING AUTOENCODER')
+        pass
     return df_out
 
 if __name__=="__main__":
