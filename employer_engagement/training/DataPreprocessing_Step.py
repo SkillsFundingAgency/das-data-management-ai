@@ -23,9 +23,10 @@ class ErrorHandler:
         self.isAzure=isAzure
         if(not isAzure):
             self.logger=logging.getLogger(logstep)
-            logging.basicConfig(level=logging.DEBUG)
+            logging.basicConfig(level=logging.INFO)
         else:
             self.run=run
+        self.logfunction=logstep
         self.logctr=0
     def log(self,logtype="INFO",msg=""):
         metricstring=f'{logtype}:{self.logfunction} {self.logctr}:'
@@ -274,12 +275,14 @@ def AE_CPIH_STEP(df_in,run=None):
     
     try:
         from DataPreprocessingFunctions import Process_AE 
+
     except Exception as E:
         logger.log('ERROR',"Autoencoder libraries don't work, this is probably an install problem with Python")
         logger.log('ERROR','Exception: {}'.format(E))
-        logger.log("FAILURE",'SKIPPING AUTOENCODER')
+        logger.log("ERROR",'SKIPPING AUTOENCODER')
         print("AUTOENCODER IMPORT FAILURE: {}".format(E))
         return df_out
+    logger.log('INFO','Autoencoder import OK')
     try:
         df_CPIH_AE=Process_AE.Process_AE_INPUT(df_in,False,-1,logger)
         df_out=df_CPIH_AE.copy()
@@ -287,7 +290,7 @@ def AE_CPIH_STEP(df_in,run=None):
         logger.log('ERROR',"Autoencoder runtime doesn't work")
         logger.log(f"Exception: {e}")
         logger.log("ERROR",'SKIPPING AUTOENCODER')
-        print("AE Runtime Error:{}".format(E))
+        print("AE Runtime Error:{}".format(e))
         return df_out
     logger.log("INFO","Completed_Autoencoder step")
     return df_out

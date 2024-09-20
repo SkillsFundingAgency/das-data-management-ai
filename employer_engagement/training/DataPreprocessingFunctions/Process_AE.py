@@ -115,8 +115,8 @@ def Process_AE_INPUT(df_in=pd.DataFrame(),aeonlyflag=False,nRows=-1,logger=None)
     else:
         pass
         
-    for p in df_test.columns:
-        print(p)
+    #for p in df_test.columns:
+    #    print(p)
     PII_VARIABLES=[
             'Age at start group',
             'Ethnicity',
@@ -176,13 +176,13 @@ def Process_AE_INPUT(df_in=pd.DataFrame(),aeonlyflag=False,nRows=-1,logger=None)
     ]
     logger.log('INFO','Finished CPIH correction, now running Autoencoder')
     
-    from DataPreprocessingFunctions.Imputation_NN_PROD_PCA import ImputeVariables
+    #from DataPreprocessingFunctions.Imputation_NN_PROD_PCA import ImputeVariables
     try:
         from DataPreprocessingFunctions.Imputation_NN_PROD_PCA import ImputeVariables
     except Exception as e:
         logger.log("ERROR","EXCEPTION: {}".format(e))
         logger.log('ERROR',"AutoEncoder will crash, so skip for moment - don't deploy this code to prod!")
-        return df_test    
+        return df_test.copy()    
     
     logger.log('INFO',"MIDAS import OK")
     #return df_test

@@ -280,16 +280,17 @@ try:
     import DataPreprocessing_Step
     df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
     df_autoencoded=DataPreprocessing_Step.AE_CPIH_STEP(df_out,run)
+    print("AUTOENCODED")
 except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
     print("PREPROCESSING ERROR: {}".format(E))
 
 
-
+print("PREPROCESSING COMPLETE")
 #ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
-
+run.log("INFO19","JOB FINISH STATUS OK")
 print("*****************************")
 print("END OF JOB")
 print("METRICS:")
