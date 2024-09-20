@@ -130,9 +130,9 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
 
     covid_timestamp=pd.Timestamp('2020-03-23')
     df_as_bq_social_nonull['CovidRef']=covid_timestamp
-    df_as_bq_social_nonull['unixtimediff_exp_end']=(df_as_bq_social_nonull['EndDate_corr'].dt.to_period('M').view('int64') - df_as_bq_social_nonull['CovidRef'].dt.to_period('M').view('int64'))
+    df_as_bq_social_nonull['unixtimediff_exp_end']=(df_as_bq_social_nonull['EndDate_corr'].dt.to_period('M').astype('int64') - df_as_bq_social_nonull['CovidRef'].dt.to_period('M').astype('int64'))
 
-    df_as_bq_social_nonull['unixtimediff_start']=(df_as_bq_social_nonull['StartDate_corr'].dt.to_period('M').view('int64') - df_as_bq_social_nonull['CovidRef'].dt.to_period('M').view('int64'))
+    df_as_bq_social_nonull['unixtimediff_start']=(df_as_bq_social_nonull['StartDate_corr'].dt.to_period('M').astype('int64') - df_as_bq_social_nonull['CovidRef'].dt.to_period('M').astype('int64'))
 
     #logger.log('RUN')
     from pandas.tseries.offsets import MonthBegin
