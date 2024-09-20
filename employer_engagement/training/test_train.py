@@ -241,14 +241,67 @@ except Exception as E:
     run.log('EXCEPTION 10A',f'{E}')
 
 
+# MOVE FILES INTO APPROPRIATE DIRECTORIES
+try:
+    os.makedirs("./ML_Models/Models/Dummy_AE/")
+except:
+    pass
+try:
+    os.makedirs("./ML_Models/ONSData")
+except:
+    pass
+
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
+    run.log('JOB COPY PROCESS 0','ONS data copied')    
+except:
+    pass    
+
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
+except:
+    pass
+# temp download of fake dataset (CSV)
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
+except:
+    pass
+
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
+except:
+    pass
+run.log('JOB START INFO 0',"JOB START")
+
+df_in=pd.DataFrame()
+try:
+    df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
+except Exception as E:
+    # major exception
+    run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+
+try:
+    import DataPreprocessing_Step
+    df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
+    df_autoencoded=DataPreprocessing_Step.AE_CPIH_STEP(df_out,run)
+    print("AUTOENCODED")
+except Exception as E:
+    run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
+    print("PREPROCESSING ERROR: {}".format(E))
+
+
+print("PREPROCESSING COMPLETE")
 #ensure deletion of model file at end of job:
 if(os.path.exists(modelpath)):
     os.remove(modelpath)
-
+run.log("INFO19","JOB FINISH STATUS OK")
 print("*****************************")
 print("END OF JOB")
 print("METRICS:")
-print(run.get_metrics())
+#print(run.get_metrics())
+metrics=run.get_metrics()
+for key in metrics.keys():
+    print(key,metrics[key])
 print("***************************")
 print("PRESENTING LOG:")
 #print(run.get_all_logs())

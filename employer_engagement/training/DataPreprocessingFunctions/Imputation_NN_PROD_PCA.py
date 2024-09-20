@@ -56,7 +56,7 @@ def InvertTransform(df_scaled=pd.DataFrame(),mindict={}):
             pass
     return df_inverted
     
-def ImputeVariables(indf,diagnostic=False,cache=False):
+def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
     import os
     dirname=os.path.dirname(__file__)+"/"
     
@@ -101,12 +101,12 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
 
     
     #scaler=MinMaxScaler()
-    print("PRE SCALED DF SHAPE: {}".format(indf.to_numpy().shape))
+    logger.log("INFO","PRE SCALED DF SHAPE: {}".format(indf.to_numpy().shape))
     
     #data_scaled=scaler.fit_transform(indf)
 
     #scaled_df=pd.DataFrame(data_scaled,columns=indf.columns)
-    print("POST SCALED DF SHAPE: {}".format(scaled_df.to_numpy().shape))
+    logger.log('INFO',"POST SCALED DF SHAPE: {}".format(scaled_df.to_numpy().shape))
     print(scaled_df.head(3))
 
     imputer=midas.Midas(layer_structure=[256,256],
@@ -124,7 +124,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
         imputer.train_model(training_epochs=10,verbose=True)    
     #imputer.train_model(training_epochs=10)
     else:
-        print("LOADING AE FROM CACHE")
+        logger.log('INFO',"LOADING AE FROM CACHE")
         # MIDAS does not have an explicit loader method, but does restore a model from defaults if previously built
 
 
@@ -145,9 +145,9 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
         df_unscaled=InvertTransform(imputation,mindict)
         df_unscaled=pd.DataFrame(df_unscaled,columns=indf.columns)
         analysisdfs.append(df_unscaled)
-        print("imputation: {}".format(itr))
+        logger.log('INFO',"imputation: {}".format(itr))
         #df_unscaled.to_csv(dirname+"../CSV/Processed_CSVs/ProfiledCSVs/AE_IMPUTATION_{}_{}_ASDATA_PROF.csv".format(itr,nsamples))
-        print("Saved imputation to CSV")
+        #print("Saved imputation to CSV")
         itr+=1
 
     d=True
@@ -182,8 +182,8 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
     df_tmp=indf.copy(deep=True)
     #add a flag if the plot contains nullrows
     df_tmp['InterpolatedFlag']=df_tmp.notna().all(axis=1).astype(int)
+    logger.log('INFO',"TRYING TO IMPUTE VALUES")
     print("TRYING TO IMPUTE VALUES")
-
     df_tmp_null=df_tmp[df_tmp['InterpolatedFlag']==0]
     #print(df_tmp_null.head(40),len(df_tmp_null),len(df_tmp))
     
@@ -250,7 +250,9 @@ def ImputeVariables(indf,diagnostic=False,cache=False):
 
 
         if(randctr % 500==0):
-            print("MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
+            print("AUTOENCODER MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
+            logger.log("INFO","MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
+
         randctr+=1
         
     outdf=df_cpy.copy(deep=True)
