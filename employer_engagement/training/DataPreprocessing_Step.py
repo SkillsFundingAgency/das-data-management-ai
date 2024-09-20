@@ -125,7 +125,7 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
         if(c=="StartDate"):
             print("*{}*".format(c))
             print(df_as_bq_social_nonull)
-            df_as_bq_social_nonull[c+"_corr"]=pd.to_datetime(df_as_bq_social_nonull[c])
+            df_as_bq_social_nonull[c+"_corr"]=pd.to_datetime(df_as_bq_social_nonull[c],errors='coerce')
 
 
     covid_timestamp=pd.Timestamp('2020-03-23')

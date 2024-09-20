@@ -267,6 +267,10 @@ try:
 except:
     pass
 
+try:
+    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
+except:
+    pass
 run.log('JOB START INFO 0',"JOB START")
 
 df_in=pd.DataFrame()
