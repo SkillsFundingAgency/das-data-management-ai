@@ -183,7 +183,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
     #add a flag if the plot contains nullrows
     df_tmp['InterpolatedFlag']=df_tmp.notna().all(axis=1).astype(int)
     logger.log('INFO',"TRYING TO IMPUTE VALUES")
-
+    print("TRYING TO IMPUTE VALUES")
     df_tmp_null=df_tmp[df_tmp['InterpolatedFlag']==0]
     #print(df_tmp_null.head(40),len(df_tmp_null),len(df_tmp))
     
@@ -251,7 +251,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
 
         if(randctr % 500==0):
             print("AUTOENCODER MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
-            logger.log("MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
+            logger.log("INFO","MODIFIED ROW {}/{}".format(randctr,len(nullindices)))
 
         randctr+=1
         
