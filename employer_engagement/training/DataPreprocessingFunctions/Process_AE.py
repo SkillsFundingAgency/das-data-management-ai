@@ -18,7 +18,7 @@ import sys
 import pandas as pd
 
 from DataPreprocessingFunctions.ECON_CPIH_Correction import ProcessSalaryData
-
+from DataPreprocessing_Step.import ErrorHandler
 #ofile=args.ofile#"./CSV/INPUT_CSV_2205/IMPUTATION_OUTPUT_FULL_3105.csv"
 #cpi_ofile=args.ofile.replace(".csv","_CPIH.csv")  #"./CSV/INPUT_CSV_2205/CPIH_CORR_3105.csv"
 #outfile=ofile
@@ -85,6 +85,7 @@ def Process_AE_INPUT(df_in=pd.DataFrame(),aeonlyflag=False,nRows=-1,logger=None)
 
         if(nRows>0):
             df_input=df_input.head(nRows)
+        
         df_cpih=ProcessSalaryData(df_input,UseASData=True,updated_CPIH_Figs=True,logger=logger)
         df_test=df_cpih.copy(deep=True)
         #df_cpih.to_csv(ofile_CPIHCorr)
@@ -220,7 +221,7 @@ def Process_AE_INPUT(df_in=pd.DataFrame(),aeonlyflag=False,nRows=-1,logger=None)
     
     logger.log('INFO',"STARTING IMPUTATION STEPS")
     #return df_test
-    df_test_floatvars=ImputeVariables(df_test_floatvars,False,True)
+    df_test_floatvars=ImputeVariables(df_test_floatvars,False,True,logger)
 
     df_t=pd.concat([df_test_passvariables,df_test_floatvars,df_PII],axis=1)
     print(df_t.columns,len(df_t))
