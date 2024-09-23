@@ -110,7 +110,7 @@ def run_pca(indf=pd.DataFrame(),
         import json
         import os
         dirname=os.path.dirname(__file__)+"/"
-        jft=open(dirname+"../ML_Models/Models/ScalerSetup.json")
+        jft=open(dirname+"../ML_Models/Models/ScalerSetup_Randomized.json")
         jf=json.load(jft)
         for c in jf.keys():
             try:
