@@ -105,6 +105,7 @@ registered_env = Environment.get(aml_workspace, 'environment')
 # Create a new runconfig object for the pipeline
 pipeline_run_config = RunConfiguration()
 # Use the compute you created above. 
+pipeline_run_config.amlcompute=aml_compute
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
