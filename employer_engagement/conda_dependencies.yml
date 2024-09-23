@@ -10,9 +10,9 @@ dependencies:
     - azureml-pipeline
     - azureml-widgets
     - pandas
-    - sklearn
     - pyarrow
     - joblib
     - matplotlib
     - tensorflow
     - MIDASpy
+    - sklearn
