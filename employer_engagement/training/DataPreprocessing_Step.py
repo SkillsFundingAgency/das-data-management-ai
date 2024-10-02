@@ -65,7 +65,7 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
             aml_workspace = Run.get_context().experiment.workspace
             #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
             run = Run.get_context()
-            isAzure=True
+            isAzure=False
         except Exception as e:
             print("No AML workspace detected - now using logger logs")  
             print("AML ERROR: {}".format(e))
@@ -262,13 +262,13 @@ def AE_CPIH_STEP(df_in,run=None):
             aml_workspace = Run.get_context().experiment.workspace
             #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
             run = Run.get_context()
-            isAzure=True
+            isAzure=False
         except Exception as e:
             print("No AML workspace detected - now using logger logs")  
             print("AML ERROR: {}".format(e))
             pass     
     else:# in case we handed a run object to it from the parent
-        isAzure=True
+        isAzure=False
     logger=ErrorHandler(isAzure,'Autoencoder_Step',run)
     logger.log('INFO','\n')
     logger.log('INFO','Hello from inside step')
