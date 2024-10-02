@@ -71,7 +71,7 @@ def Preprocess_Data(df_in=pd.DataFrame(),run=None) :
             print("AML ERROR: {}".format(e))
             pass      
     else:
-        isAzure=True
+        isAzure=False
     logger=ErrorHandler(isAzure,logstep="Preprocessing",run=run)
 
     logger.log('INFO',"Hello there")
