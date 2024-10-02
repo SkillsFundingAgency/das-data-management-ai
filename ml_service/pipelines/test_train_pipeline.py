@@ -107,7 +107,7 @@ pipeline_run_config = RunConfiguration()
 # Use the compute you created above. 
 #pipeline_run_config.amlcompute=aml_compute
 pipeline_run_config.node_count=1
-pipeline_run_config.max_run_duration_seconds=600
+pipeline_run_config.max_run_duration_seconds=3600
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
