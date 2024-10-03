@@ -252,23 +252,23 @@ except:
     pass
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
     run.log('JOB COPY PROCESS 0','ONS data copied')    
 except:
     pass    
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
 except:
     pass
 # temp download of fake dataset (CSV)
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
 except:
     pass
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
 except:
     pass
 run.log('JOB START INFO 0',"JOB START")
