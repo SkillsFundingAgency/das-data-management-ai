@@ -265,6 +265,10 @@ try:
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
     print("Autoencoder: COPIED ALL REAL FILES")
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/.* ./ML_Models/Models/Dummy_AE/') # additional block to move hidden files
+    
+    print("ASSIGNING ADDITIONAL PERMS TO AE BINARIES")
+    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
+    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
     print("Autoencoder: COPIED HIDDEN FILES")
 except:
     pass
