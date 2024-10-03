@@ -101,13 +101,13 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
 
     
     #scaler=MinMaxScaler()
-    logger.log("INFO","PRE SCALED DF SHAPE: {}".format(indf.to_numpy().shape))
+    logger.log("INFO","PRE SCALED DF SHAPE: {}".format(str(indf.to_numpy().shape)))
     
     #data_scaled=scaler.fit_transform(indf)
 
     #scaled_df=pd.DataFrame(data_scaled,columns=indf.columns)
-    logger.log('INFO',"POST SCALED DF SHAPE: {}".format(scaled_df.to_numpy().shape))
-    print(scaled_df.head(3))
+    logger.log("INFO","POST SCALED DF SHAPE: {}".format(str(scaled_df.to_numpy().shape)))
+    #print(scaled_df.head(3))
 
     imputer=midas.Midas(layer_structure=[256,256],
                         vae_layer=False,
@@ -124,7 +124,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
         imputer.train_model(training_epochs=10,verbose=True)    
     #imputer.train_model(training_epochs=10)
     else:
-        logger.log('INFO',"LOADING AE FROM CACHE")
+        logger.log("INFO","LOADING AE FROM CACHE")
         # MIDAS does not have an explicit loader method, but does restore a model from defaults if previously built
 
 
@@ -137,7 +137,7 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
     
     nsamples=10
     imputations=imputer.yield_samples(m=nsamples)
-    
+    print("IMPUTATION LOADED")
     analysisdfs=[]
     
     itr=0
@@ -145,12 +145,12 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
         df_unscaled=InvertTransform(imputation,mindict)
         df_unscaled=pd.DataFrame(df_unscaled,columns=indf.columns)
         analysisdfs.append(df_unscaled)
-        logger.log('INFO',"imputation: {}".format(itr))
+        logger.log('INFO',"imputation: {}".format(str(itr)))
         #df_unscaled.to_csv(dirname+"../CSV/Processed_CSVs/ProfiledCSVs/AE_IMPUTATION_{}_{}_ASDATA_PROF.csv".format(itr,nsamples))
         #print("Saved imputation to CSV")
         itr+=1
 
-    d=True
+    d=False
     if(diagnostic and d):
         for c in indf.columns:
             print("PLOTTING {}".format(c))
