@@ -198,7 +198,8 @@ try:
         run.log("INFO 19 B{}".format(ctr),'FILES OBTAINED: {}'.format(str(path)))
         ctr+=1
     ld=glob.glob(download_path+"*")
-    run.log('INFO 19 C','List of files: {}'.format(ld))
+    ld_hidden=glob.glob(download_path+".*")
+    run.log('INFO 19 C','List of files: {}, hidden files: {}'.format(ld,ld_hidden))
 except Exception as E:
     run.log('EXCEPTION 9A',f'{E}')
 
@@ -252,23 +253,33 @@ except:
     pass
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/* ./ML_Models/ONSData/')
     run.log('JOB COPY PROCESS 0','ONS data copied')    
 except:
     pass    
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
+    print("TRYING TO MOVE FILES TO THE AUTOENCODER DIRECTORY")
+    os.system("ls -ltra ./ML_Models/Download_Manifest/Dummy_Autoencoder/")
+    
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/* ./ML_Models/Models/Dummy_AE/')
+    print("Autoencoder: COPIED ALL REAL FILES")
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/.* ./ML_Models/Models/Dummy_AE/') # additional block to move hidden files
+    
+    print("ASSIGNING ADDITIONAL PERMS TO AE BINARIES")
+    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
+    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
+    print("Autoencoder: COPIED HIDDEN FILES")
 except:
     pass
 # temp download of fake dataset (CSV)
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/Fake_Dataframe_SQLOutput.csv  ./ML_Models/')
 except:
     pass
 
 try:
-    os.system('cp -r -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
 except:
     pass
 run.log('JOB START INFO 0',"JOB START")
