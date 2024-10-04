@@ -13,5 +13,5 @@ dependencies:
     - pyarrow
     - joblib
     - matplotlib
-    - tensorflow
+    - tensorflow-cpu
     - MIDASpy
