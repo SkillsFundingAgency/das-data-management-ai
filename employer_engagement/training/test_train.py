@@ -34,6 +34,7 @@ run = Run.get_context()
 
 #prevent SettingWithCopyWarning message from appearing
 #pd.options.mode.chained_assignment = None
+os.environ['CUDA_VISIBLE_DEVICES']='-1'
 
 ### Get XGBoost version -pkl load might be a bit funky if XGB is different to the model saved
 try:
