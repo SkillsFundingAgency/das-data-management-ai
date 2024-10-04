@@ -267,9 +267,13 @@ try:
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/Dummy_Autoencoder/.* ./ML_Models/Models/Dummy_AE/') # additional block to move hidden files
     
     print("ASSIGNING ADDITIONAL PERMS TO AE BINARIES")
-    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
-    os.system('chmod 500 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
+    os.system('chmod 700 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
+    os.system('chmod 700 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
+    os.system('chmod 700 -R ./ML_Models/Models/Dummy_AE') # permissions on everything in this directory
     print("Autoencoder: COPIED HIDDEN FILES")
+    print("GETTING LIST OF FILES IN AE DIR")
+    os.system("ls -ltra ./ML_Models/Models/Dummy_AE/")
+    print("\n\n")
 except:
     pass
 # temp download of fake dataset (CSV)
