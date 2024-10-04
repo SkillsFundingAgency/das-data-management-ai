@@ -268,9 +268,9 @@ try:
     
     print("ASSIGNING ADDITIONAL PERMS TO AE BINARIES")
     os.system("rm -r -v ./ML_Models/Models/Dummy_AE/ONSData") # for some reason the ONSData is being downloaded into the Autoencoder directory - remove it
-    os.system('chmod 700 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
-    os.system('chmod 700 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
-    os.system('chmod 700 -R ./ML_Models/Models/Dummy_AE') # permissions on everything in this directory
+    os.system('chmod 755 ./ML_Models/Models/Dummy_AE/* ') # permissions on the Autoencoder binaries
+    os.system('chmod 755 ./ML_Models/Models/Dummy_AE/.* ') # permissions on the autoencoder binaries' hidden files
+    os.system('chmod 755 -R ./ML_Models/Models/Dummy_AE') # permissions on everything in this directory
     print("Autoencoder: COPIED HIDDEN FILES")
     print("GETTING LIST OF FILES IN AE DIR")
     os.system("ls -ltra ./ML_Models/Models/Dummy_AE/")
