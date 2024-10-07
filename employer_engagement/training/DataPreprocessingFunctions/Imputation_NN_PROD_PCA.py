@@ -4,6 +4,7 @@ import pandas as pd
 #import sklearn
 import os
 import tensorflow
+tensorflow.config.set_visible_devices([],'GPU') # force TENSORFLOW TO USE CPU
 import MIDASpy as midas
 #from sklearn.preprocessing import MinMaxScaler
 from keras.callbacks import EarlyStopping
@@ -55,8 +56,27 @@ def InvertTransform(df_scaled=pd.DataFrame(),mindict={}):
         except:
             pass
     return df_inverted
-    
+
+class ConfigException(Exception):
+    pass
+
+
 def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
+    
+    try:
+        tensorflow.config.set_visible_devices([],'GPU') # force TENSORFLOW TO USE CPU
+        logger.log('INFO',"Forced tensorflow to use CPU")
+        gpu_devices = tensorflow.config.list_physical_devices('GPU')
+
+        if not gpu_devices:
+            logger.log('INFO',"TensorFlow is using the CPU. (GOOD!)")
+        else:
+            logger.log('ERROR',f"THIS IS AN ERROR: TensorFlow is using the following GPU(s): {gpu_devices} (BAD!!!!)")
+    except Exception as E:
+        logger.log('INFO',"TENSORFLOW CONFIG EXCEPTION: {}".format(E))
+        raise ConfigException("Tensorflow config didn't work correctly")
+        
+
     import os
     dirname=os.path.dirname(__file__)+"/"
     
