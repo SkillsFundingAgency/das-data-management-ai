@@ -82,7 +82,7 @@ def RunBDTModel(infile,outfile,plots):
 
     df_FullEconVariables_input=pd.read_csv(infile,index_col=0)#"./CSV/INPUT_CSV_2205/BDT_INPUT_STARTS2324.csv",index_col=0)
     #df_FullEconVariables_input=df_FullEconVariables_input[pd.to_datetime(df_FullEconVariables_input['EndDate'],errors='coerce')<pd.Timestamp('2023-08-01')]
-    df_FullEconVariables_input=df_FullEconVariables_input[pd.to_datetime(df_FullEconVariables_input['EndDate'],errors='coerce')<pd.Timestamp('2023-08-01')]
+    #df_FullEconVariables_input=df_FullEconVariables_input[pd.to_datetime(df_FullEconVariables_input['EndDate'],errors='coerce')<pd.Timestamp('2023-08-01')]
 
     import DataPreprocessingFunctions.PCA_Processing as PCA
 
