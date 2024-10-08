@@ -128,7 +128,10 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
     #scaled_df=pd.DataFrame(data_scaled,columns=indf.columns)
     logger.log("INFO","POST SCALED DF SHAPE: {}".format(str(scaled_df.to_numpy().shape)))
     #print(scaled_df.head(3))
-
+    os.system("chmod -R 777 ./ML_Models/Models/DUMMY_AE/")
+    os.system("ls -ltra ./ML_Models/Models/DUMMY_AE/")
+    
+    logger.log("INFO","NOW LOADING MODEL")
     imputer=midas.Midas(layer_structure=[256,256],
                         vae_layer=False,
                         seed=42,
