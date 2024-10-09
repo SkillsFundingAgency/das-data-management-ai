@@ -52,7 +52,7 @@ class ErrorHandler:
         self.logctr+=1
 
 #filter out duplicate indices (only keep scores)
-def RunBDTModel(infile,outfile,plots):
+def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
     isAzure=False
     logger=None
     run=None
@@ -60,7 +60,7 @@ def RunBDTModel(infile,outfile,plots):
         aml_workspace = Run.get_context().experiment.workspace
         #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
         run = Run.get_context()
-        isAzure=True
+        isAzure=False # force logs to be written to disk
     except Exception as e:
         print("No AML workspace detected - now using logger logs")  
         print("AML ERROR: {}".format(e))
@@ -79,8 +79,10 @@ def RunBDTModel(infile,outfile,plots):
     logger.log('INFO',df_social)
 
 
-
-    df_FullEconVariables_input=pd.read_csv(infile,index_col=0)#"./CSV/INPUT_CSV_2205/BDT_INPUT_STARTS2324.csv",index_col=0)
+    if(len(PandasInput)>0):
+        df_FullEconVariables_input=PandasInput.copy()
+    else: # local file load
+        df_FullEconVariables_input=pd.read_csv(infile,index_col=0)#"./CSV/INPUT_CSV_2205/BDT_INPUT_STARTS2324.csv",index_col=0)
     #df_FullEconVariables_input=df_FullEconVariables_input[pd.to_datetime(df_FullEconVariables_input['EndDate'],errors='coerce')<pd.Timestamp('2023-08-01')]
     #df_FullEconVariables_input=df_FullEconVariables_input[pd.to_datetime(df_FullEconVariables_input['EndDate'],errors='coerce')<pd.Timestamp('2023-08-01')]
 
@@ -127,7 +129,7 @@ def RunBDTModel(infile,outfile,plots):
         df_opt.copy().fillna(0),
         n_components=len(l_econfields),
         cols=l_econfields,
-        label='ECON',
+        label='ECON_DUMMY',
         verbose=False,
         ProdMode=True
         ,cache=True
@@ -536,10 +538,11 @@ def RunBDTModel(infile,outfile,plots):
     #model_t.fit(x_train_t,y_train_t,eval_set=evalset_t,verbose=True)
     #logger.log('INFO',"BEST ITERATION: {}".format(model_t.get_booster().best_iteration))
 
-    model_t.load_model("./ML_Models/Models/Model_BDT_NoLocation.model")
-
+    #model_t.load_model("./ML_Models/Models/Model_BDT_NoLocation.model")
+    model_t.load_model("./ML_Models/Models/BDTStepConfig/Model_BDT__DUMMYDATA.model")
+    logger.log("BDT MODEL LOADED OK")
     preds_t=model_t.predict(x_test_t)
-
+    
     df_testset_t=x_test_t.copy(deep=True)
     df_testset_t['Predicted Withdrawal']=preds_t
     df_testset_t['Actual Withdrawal'] = y_test_t.copy(deep=True)
@@ -550,6 +553,7 @@ def RunBDTModel(infile,outfile,plots):
 
     df_modelinput=x_train_t.copy(deep=True)
     df_modelinput_noPredVariables=df_modelinput.copy(deep=True)
+    logger.log("BDT MODEL MADE A PREDICTION ON ALL DATA SET")
     df_modelinput['Actual Withdrawal']=y_train_t.copy(deep=True)
     df_modelinput['Predicted Withdrawal']=model_t.predict(x_train_t)
     df_modelinput[list_mask_variables]=mask_train_t.copy()
@@ -558,7 +562,7 @@ def RunBDTModel(infile,outfile,plots):
 
     df_modeloutput=df_testset_t.copy(deep=True)
 
-    logger.log('INFO',"LENGTHCHECK",len(df_modelinput),len(df_modeloutput),len(df_modelinput)+len(df_modeloutput),len(x))
+    logger.log('INFO',f"LENGTHCHECK {[len(df_modelinput),len(df_modeloutput),len(df_modelinput)+len(df_modeloutput),len(x)]}")
 
 
     logger.log('INFO',"FINISHED BDT APPLICATION")
@@ -568,7 +572,7 @@ def RunBDTModel(infile,outfile,plots):
     dblen=len(df_model_ABsorting)
     import math
     partsize=math.ceil(dblen/2)
-    logger.log('INFO',dblen,partsize)
+    logger.log('INFO',f'{(dblen,partsize)}')
     #partition=df_model_ABsorting.index[0:]
 
     df_model_ABsorting['HiLoPartition']="NONE"
@@ -585,14 +589,14 @@ def RunBDTModel(infile,outfile,plots):
     df_model_ABsorting['ABPartition']='B'
     df_model_hi_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi'].sample(frac=0.5,random_state=42)
     df_model_lo_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo'].sample(frac=0.5,random_state=42)
-    logger.log('INFO',"LOWA PARTITION",len(df_model_lo_A))
+    logger.log('INFO',f"LOWA PARTITION {len(df_model_lo_A)}")
     df_model_ABsorting['ABPartition'].iloc[df_model_hi_A.index]='A'
     df_model_ABsorting['ABPartition'].iloc[df_model_lo_A.index]='A'
 
 
     df_part_lo=df_model_ABsorting.iloc[:partsize]
     df_part_hi=df_model_ABsorting.iloc[partsize:]
-    logger.log('INFO',len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo))
+    logger.log('INFO',f"{[len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo)]}")
 
     df_model_ABsorting.to_csv(outfile)
 
@@ -711,7 +715,7 @@ def RunBDTModel(infile,outfile,plots):
     from sklearn.metrics import accuracy_score
     df_model_allout=df_model_allout[df_model_allout['Actual Withdrawal'].notna()].copy()
     df_model_allout=df_model_allout[df_model_allout['Actual Withdrawal']>=0].copy()
-    logger.log('INFO',df_model_allout[['Actual Withdrawal','Predicted Withdrawal']].value_counts())
+    #logger.log('INFO',df_model_allout[['Actual Withdrawal','Predicted Withdrawal']].value_counts())
     acc_xgb=accuracy_score(y_true=df_model_allout['Actual Withdrawal'] ,y_pred=df_model_allout['Predicted Withdrawal'] )
     logger.log('INFO',"XGB ACC calc (Test set): {}".format(acc_xgb))
     return
@@ -1306,14 +1310,14 @@ def RunBDTModel(infile,outfile,plots):
 
     #df_timeseries['Percent_Duration_Completed']=df_timeseries['Percent_Duration_Completed'].apply(lambda x: 0 if x<0 else (x if x<300 else 0) )
     #df_timeseries['PreCovid']=df_timeseries['EndDate'].apply(lambda x: 1 if x<pd.Timestamp("23-03-2020") else 0)
+if __name__=="__main__":
+    import argparse
 
-import argparse
+    parser=argparse.ArgumentParser('GenerateBDT_Predictions.py')
+    parser.add_argument('--infile',action='store',dest='infile',help='Input file (.csv)')
+    parser.add_argument('--outfile',action='store',dest='outfile',help="Output File (.csv)")
+    parser.add_argument("--p",action='store_true',default=False,dest='plots',help="Make diagnostic plots of A/B sample")
+    args=parser.parse_args()
 
-parser=argparse.ArgumentParser('GenerateBDT_Predictions.py')
-parser.add_argument('--infile',action='store',dest='infile',help='Input file (.csv)')
-parser.add_argument('--outfile',action='store',dest='outfile',help="Output File (.csv)")
-parser.add_argument("--p",action='store_true',default=False,dest='plots',help="Make diagnostic plots of A/B sample")
-args=parser.parse_args()
-
-RunBDTModel(args.infile,args.outfile,args.plots)
+    RunBDTModel(args.infile,args.outfile,args.plots)
 
