@@ -110,7 +110,7 @@ def run_pca(indf=pd.DataFrame(),
         import json
         import os
         dirname=os.path.dirname(__file__)+"/"
-        jft=open(dirname+"../CSV/ScalerSetup.json")
+        jft=open(dirname+"../ML_Models/Models/ScalerSetup_Randomized.json")
         jf=json.load(jft)
         for c in jf.keys():
             try:
@@ -135,7 +135,7 @@ def run_pca(indf=pd.DataFrame(),
 
     if(cache):
         print("LOADING PCA FROM CACHE")
-        fname="../models/PCA_{}.pkl".format(label)
+        fname=dirname+"../ML_Models/Models/PCA_{}.pkl".format(label)
         import pickle
         try:
             pca=pickle.load(open(fname,'rb'))
