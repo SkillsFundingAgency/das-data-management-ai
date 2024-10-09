@@ -288,6 +288,16 @@ try:
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/ScalerSetup*.json ./ML_Models/Models/')
 except:
     pass
+print("NOW COPYING THE BDT STEP FILES - CURRENTLY STORED IN ONS DATA DIRECTORY")
+try:
+    os.system('mkdir ./ML_Models/Models/BDTStepConfig/')
+except:
+    pass
+try:    
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/Model_BDT*.model ./ML_Models/Models/BDTStepConfig/')
+    os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/PCA_ECON*.model ./ML_Models/Models/BDTStepConfig/')
+except:
+    pass
 run.log('JOB START INFO 0',"JOB START")
 
 df_in=pd.DataFrame()
