@@ -310,16 +310,23 @@ try:
 except Exception as E:
     # major exception
     run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
-
+df_autoencoded=None
 try:
     import DataPreprocessing_Step
     df_out=DataPreprocessing_Step.Preprocess_Data(df_in,run)
     df_autoencoded=DataPreprocessing_Step.AE_CPIH_STEP(df_out,run)
+    
     print("AUTOENCODED")
 except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
     print("PREPROCESSING ERROR: {}".format(E))
 
+try:
+    import Generate_BDT_Predictions_NOLocation as BDTCode
+    BDTCode.RunBDTModel(infile="",plots=False,outfile="./TEST_OUTPUT.csv",PandasInput=df_autoencoded.copy())
+    run.log('BDT EVAL','OK')
+except Exception as E:
+    print("BDT EVALUATION FAILURE")
 
 print("PREPROCESSING COMPLETE")
 #ensure deletion of model file at end of job:
