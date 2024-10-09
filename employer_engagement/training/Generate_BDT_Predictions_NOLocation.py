@@ -60,7 +60,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
         aml_workspace = Run.get_context().experiment.workspace
         #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
         run = Run.get_context()
-        isAzure=True
+        isAzure=False # force logs to be written to disk
     except Exception as e:
         print("No AML workspace detected - now using logger logs")  
         print("AML ERROR: {}".format(e))
