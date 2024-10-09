@@ -4,6 +4,7 @@ import pandas as pd
 #import sklearn
 import os
 import tensorflow
+tensorflow.config.set_visible_devices([],'GPU') # force TENSORFLOW TO USE CPU
 import MIDASpy as midas
 #from sklearn.preprocessing import MinMaxScaler
 from keras.callbacks import EarlyStopping
@@ -55,8 +56,27 @@ def InvertTransform(df_scaled=pd.DataFrame(),mindict={}):
         except:
             pass
     return df_inverted
-    
+
+class ConfigException(Exception):
+    pass
+
+
 def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
+    
+    try:
+        tensorflow.config.set_visible_devices([],'GPU') # force TENSORFLOW TO USE CPU
+        logger.log('INFO',"Forced tensorflow to use CPU")
+        gpu_devices = tensorflow.config.list_physical_devices('GPU')
+
+        if not gpu_devices:
+            logger.log('INFO',"TensorFlow is using the CPU. (GOOD!)")
+        else:
+            logger.log('ERROR',f"THIS IS AN ERROR: TensorFlow is using the following GPU(s): {gpu_devices} (BAD!!!!)")
+    except Exception as E:
+        logger.log('INFO',"TENSORFLOW CONFIG EXCEPTION: {}".format(E))
+        raise ConfigException("Tensorflow config didn't work correctly")
+        
+
     import os
     dirname=os.path.dirname(__file__)+"/"
     
@@ -108,12 +128,15 @@ def ImputeVariables(indf,diagnostic=False,cache=False,logger=None):
     #scaled_df=pd.DataFrame(data_scaled,columns=indf.columns)
     logger.log("INFO","POST SCALED DF SHAPE: {}".format(str(scaled_df.to_numpy().shape)))
     #print(scaled_df.head(3))
-
+    os.system("chmod -R 777 ./ML_Models/Models/Dummy_AE/")
+    os.system("ls -ltra ./ML_Models/Models/Dummy_AE/")
+    
+    logger.log("INFO","NOW LOADING MODEL")
     imputer=midas.Midas(layer_structure=[256,256],
                         vae_layer=False,
                         seed=42,
                         input_drop=0.50,
-                        savepath=dirname+"../ML_Models/Models/DUMMY_AE/" # dummy data Autoencoder
+                        savepath="./ML_Models/Models/Dummy_AE/" # dummy data Autoencoder
                         #savepath=dirname+r"..\ML_Models\Models\MIDAS_CHECKPOINTS_PROD_PCA\\" # real data autoencoder
                         )
     imputer.build_model(scaled_df,softmax_columns=[])
