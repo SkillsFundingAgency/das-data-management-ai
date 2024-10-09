@@ -296,6 +296,10 @@ except:
 try:    
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/Model_BDT*.model ./ML_Models/Models/BDTStepConfig/')
     os.system('cp -r -a -v ./ML_Models/Download_Manifest/ONSData/PCA_ECON*.model ./ML_Models/Models/BDTStepConfig/')
+    print("CONFIRMING BDT MODELS DOWNLOADED IN MANIFEST")
+    ldbdt=glob.glob("./ML_Models/Models/BDTStepConfig/*.*")
+    print("BDT CONFIG FILES: {}".format(ldbdt))
+    print("BDT CHECK COMPLETE")
 except:
     pass
 run.log('JOB START INFO 0',"JOB START")
