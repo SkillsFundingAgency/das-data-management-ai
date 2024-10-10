@@ -56,6 +56,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     memtracker=None
     if(RunMemCheck):
         from pympler import tracker
+        from pympler import muppy
         memtracker=tracker.SummaryTracker()
     isAzure=False
     logger=None
@@ -562,7 +563,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     logger.log('INFO',np.array(model_t.predict_proba(x_test_t)).shape)
 
     df_modelinput=x_train_t.copy()
-    df_modelinput_noPredVariables=df_modelinput.copy()
+    #df_modelinput_noPredVariables=df_modelinput.copy()
     logger.log("BDT MODEL MADE A PREDICTION ON ALL DATA SET")
     df_modelinput['Actual Withdrawal']=y_train_t.copy()
     df_modelinput['Predicted Withdrawal']=model_t.predict(x_train_t)
@@ -572,22 +573,39 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
 
     df_modeloutput=df_testset_t.copy()
 
+    del x_train_t
+    del y_train_t
+    del x_test_t
+    del y_test_t
     logger.log('INFO',f"LENGTHCHECK {[len(df_modelinput),len(df_modeloutput),len(df_modelinput)+len(df_modeloutput),len(x)]}")
 
 
     logger.log('INFO',"FINISHED BDT APPLICATION")
+
+    if(RunMemCheck):
+        print("**************************")
+        print("MEMORY CHECKPOINT: PRE DF CONCAT")
+        memtracker.print_diff()
+        #biggest_objects=muppy.sort(muppy.get_objects())[-100:]
+        #print("BIGGEST OBJECTS")
+        print("****")
     df_model_allout=pd.concat([df_modelinput,df_modeloutput])
-<<<<<<< HEAD
+    # now that I bolted everything back together, remove the copies
+    del df_modelinput
+    del df_modeloutput
+    print("Finished cleanup of concat - hopefully")
     if(RunMemCheck):
         print("**************************")
         print("MEMORY CHECKPOINT: BDT EVALUATION & SORT")
         memtracker.print_diff()
+        biggest_objects=muppy.sort(muppy.get_objects())[-100:]
+        #print("BIGGEST OBJECTS")
+        #import objgraph   
+        #objgraph.show_backrefs(biggest_objects,filename="REFFILE.png")
         print("**************************")
-    df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy(deep=True)
-=======
 
     df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy()
->>>>>>> 9c687dd3cb4ae05903d51f7b6f23ea352b0aef6f
+
     dblen=len(df_model_ABsorting)
     import math
     partsize=math.ceil(dblen/2)
@@ -599,15 +617,15 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     df_model_ABsorting['HiLoPartition'].iloc[df_model_ABsorting.index>=partsize]='Hi'
     logger.log('INFO',df_model_ABsorting['HiLoPartition'].value_counts())
 
-    LoGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
-    HiGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
+    #LoGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
+    #HiGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
 
     partsize_Lo=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo'])/2)
     partsize_Hi=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi'])/2)
 
     df_model_ABsorting['ABPartition']='B'
-    df_model_hi_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi'].sample(frac=0.5,random_state=42)
-    df_model_lo_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo'].sample(frac=0.5,random_state=42)
+    df_model_hi_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi']['HiLoPartition'].sample(frac=0.5,random_state=42)
+    df_model_lo_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'].sample(frac=0.5,random_state=42)
     logger.log('INFO',f"LOWA PARTITION {len(df_model_lo_A)}")
     df_model_ABsorting['ABPartition'].iloc[df_model_hi_A.index]='A'
     df_model_ABsorting['ABPartition'].iloc[df_model_lo_A.index]='A'
@@ -680,9 +698,9 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     dict_variables_t=model_t.feature_importances_
     logger.log('INFO',dict_variables_t)
 
-    sorted_idx = np.argsort(model_t.feature_importances_)[::-1]
-    for index in sorted_idx:
-        logger.log('INFO',[x_train_t.columns[index], model_t.feature_importances_[index]])
+    #sorted_idx = np.argsort(model_t.feature_importances_)[::-1]
+    #for index in sorted_idx:
+    #    logger.log('INFO',[x_train_t.columns[index], model_t.feature_importances_[index]])
 
 
 
