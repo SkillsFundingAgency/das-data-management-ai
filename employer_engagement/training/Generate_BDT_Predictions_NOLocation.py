@@ -454,7 +454,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     from sklearn.model_selection import train_test_split
     # plot some variables on the date field
 
-    df_profiling_pretraining=df_in_sort.copy(deep=True)
+    df_profiling_pretraining=df_in_sort.copy()
     df_profiling_pretraining['Withdraw']=df_profiling_pretraining['CompletionStatus'].apply(lambda x:
                                                                                             -1 if x==1
                                                                                             else 0 if x==2
@@ -553,36 +553,41 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
         print("**************************")
     preds_t=model_t.predict(x_test_t)
     
-    df_testset_t=x_test_t.copy(deep=True)
+    df_testset_t=x_test_t.copy()
     df_testset_t['Predicted Withdrawal']=preds_t
-    df_testset_t['Actual Withdrawal'] = y_test_t.copy(deep=True)
+    df_testset_t['Actual Withdrawal'] = y_test_t.copy()
     df_testset_t[list_mask_variables]=mask_test_t
     df_testset_t['BDT_PROB_COMPLETE']=model_t.predict_proba(x_test_t)[:,0]
     df_testset_t['BDT_PROB_WITHDRAW']=model_t.predict_proba(x_test_t)[:,1]
     logger.log('INFO',np.array(model_t.predict_proba(x_test_t)).shape)
 
-    df_modelinput=x_train_t.copy(deep=True)
-    df_modelinput_noPredVariables=df_modelinput.copy(deep=True)
+    df_modelinput=x_train_t.copy()
+    df_modelinput_noPredVariables=df_modelinput.copy()
     logger.log("BDT MODEL MADE A PREDICTION ON ALL DATA SET")
-    df_modelinput['Actual Withdrawal']=y_train_t.copy(deep=True)
+    df_modelinput['Actual Withdrawal']=y_train_t.copy()
     df_modelinput['Predicted Withdrawal']=model_t.predict(x_train_t)
     df_modelinput[list_mask_variables]=mask_train_t.copy()
     df_modelinput['BDT_PROB_COMPLETE']=model_t.predict_proba(x_train_t)[:,0]
     df_modelinput['BDT_PROB_WITHDRAW']=model_t.predict_proba(x_train_t)[:,1]
 
-    df_modeloutput=df_testset_t.copy(deep=True)
+    df_modeloutput=df_testset_t.copy()
 
     logger.log('INFO',f"LENGTHCHECK {[len(df_modelinput),len(df_modeloutput),len(df_modelinput)+len(df_modeloutput),len(x)]}")
 
 
     logger.log('INFO',"FINISHED BDT APPLICATION")
     df_model_allout=pd.concat([df_modelinput,df_modeloutput])
+<<<<<<< HEAD
     if(RunMemCheck):
         print("**************************")
         print("MEMORY CHECKPOINT: BDT EVALUATION & SORT")
         memtracker.print_diff()
         print("**************************")
     df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy(deep=True)
+=======
+
+    df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy()
+>>>>>>> 9c687dd3cb4ae05903d51f7b6f23ea352b0aef6f
     dblen=len(df_model_ABsorting)
     import math
     partsize=math.ceil(dblen/2)
@@ -762,7 +767,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     plt.close('all')
 
 
-    df_x=df_tmp.copy(deep=True)
+    df_x=df_tmp.copy()
     #purge any nulls/nans lingering around as the LogRegressor won't like them.
     df_x=df_x.dropna()
 
@@ -926,8 +931,8 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
 
     for itr in range(2,8):
         #logger.log('INFO',itr)
-        tempdf=df_modeloutput[df_modeloutput['Level'] ==itr ].copy(deep=True)
-        tempmodelinput_df=df_modelinput[df_modelinput['Level']==itr].copy(deep=True)
+        tempdf=df_modeloutput[df_modeloutput['Level'] ==itr ].copy()
+        tempmodelinput_df=df_modelinput[df_modelinput['Level']==itr].copy()
         
         y_true=tempdf['Actual Withdrawal']
         y_pred=tempdf['Predicted Withdrawal']
