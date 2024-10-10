@@ -52,7 +52,11 @@ class ErrorHandler:
         self.logctr+=1
 
 #filter out duplicate indices (only keep scores)
-def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
+def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunMemCheck=False):
+    memtracker=None
+    if(RunMemCheck):
+        from pympler import tracker
+        memtracker=tracker.SummaryTracker()
     isAzure=False
     logger=None
     run=None
@@ -541,6 +545,12 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
     #model_t.load_model("./ML_Models/Models/Model_BDT_NoLocation.model")
     model_t.load_model("./ML_Models/Models/BDTStepConfig/Model_BDT__DUMMYDATA.model")
     logger.log("BDT MODEL LOADED OK")
+
+    if(RunMemCheck):
+        print("**************************")
+        print("MEMORY CHECKPOINT: BDT load")
+        memtracker.print_diff()
+        print("**************************")
     preds_t=model_t.predict(x_test_t)
     
     df_testset_t=x_test_t.copy(deep=True)
@@ -567,7 +577,11 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
 
     logger.log('INFO',"FINISHED BDT APPLICATION")
     df_model_allout=pd.concat([df_modelinput,df_modeloutput])
-
+    if(RunMemCheck):
+        print("**************************")
+        print("MEMORY CHECKPOINT: BDT EVALUATION & SORT")
+        memtracker.print_diff()
+        print("**************************")
     df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy(deep=True)
     dblen=len(df_model_ABsorting)
     import math
@@ -718,6 +732,10 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame()):
     #logger.log('INFO',df_model_allout[['Actual Withdrawal','Predicted Withdrawal']].value_counts())
     acc_xgb=accuracy_score(y_true=df_model_allout['Actual Withdrawal'] ,y_pred=df_model_allout['Predicted Withdrawal'] )
     logger.log('INFO',"XGB ACC calc (Test set): {}".format(acc_xgb))
+
+    if(RunMemCheck):
+        print("MEMORY CHECKPOINT: END OF JOB")
+        memtracker.print_diff()
     return
 
     metrics=(model_t.evals_result())
@@ -1317,7 +1335,10 @@ if __name__=="__main__":
     parser.add_argument('--infile',action='store',dest='infile',help='Input file (.csv)')
     parser.add_argument('--outfile',action='store',dest='outfile',help="Output File (.csv)")
     parser.add_argument("--p",action='store_true',default=False,dest='plots',help="Make diagnostic plots of A/B sample")
+    parser.add_argument("--memdebug",action='store_true',default=False,help="Run Memory Profiler? (muppy https://pythonhosted.org/Pympler/muppy.html)",dest='memcheck')
     args=parser.parse_args()
 
-    RunBDTModel(args.infile,args.outfile,args.plots)
-
+    if(args.memcheck):
+        RunBDTModel(args.infile,args.outfile,args.plots,pd.DataFrame(),args.memcheck)
+    else:
+        RunBDTModel(args.infile,args.outfile,args.plots,pd.DataFrame(),False)
