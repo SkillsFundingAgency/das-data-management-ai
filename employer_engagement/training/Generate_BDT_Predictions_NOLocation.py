@@ -605,40 +605,52 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
         print("**************************")
 
     df_model_ABsorting=df_model_allout.sort_values(by='BDT_PROB_COMPLETE',ascending=True).copy()
-
+    
     dblen=len(df_model_ABsorting)
     import math
     partsize=math.ceil(dblen/2)
     logger.log('INFO',f'{(dblen,partsize)}')
+
+    df_pred_wdraw=df_model_ABsorting[df_model_ABsorting['Predicted_Withdrawal']==1]
+    df_pred_complete=df_model_ABsorting[df_model_ABsorting['Predicted_Withdrawal']==0]
+
+    df_model_ABsorting['Email_Classification']='Email A'
+    emailBalloc_wdraw=df_pred_wdraw['Email_Classification'].sample(frac=0.5,random_state=42)
+    emailBalloc_complete=df_pred_complete['Email_Classification'].sample(frac=0.5,random_state=42)
+    
+    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_wdraw.index]='Email B'
+    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_complete.index]='Email B'
+
     #partition=df_model_ABsorting.index[0:]
 
-    df_model_ABsorting['HiLoPartition']="NONE"
-    df_model_ABsorting['HiLoPartition'].iloc[df_model_ABsorting.index<partsize]='Lo'
-    df_model_ABsorting['HiLoPartition'].iloc[df_model_ABsorting.index>=partsize]='Hi'
-    logger.log('INFO',df_model_ABsorting['HiLoPartition'].value_counts())
+    #df_model_ABsorting['HiLoPartition']="NONE"
+
+    #df_model_ABsorting['HiLoPartition'].iloc[df_model_ABsorting.index<partsize]='Lo'
+    #df_model_ABsorting['HiLoPartition'].iloc[df_model_ABsorting.index>=partsize]='Hi'
+    #logger.log('INFO',df_model_ABsorting['HiLoPartition'].value_counts())
 
     #LoGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
     #HiGroup=len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'])
 
-    partsize_Lo=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo'])/2)
-    partsize_Hi=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi'])/2)
+    #partsize_Lo=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo'])/2)
+    #partsize_Hi=math.ceil(len(df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi'])/2)
 
-    df_model_ABsorting['ABPartition']='B'
-    df_model_hi_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi']['HiLoPartition'].sample(frac=0.5,random_state=42)
-    df_model_lo_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'].sample(frac=0.5,random_state=42)
-    logger.log('INFO',f"LOWA PARTITION {len(df_model_lo_A)}")
-    df_model_ABsorting['ABPartition'].iloc[df_model_hi_A.index]='A'
-    df_model_ABsorting['ABPartition'].iloc[df_model_lo_A.index]='A'
+    #df_model_ABsorting['ABPartition']='B'
+    #df_model_hi_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Hi']['HiLoPartition'].sample(frac=0.5,random_state=42)
+    #df_model_lo_A=df_model_ABsorting[df_model_ABsorting['HiLoPartition']=='Lo']['HiLoPartition'].sample(frac=0.5,random_state=42)
+    #logger.log('INFO',f"LOWA PARTITION {len(df_model_lo_A)}")
+    #df_model_ABsorting['ABPartition'].iloc[df_model_hi_A.index]='A'
+    #df_model_ABsorting['ABPartition'].iloc[df_model_lo_A.index]='A'
 
 
-    df_part_lo=df_model_ABsorting.iloc[:partsize]
-    df_part_hi=df_model_ABsorting.iloc[partsize:]
-    logger.log('INFO',f"{[len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo)]}")
+    #df_part_lo=df_model_ABsorting.iloc[:partsize]
+    #df_part_hi=df_model_ABsorting.iloc[partsize:]
+    #logger.log('INFO',f"{[len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo)]}")
 
     df_model_ABsorting.to_csv(outfile)
 
-
-
+    return
+    
     logger.log('INFO',"********************************************")
     logger.log('INFO',df_model_ABsorting['HiLoPartition'].value_counts(dropna=False))
     logger.log('INFO',df_model_ABsorting['ABPartition'].value_counts(dropna=False))
