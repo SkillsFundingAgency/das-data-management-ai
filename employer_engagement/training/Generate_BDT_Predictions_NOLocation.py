@@ -614,12 +614,12 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     df_pred_wdraw=df_model_ABsorting[df_model_ABsorting['Predicted_Withdrawal']==1]
     df_pred_complete=df_model_ABsorting[df_model_ABsorting['Predicted_Withdrawal']==0]
 
-    df_model_ABsorting['Email_Classification']='Email A'
+    df_model_ABsorting['Email_Classification']='A'
     emailBalloc_wdraw=df_pred_wdraw['Email_Classification'].sample(frac=0.5,random_state=42)
     emailBalloc_complete=df_pred_complete['Email_Classification'].sample(frac=0.5,random_state=42)
     
-    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_wdraw.index]='Email B'
-    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_complete.index]='Email B'
+    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_wdraw.index]='B'
+    df_model_ABsorting['Email_Classification'].iloc[emailBalloc_complete.index]='B'
 
     #partition=df_model_ABsorting.index[0:]
 
@@ -646,7 +646,7 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     #df_part_lo=df_model_ABsorting.iloc[:partsize]
     #df_part_hi=df_model_ABsorting.iloc[partsize:]
     #logger.log('INFO',f"{[len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo)]}")
-
+    
     df_model_ABsorting.to_csv(outfile)
 
     return
