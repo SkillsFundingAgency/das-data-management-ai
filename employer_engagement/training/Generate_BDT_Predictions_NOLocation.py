@@ -647,8 +647,17 @@ def RunBDTModel(infile="",outfile="",plots=False,PandasInput=pd.DataFrame(),RunM
     #df_part_hi=df_model_ABsorting.iloc[partsize:]
     #logger.log('INFO',f"{[len(df_part_hi),len(df_part_lo),len(df_part_hi)+len(df_part_lo)]}")
     
-    df_model_ABsorting.to_csv(outfile)
+    df_model_ABsorting[['ApprenticeshipId','EmailClassification']].to_csv(outfile)
+    
+    #output to datamart
+    df_datamart_output=df_model_ABsorting[['ApprenticeshipId','Predicted Withdrawal','BDT_PROB_WITHDRAW']]
+    df_datamart_output=df_datamart_output.rename(columns={'BDT_PROB_WITHDRAW':'BDT_proba'})
+    #force INT on Withdraw/Complete
+    df_datamart_output['BDT_prediction']=df_datamart_output['Predicted Withdrawal'].astype(int)
+    df_datamart_output['ApprenticeshipId']=df_datamart_output['ApprenticeshipId'].astype(int)
+    df_datamart_output['BDT_prediction_description']=df_datamart_output['BDT_prediction'].apply(lambda x: "Predict withdraw" if x>0 else "Predict complete")
 
+    df_datamart_output[['ApprenticeshipId','BDT_prediction','BDT_proba','BDT_prediction_description']].to_csv(outfile.replace(".csv","_DATAMART_INPUT.csv"))
     return
     
     logger.log('INFO',"********************************************")
