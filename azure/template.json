@@ -15,6 +15,9 @@
                 "description": "Specifies that the Azure Machine Learning workspace holds highly confidential data."
             }
         },
+        "ipAllowlist": {
+            "type": "array"
+        },
         "tags": {
             "type": "object"
         },
@@ -313,6 +316,9 @@
                     },
                     "confidentialData": {
                         "value": "[parameters('confidentialData')]"
+                    },
+                    "ipAllowlist": {
+                        "value": "[parameters('ipAllowlist')]"
                     }
                 }
             },
