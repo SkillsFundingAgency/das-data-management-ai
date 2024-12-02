@@ -103,8 +103,8 @@ try:
     if(not os.path.exists("./outputs/")):
         os.mkdir("outputs/")
     
-    df_proc.to_csv("./outputs/"+fname_base+".csv")
-    df_proc.to_parquet("./outputs/"+fname_base+".parquet")
+    df_proc.to_csv("./outputs/"+fname_base+"_FAKEDATA.csv")
+    df_proc.to_parquet("./outputs/"+fname_base+"_FAKEDATA.parquet")
     run.log("INFO 8", "DATA SAVED TO DISK")
     blob=Datastore.get(aml_workspace,'workspaceartifactstore')
 
@@ -324,10 +324,18 @@ except Exception as E:
 
 try:
     import Generate_BDT_Predictions_NOLocation as BDTCode
-    BDTCode.RunBDTModel(infile="",plots=False,outfile="./TEST_OUTPUT.csv",PandasInput=df_autoencoded.copy())
+    currtime=datetime.datetime.now()
+    hh=currtime.hour
+    mm=currtime.minute
+    DD=currtime.day
+    MM=currtime.month
+    YYYY=currtime.year
+    fname_AImod=f'WithdrawalRateAIPrediction_{YYYY}{MM}{DD}{hh}{mm}00'
+    BDTCode.RunBDTModel(infile="",plots=False,outfile="./outputs/{}.csv".format(fname_AImod),PandasInput=df_autoencoded.copy())
     run.log('BDT EVAL','OK')
 except Exception as E:
     print("BDT EVALUATION FAILURE")
+    print("EXCEPTION {}".format(E))
 
 print("PREPROCESSING COMPLETE")
 #ensure deletion of model file at end of job:
