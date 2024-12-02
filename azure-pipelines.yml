@@ -21,12 +21,12 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.4.63
+    ref: refs/tags/2.2.8
     endpoint: SkillsFundingAgency
   - repository: das-platform-automation
     type: github
     name: SkillsFundingAgency/das-platform-automation
-    ref: refs/tags/5.0.6
+    ref: refs/tags/5.1.8
     endpoint: SkillsFundingAgency
   containers:
   - container: mlops
@@ -47,6 +47,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
+  - group: AT das-data-management-ai
   jobs:
   - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
@@ -59,6 +60,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
+  - group: TEST das-data-management-ai
   jobs:
   - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
@@ -71,6 +73,7 @@ stages:
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
+  - group: PREPROD das-data-management-ai
   jobs:
   - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
@@ -83,6 +86,7 @@ stages:
   variables:
   - group: Prod Management Resources
   - group: Prod Shared Resources
+  - group: PROD das-data-management-ai
   jobs:
   - template: pipeline-templates/job/deploy-pipeline.yml
     parameters:
