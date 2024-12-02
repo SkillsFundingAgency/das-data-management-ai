@@ -17,7 +17,7 @@ def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: 
     train_source_dir="./employer_engagement/training"
     test_train_step = PythonScriptStep(
         name='test_train',
-        script_name="test_train.py",
+        script_name="WithdrawalAIPrediction.py",
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
         source_directory=train_source_dir,
