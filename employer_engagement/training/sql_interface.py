@@ -45,7 +45,7 @@ def Validate_Columns(df_in):
     
 
 def ExtractView():
-    query=DataPath(datastore,'SELECT * FROM [PDS_AI].[MLOpsData]')
+    query=DataPath(datastore,'SELECT * FROM [PDS_AI].[PT_F]')
     tabular=Dataset.Tabular.from_sql_query(query,query_timeout=3600)
     outdf=tabular.to_pandas_dataframe()
     validation_report=Validate_Columns(outdf)
