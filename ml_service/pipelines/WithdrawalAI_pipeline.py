@@ -7,7 +7,7 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
-from ml_service.pipelines.test_train import test_train
+from ml_service.pipelines.WithdrawalAI_steps import tonfigureEndpoint
 
 
 # Set up all environment details
@@ -113,5 +113,5 @@ pipeline_run_config.target = aml_compute
 pipeline_run_config.environment = registered_env
 
 #Create pipelines for levy models
-test_train(aml_workspace, aml_compute, pipeline_run_config, experiment) 
+ConfigureEndpoint(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 

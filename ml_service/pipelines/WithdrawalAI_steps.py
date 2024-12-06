@@ -12,7 +12,7 @@ from azureml.core.run import Run
 from ml_service.util.manage_environment import get_environment
 
 
-def test_train(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
+def ConfigureEndpoint(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
    
     train_source_dir="./employer_engagement/training"
     test_train_step = PythonScriptStep(
