@@ -43,6 +43,9 @@
         "minimumTlsVersion": {
             "type": "string",
             "defaultValue": "TLS1_2"
+        },
+        "logAnalyticsWorkspaceResourceId": {
+          "type": "string"
         }
     },
     "variables": {
@@ -319,6 +322,9 @@
                     },
                     "ipAllowlist": {
                         "value": "[parameters('ipAllowlist')]"
+                    },
+                    "logAnalyticsWorkspaceResourceId": {
+                        "value": "[parameters('logAnalyticsWorkspaceResourceId')]"
                     }
                 }
             },
