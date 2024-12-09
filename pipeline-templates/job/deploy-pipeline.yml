@@ -81,4 +81,4 @@ jobs:
         export RESOURCE_GROUP=$(ResourceGroupName)
         export DATA_STORAGE_CONTAINER_NAME=$(DataStorageContainerName)
         export DATA_STORAGE_ACCOUNT_NAME=$(DataStorageAccountName)
-        python -m ml_service.pipelines.test_train_pipeline
+        python -m ml_service.pipelines.WithdrawalAI_pipeline
