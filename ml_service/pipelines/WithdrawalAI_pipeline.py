@@ -7,7 +7,7 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline, PipelineData, StepSequence, PublishedPipeline
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
-from ml_service.pipelines.WithdrawalAI_steps import tonfigureEndpoint
+from ml_service.pipelines.WithdrawalAI_steps import ConfigureEndpoint
 
 
 # Set up all environment details
