@@ -16,7 +16,7 @@ def ConfigureEndpoint(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
    
     train_source_dir="./employer_engagement/training"
     test_train_step = PythonScriptStep(
-        name='test_train',
+        name='WithdrawalAIScript_Inc_Autoencoder',
         script_name="WithdrawalAIPrediction.py",
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
@@ -45,7 +45,7 @@ def ConfigureEndpoint(aml_workspace: Workspace, aml_compute: str, pipeline_run_c
           print("Endpoint GET exception: {}".format(E))
           print("New endpoint being created")
           pipeline_endpoint = PipelineEndpoint.publish(workspace=aml_workspace,
-                                                       name="test_train_endpoint", 
+                                                       name="WithdrawalAI_Endpoint", 
                                                        pipeline=test_train_published_pipeline,
                                                        description="Endpoint to test Train pipeline",
                                                        )
