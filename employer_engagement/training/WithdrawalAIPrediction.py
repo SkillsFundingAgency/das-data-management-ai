@@ -82,8 +82,8 @@ except Exception as E:
 #try:
 
 df_in_AIMod,validation_report=sql_interface.ExtractView()
-run.log('INFO 9A","Queried Datamart OK')
-    #run.log("INFO 10","Extraction verification report: {}".format(str(validation_report)))
+run.log('INFO 9A','Queried Datamart OK')
+run.log("INFO 10","Extraction verification report: {}".format(str(validation_report)))
 #except Exception as E:
 #    run.log("EXCEPTION 3",f'Exception: {E}')
 #    pass
