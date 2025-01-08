@@ -89,6 +89,7 @@ run.log("INFO 10","Extraction verification report: {}".format(str(validation_rep
 #    pass
 
 
+
 # Make some directories on the AzureML build machines
 try:
     os.makedirs("./ML_Models/Download_Manifest/Dummy_Autoencoder/")
