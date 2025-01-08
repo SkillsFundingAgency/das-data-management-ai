@@ -48,7 +48,9 @@ def ExtractView():
     query=DataPath(datastore,'SELECT * FROM [PDS_AI].[PT_F]')
     tabular=Dataset.Tabular.from_sql_query(query,query_timeout=3600)
     outdf=tabular.to_pandas_dataframe()
-    #validation_report=Validate_Columns(outdf)
-    return outdf#,validation_report
+    validation_report=Validate_Columns(outdf)
+    #validation_report="" # force a temporary validation report to skip
+    return outdf,validation_report
+
 
 
