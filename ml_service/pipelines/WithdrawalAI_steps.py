@@ -13,11 +13,15 @@ from ml_service.util.manage_environment import get_environment
 
 
 def ConfigureEndpoint(aml_workspace: Workspace, aml_compute: str, pipeline_run_config: str, experiment: str) :
-   
+    print(f"STEP CONFIG:::{os.environ.get('ENVIRONMENT_FLAG')}")
+    args=None
+    if(os.environ.get('ENVIRONMENT_FLAG') is not None):
+        args=["--env",os.environ.get('ENVIRONMENT_FLAG')]
     train_source_dir="./employer_engagement/training"
     test_train_step = PythonScriptStep(
         name='WithdrawalAIScript_Inc_Autoencoder',
         script_name="WithdrawalAIPrediction.py",
+        arguments=args,
         compute_target=aml_compute,
         runconfig=pipeline_run_config,
         source_directory=train_source_dir,

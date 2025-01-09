@@ -111,7 +111,7 @@ pipeline_run_config.max_run_duration_seconds=3600
 pipeline_run_config.target = aml_compute
 # Assign the environment to the run configuration
 pipeline_run_config.environment = registered_env
-
+print(f"PIPELINE CONFIG:::{os.environ.get('ENVIRONMENT_FLAG')}")
 #Create pipelines for levy models
 ConfigureEndpoint(aml_workspace, aml_compute, pipeline_run_config, experiment) 
 
