@@ -21,16 +21,30 @@ from scipy import stats
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 
+import argparse
+
+parser=argparse.ArgumentParser("WithdrawalAIPrediction.py : Step to run the AI model code")
+parser.add_argument("--env",default=None,help="Environment flag (from DevOps build machine)",dest="environment",action="store")
+args=parser.parse_args()
+enviros=args.environment
+if(enviros!=None):
+    os.environ['ENVIRONMENT_FLAG']=enviros
+print(f"AZUREML ENVIRONMENT: {os.environ.get('ENVIRONMENT_FLAG')}")
+
 import levy_train_sql_functions as levy_train_functions
 import generic_sql_functions as generic_train_functions
 import sql_interface 
 import pickle 
 import time
+
+
 # Set up config of workspace and datastore
 aml_workspace = Run.get_context().experiment.workspace
 #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 run = Run.get_context()
 #run.log('levy_model_train','levy_model_train')
+
+
 
 #prevent SettingWithCopyWarning message from appearing
 #pd.options.mode.chained_assignment = None
@@ -80,8 +94,17 @@ except Exception as E:
     run.log("EXCEPTION 2",f'Exception: {E}')
 
 #try:
+DAS_ENV="NONE-BUGGED"
+try:
+    DAS_ENV=os.environ['ENVIRONMENT_FLAG']
+    print(f"Hello I'm running on {DAS_ENV}")
+except Exception as E:
+    print("ENVIRONMENT EXCEPTION: {}".format(E))
 
-df_in_AIMod,validation_report=sql_interface.ExtractView()
+df_in_AIMod,validation_report=sql_interface.ExtractView(environment=DAS_ENV)
+print('Queried Datamart OK')
+print("Extraction verification report: {}".format(str(validation_report)))
+print("Number of rows: {}".format(df_in_AIMod))
 run.log('INFO 9A','Queried Datamart OK')
 run.log("INFO 10","Extraction verification report: {}".format(str(validation_report)))
 #except Exception as E:
@@ -241,12 +264,18 @@ except:
     pass
 run.log('JOB START INFO 0',"JOB START")
 
-df_in=pd.DataFrame()
-try:
-    df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
-except Exception as E:
-    # major exception
-    run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+df_in=pd.DataFrame() # empty dataframe just in case all of the otehr catches fail.
+if(len(df_in_AIMod)==0):
+    df_in=pd.DataFrame()
+    print("ERROR: FALLBACK TO FAKE DATA FILE")
+    run.log('ERROR: DATA LOAD FROM SQL EXECUTION ERROR:','FALLBACK TO FAKE DATA FILE')
+    try:
+        df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
+    except Exception as E:
+        # major exception
+        run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+else:
+    df_in=df_in_AIMod.copy()# assign the dataframe from SQL to be the one used to run the model, not that from fake data file
 df_autoencoded=None
 try:
     import DataPreprocessing_Step
