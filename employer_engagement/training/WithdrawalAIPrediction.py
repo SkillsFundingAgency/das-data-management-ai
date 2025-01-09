@@ -250,7 +250,7 @@ except:
     pass
 run.log('JOB START INFO 0',"JOB START")
 
-
+df_in=pd.DataFrame() # empty dataframe just in case all of the otehr catches fail.
 if(len(df_in_AIMod)==0):
     df_in=pd.DataFrame()
     print("ERROR: FALLBACK TO FAKE DATA FILE")
