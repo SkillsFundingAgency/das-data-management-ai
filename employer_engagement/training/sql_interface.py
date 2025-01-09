@@ -44,8 +44,20 @@ def Validate_Columns(df_in):
     return validation_report
     
 
-def ExtractView():
-    query=DataPath(datastore,'SELECT * FROM [PDS_AI].[MLOpsData]')
+def ExtractView(environment=""):
+    if(environment=="" or environment==None):
+        print("EXTRACTVIEW: NO ENVIRONMENT SPECIFIED")
+        return pd.DataFrame(),{}
+    print("Extract View: Environment:{}")
+    if(environment=="PP" or environment=="PRD"):
+        
+        query=DataPath(datastore,'SELECT * FROM [PDS_AI].[MLOpsData]')
+    elif(environment=="AT"):
+        query=DataPath(datastore,'SELECT * FROM [PDS_AI].[Dev_MLOpsData]')
+    else:
+        print("EXTRACTVIEW ERROR: ENVIRONMENT {} SPECIFIED BUT NOT IN LIST".format(environment))
+        return pd.DataFrame(),{}
+
     tabular=Dataset.Tabular.from_sql_query(query,query_timeout=3600)
     outdf=tabular.to_pandas_dataframe()
     validation_report=Validate_Columns(outdf)

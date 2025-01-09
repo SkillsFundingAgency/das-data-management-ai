@@ -80,8 +80,17 @@ except Exception as E:
     run.log("EXCEPTION 2",f'Exception: {E}')
 
 #try:
+DAS_ENV="NONE-BUGGED"
+try:
+    DAS_ENV=os.environ['ENVIRONMENT_FLAG']
+    print(f"Hello I'm running on {DAS_ENV}")
+except Exception as E:
+    print("ENVIRONMENT EXCEPTION: {}".format(E))
 
-df_in_AIMod,validation_report=sql_interface.ExtractView()
+df_in_AIMod,validation_report=sql_interface.ExtractView(environment=DAS_ENV)
+print('Queried Datamart OK')
+print("Extraction verification report: {}".format(str(validation_report)))
+print("Number of rows: {}".format(df_in_AIMod))
 run.log('INFO 9A','Queried Datamart OK')
 run.log("INFO 10","Extraction verification report: {}".format(str(validation_report)))
 #except Exception as E:
@@ -240,12 +249,18 @@ except:
     pass
 run.log('JOB START INFO 0',"JOB START")
 
-df_in=pd.DataFrame()
-try:
-    df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
-except Exception as E:
-    # major exception
-    run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+
+if(len(df_in_AIMod)==0):
+    df_in=pd.DataFrame()
+    print("ERROR: FALLBACK TO FAKE DATA FILE")
+    run.log('ERROR: DATA LOAD FROM SQL EXECUTION ERROR:','FALLBACK TO FAKE DATA FILE')
+    try:
+        df_in=pd.read_csv('./ML_Models/Fake_Dataframe_SQLOutput.csv',index_col=0)
+    except Exception as E:
+        # major exception
+        run.log('DATA LOAD EXECUTION ERROR: ',f'{str(E)}')
+else:
+    df_in=df_in_AIMod.copy()# assign the dataframe from SQL to be the one used to run the model, not that from fake data file
 df_autoencoded=None
 try:
     import DataPreprocessing_Step
