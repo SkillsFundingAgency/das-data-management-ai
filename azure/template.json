@@ -15,6 +15,9 @@
                 "description": "Specifies that the Azure Machine Learning workspace holds highly confidential data."
             }
         },
+        "ipAllowlist": {
+            "type": "array"
+        },
         "tags": {
             "type": "object"
         },
@@ -40,6 +43,9 @@
         "minimumTlsVersion": {
             "type": "string",
             "defaultValue": "TLS1_2"
+        },
+        "logAnalyticsWorkspaceResourceId": {
+          "type": "string"
         }
     },
     "variables": {
@@ -313,6 +319,12 @@
                     },
                     "confidentialData": {
                         "value": "[parameters('confidentialData')]"
+                    },
+                    "ipAllowlist": {
+                        "value": "[parameters('ipAllowlist')]"
+                    },
+                    "logAnalyticsWorkspaceResourceId": {
+                        "value": "[parameters('logAnalyticsWorkspaceResourceId')]"
                     }
                 }
             },
