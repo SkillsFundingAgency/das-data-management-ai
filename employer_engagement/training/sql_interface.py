@@ -49,7 +49,7 @@ def ExtractView(environment=""):
         print("EXTRACTVIEW: NO ENVIRONMENT SPECIFIED")
         return pd.DataFrame(),{}
     print("Extract View: Environment:{}")
-    if(environment=="PP" or environment=="PRD"):
+    if(environment=="PP" or environment=="PROD"):
         
         query=DataPath(datastore,'SELECT * FROM [PDS_AI].[MLOpsData]')
     elif(environment=="AT"):
