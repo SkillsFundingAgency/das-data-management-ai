@@ -79,7 +79,7 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        export ENVIRONMENT_FLAG=$(parameters.Environment)
+        export ENVIRONMENT_FLAG=${{ parameters.Environment }}
         export DATA_STORAGE_CONTAINER_NAME=$(DataStorageContainerName)
         export DATA_STORAGE_ACCOUNT_NAME=$(DataStorageAccountName)
         python -m ml_service.pipelines.WithdrawalAI_pipeline
