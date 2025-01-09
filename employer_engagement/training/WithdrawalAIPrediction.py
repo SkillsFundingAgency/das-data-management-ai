@@ -21,16 +21,30 @@ from scipy import stats
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 
+import argparse
+
+parser=argparse.ArgumentParser("WithdrawalAIPrediction.py : Step to run the AI model code")
+parser.add_argument("--env",default=None,help="Environment flag (from DevOps build machine)",dest="environment",action="store")
+args=parser.parse_args()
+enviros=args.environment
+if(enviros!=None):
+    os.environ['ENVIRONMENT_FLAG']=enviros
+print(f"AZUREML ENVIRONMENT: {os.environ.get('ENVIRONMENT_FLAG')}")
+
 import levy_train_sql_functions as levy_train_functions
 import generic_sql_functions as generic_train_functions
 import sql_interface 
 import pickle 
 import time
+
+
 # Set up config of workspace and datastore
 aml_workspace = Run.get_context().experiment.workspace
 #datastore = Datastore.get(aml_workspace, datastore_name='datamgmtdb')
 run = Run.get_context()
 #run.log('levy_model_train','levy_model_train')
+
+
 
 #prevent SettingWithCopyWarning message from appearing
 #pd.options.mode.chained_assignment = None
