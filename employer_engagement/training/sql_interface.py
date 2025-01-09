@@ -52,7 +52,7 @@ def ExtractView(environment=""):
     if(environment=="PP" or environment=="PROD"):
         
         query=DataPath(datastore,'SELECT * FROM [PDS_AI].[MLOpsData]')
-    elif(environment=="AT"):
+    elif(environment=="AT" or environment=="TEST"):
         query=DataPath(datastore,'SELECT * FROM [PDS_AI].[Dev_MLOpsData]')
     else:
         print("EXTRACTVIEW ERROR: ENVIRONMENT {} SPECIFIED BUT NOT IN LIST".format(environment))
