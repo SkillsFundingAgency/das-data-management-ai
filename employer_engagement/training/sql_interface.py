@@ -31,7 +31,11 @@ def Validate_Columns(df_in):
     if(len(df_in.columns==39)):
         print("SQL dataframe has correct number of rows")
         lencheck=True
-    if((len(df_in.columns)!=39) & (len(df_in.columns)!=35): # flag only if the table is incorrect somehow.
+    if(
+        (len(df_in.columns)!=39) 
+        & 
+        (len(df_in.columns)!=35)
+    ): # flag only if the table is incorrect somehow.
         print("WARNING: SQL dataframe has {} columns, the downstream might spectacularly explode".format(len(df_in.columns)))
 
     
