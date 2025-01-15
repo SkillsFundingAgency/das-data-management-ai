@@ -287,20 +287,19 @@ except Exception as E:
     run.log('DATA PREPROCESS EXECUTION ERROR: ',f'{str(E)}')
     print("PREPROCESSING ERROR: {}".format(E))
 
-try:
-    import Generate_BDT_Predictions_NOLocation as BDTCode
-    currtime=datetime.datetime.now()
-    hh=currtime.hour
-    mm=currtime.minute
-    DD=currtime.day
-    MM=currtime.month
-    YYYY=currtime.year
-    fname_AImod=f'WithdrawalRateAIPrediction_{YYYY}{MM}{DD}{hh}{mm}00'
-    BDTCode.RunBDTModel(infile="./ML_Models/Fake_Dataframe_SQLOutput.csv",plots=False,outfile="./outputs/{}.csv".format(fname_AImod),PandasInput=df_autoencoded.copy())
-    run.log('BDT EVAL','OK')
-except Exception as E:
-    print("BDT EVALUATION FAILURE")
-    print("EXCEPTION {}".format(E))
+
+import Generate_BDT_Predictions_NOLocation as BDTCode
+currtime=datetime.datetime.now()
+hh=currtime.hour
+mm=currtime.minute
+DD=currtime.day
+MM=currtime.month
+YYYY=currtime.year
+fname_AImod=f'WithdrawalRateAIPrediction_{YYYY}{MM}{DD}{hh}{mm}00'
+BDTCode.RunBDTModel(infile="./ML_Models/Fake_Dataframe_SQLOutput.csv",plots=False,outfile="./outputs/{}.csv".format(fname_AImod),PandasInput=df_autoencoded.copy())
+run.log('BDT EVAL','OK')
+
+    
 
 print("PREPROCESSING COMPLETE")
 run.log("INFO19","JOB FINISH STATUS OK")
