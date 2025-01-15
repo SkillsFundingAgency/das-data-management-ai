@@ -31,11 +31,15 @@ def Validate_Columns(df_in):
     if(len(df_in.columns==39)):
         print("SQL dataframe has correct number of rows")
         lencheck=True
-    if(len(df_in.columns)-39!=0):
-        print("WARNING: SQL dataframe has {}, the downstream might spectacularly explode".format(len(df_in.columns)))
+    if(
+        (len(df_in.columns)!=39) 
+        & 
+        (len(df_in.columns)!=35)
+    ): # flag only if the table is incorrect somehow.
+        print("WARNING: SQL dataframe has {} columns, the downstream might spectacularly explode".format(len(df_in.columns)))
 
     
-    expected_column_names=['CommitmentId', 'Id', 'CreatedOn', 'ULN', 'StandardUId', 'StartDate', 'EndDate', 'StopDate', 'LearnStartDate', 'PlannedEndDate', 'LearnActEndDate', 'UKPRN', 'DelLoc_Pst_Lower_Layer_SOA', 'CompletionStatus', 'IsTransfer', 'StandardUId.1', 'StandardCode', 'Level', 'SectorSubjectAreaTier1', 'SectorSubjectAreaTier2', 'SectorSubjectAreaTier2_Desc', 'SectorSubjectAreaTier1_Desc', 'UKPRN.1', 'LARSCODE', 'FLAG_AGGREGATED_LOWRATING', 'weighted_average_annual_minwage', 'weighted_average_annual_maxwage', 'ProviderUkprn', 'FrameworkOrStandardLarsCode', 'Level.1', 'ApprenticeshipId.1', 'EmployerAccountId', 'Employer type', 'Employer sector estimate', 'Employee_size_estimate', 'CURR_STAMP', 'YESTERDAY', 'LASTWEEK', 'CreatedRecordDate']
+    expected_column_names=['CommitmentId', 'Id', 'CreatedOn', 'ULN', 'StandardUId', 'StartDate', 'EndDate', 'StopDate', 'LearnStartDate', 'PlannedEndDate', 'LearnActEndDate', 'UKPRN', 'DelLoc_Pst_Lower_Layer_SOA', 'CompletionStatus', 'IsTransfer', 'StandardCode', 'Level', 'SectorSubjectAreaTier1', 'SectorSubjectAreaTier2', 'SectorSubjectAreaTier2_Desc', 'SectorSubjectAreaTier1_Desc',  'LARSCODE', 'FLAG_AGGREGATED_LOWRATING', 'weighted_average_annual_minwage', 'weighted_average_annual_maxwage', 'ProviderUkprn', 'FrameworkOrStandardLarsCode', 'EmployerAccountId', 'Employer type', 'Employer sector estimate', 'Employee_size_estimate', 'CURR_STAMP', 'YESTERDAY', 'LASTWEEK', 'CreatedRecordDate']
     missing_columns=[]
     for col in expected_column_names:
         if(not any(x==col for x in df_in.columns)):
