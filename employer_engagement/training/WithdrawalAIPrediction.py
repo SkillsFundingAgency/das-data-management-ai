@@ -138,7 +138,7 @@ try:
     run.log('INFO 13 A-1',f'BLOBNAME {str(blob.name)}')
     run.log('INFO 13 A-2',f'BLOBKEY {str(blob.account_name)}')
     run.log('INFO 13 A-3',f'BLOBKEY {str(blob.container_name)}')
-    run.log('INFO 13 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
+    
             
 except Exception as E:
     run.log('EXCEPTION 6',f'{E}')
@@ -177,7 +177,7 @@ try:
     run.log('INFO 16 A-1',f'BLOBNAME {str(blob.name)}')
     run.log('INFO 16 A-2',f'BLOBKEY {str(blob.account_name)}')
     run.log('INFO 16 A-3',f'BLOBKEY {str(blob.container_name)}')
-    run.log('INFO 16 A-4',f'BLOB CLIENT ID: {str(blob.client_id)}')
+    
 except Exception as E:
     run.log('EXCEPTION 8',f'{E}')
 
