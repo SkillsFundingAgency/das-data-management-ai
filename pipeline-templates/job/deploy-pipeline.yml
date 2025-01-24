@@ -26,7 +26,7 @@ jobs:
             ParametersPath: das-data-management-ai/azure/template.parameters.json
             IsMultiRepoCheckout: true
 
-# ###TODO: This is commented out as the AZDO SP doesnt have permission to change IAM          
+# ###TODO: This is commented out as the AZDO SP doesnt have permission to change IAM
 # - job: SetPermissions
 #   dependsOn: DeployInfra
 #   variables:
@@ -68,6 +68,19 @@ jobs:
   steps:
   - checkout: self
   - task: AzureCLI@2
+    condition: ${{ or(eq(parameters.Environment, 'PP'), eq(parameters.Environment, 'PROD')) }}
+    displayName: "Add IP to ML workspace whitelist"
+    inputs:
+      azureSubscription: ${{ parameters.ServiceConnection }}
+      workingDirectory: $(Build.SourcesDirectory)
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        set -e # fail on error
+        ip=$(curl -s http://ipinfo.io/json | jq -r '.ip')
+        echo "Public IP Address: $ip"
+        az resource update -n $(WorkspaceName) -g $(ResourceGroupName) --resource-type Microsoft.MachineLearningServices/workspaces --add properties.ipAllowlist $ip
+  - task: AzureCLI@2
     displayName: "Deploy ML pipelines"
     inputs:
       azureSubscription: ${{ parameters.ServiceConnection }}
@@ -79,7 +92,21 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        export ENVIRONMENT_FLAG=${{ parameters.Environment }}
-        export DATA_STORAGE_CONTAINER_NAME=$(DataStorageContainerName)
-        export DATA_STORAGE_ACCOUNT_NAME=$(DataStorageAccountName)
         python -m ml_service.pipelines.WithdrawalAI_pipeline
+  - task: AzureCLI@2
+    condition: ${{ or(eq(parameters.Environment, 'PP'), eq(parameters.Environment, 'PROD')) }}
+    displayName: "Remove IP to ML workspace whitelist"
+    inputs:
+      azureSubscription: ${{ parameters.ServiceConnection }}
+      workingDirectory: $(Build.SourcesDirectory)
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        set -e # fail on error
+        ip=$(curl -s http://ipinfo.io/json | jq -r '.ip')
+        echo "Public IP Address: $ip"
+        ip="${ip}/32"
+        echo "Public IP Address with /32: $ip"
+        indexToRemove=$(az resource show -n $(WorkspaceName) -g $(ResourceGroupName) --resource-type Microsoft.MachineLearningServices/workspaces --query properties.ipAllowlist -o json | jq -c --arg ip "$ip" '. | to_entries[] | select(.value==$ip) | .key ')
+        echo "$indexToRemove"
+        az resource update -n $(WorkspaceName) -g $(ResourceGroupName) --resource-type Microsoft.MachineLearningServices/workspaces --remove properties.ipAllowlist $indexToRemove
