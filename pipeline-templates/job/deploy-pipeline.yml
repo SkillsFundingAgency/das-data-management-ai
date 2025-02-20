@@ -61,6 +61,10 @@ jobs:
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ResourceGroupName'] ]
   - name: ComputeName
     value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.ComputeName'] ]
+  - name: DataStorageContainerName
+    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.dataStorageContainerName'] ]
+  - name: DataStorageAccountName
+    value: $[ dependencies.DeployInfra.outputs['DeployInfra.ArmOutputs${{ parameters.Environment }}.dataStorageAccountName'] ]
   steps:
   - checkout: self
   - task: AzureCLI@2
@@ -88,7 +92,10 @@ jobs:
         export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         export WORKSPACE_NAME=$(WorkspaceName)
         export RESOURCE_GROUP=$(ResourceGroupName)
-        python -m ml_service.pipelines.employer_engagement_train_pipeline
+        export ENVIRONMENT_FLAG=${{ parameters.Environment }}
+        export DATA_STORAGE_CONTAINER_NAME=$(DataStorageContainerName)
+        export DATA_STORAGE_ACCOUNT_NAME=$(DataStorageAccountName)
+        python -m ml_service.pipelines.WithdrawalAI_pipeline
   - task: AzureCLI@2
     condition: ${{ or(eq(parameters.Environment, 'PP'), eq(parameters.Environment, 'PROD')) }}
     displayName: "Remove IP to ML workspace whitelist"

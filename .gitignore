@@ -348,3 +348,11 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# AI ML models directory contents
+employer_engagement/training/ML_Models/Models/
+employer_engagement/training/ML_Models/ONSData/
+
+# AI ML models directory contents
+employer_engagement/training/ML_Models/Models/
+employer_engagement/training/ML_Models/ONSData/
