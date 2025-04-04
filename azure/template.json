@@ -45,7 +45,20 @@
             "defaultValue": "TLS1_2"
         },
         "logAnalyticsWorkspaceResourceId": {
-          "type": "string"
+            "type": "string"
+        },
+        "EnableRouteTableAssociation": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Determines whether to enable route table association on subnet"
+            }
+        },
+        "SharedRouteTableName": {
+            "type": "string",
+            "metadata": {
+                "description": "Determines whether to enable route table association on subnet"
+            }
         }
     },
     "variables": {
@@ -59,7 +72,11 @@
         "containerRegistryName": "[replace(concat(variables('resourceNamePrefix'), 'acr'), '-', '')]",
         "defaultStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'str'), '-', '')]",
         "dataStorageAccountName": "[replace(concat(variables('resourceNamePrefix'), 'datastr'), '-', '')]",
-        "dataStorageContainerName": "trainingdata"
+        "dataStorageContainerName": "trainingdata",
+        "routeTableId": {
+            "id": "[resourceId(subscription().subscriptionId, parameters('sharedEnvResourceGroup'), 'Microsoft.Network/routeTables', parameters('SharedRouteTableName'))]"
+        },
+        "emptyObject": {}
     },
     "resources": [
         {
@@ -98,6 +115,9 @@
                             "Microsoft.ContainerRegistry",
                             "Microsoft.Sql"
                         ]
+                    },
+                    "routeTable": {
+                        "value": "[if(parameters('enableRouteTableAssociation'), variables('routeTableId') , variables('emptyObject'))]"
                     }
                 }
             }
