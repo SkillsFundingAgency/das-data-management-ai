@@ -27,6 +27,9 @@
         "sharedEnvResourceGroup": {
             "type": "string"
         },
+        "deployPrivateLinkedScopedResource": {
+            "type": "bool"
+        },
         "sharedSQLServerName": {
             "type": "string"
         },
@@ -66,6 +69,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appInsightsName": "[concat(variables('resourceNamePrefix'), '-ai')]",
+        "privateLinkScopeName": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-shared-ampls'))]",
         "workspaceName": "[concat(variables('resourceNamePrefix'), '-ml')]",
         "keyVaultName": "[concat(variables('resourceNamePrefix'), '-kv')]",
         "computeName": "cpucluster",
@@ -309,6 +313,31 @@
             "dependsOn": [
                 "[variables('resourceGroupName')]"
             ]
+        },
+        {
+            "condition": "[parameters('deployPrivateLinkedScopedResource')]",
+            "apiVersion": "2021-04-01",
+            "name": "[concat('ml-private-link-scoped-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'private-linked-scoped-resource.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "privateLinkScopeName": {
+                        "value": "[variables('privateLinkScopeName')]"
+                    },
+                    "scopedResourceName": {
+                        "value": "[variables('appInsightsName')]"
+                    },
+                    "scopedResourceId": {
+                        "value": "[reference(concat('ml-app-insights-', parameters('utcValue'))).outputs.AppInsightsResourceId.value]"
+                    }
+                }
+            }
         },
         {
             "apiVersion": "2021-04-01",
